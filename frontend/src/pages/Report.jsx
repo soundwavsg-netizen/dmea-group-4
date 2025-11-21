@@ -47,35 +47,41 @@ const Report = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
-        <div className="text-center max-w-md">
-          <p className="text-red-600 mb-4">{error}</p>
-          <button
-            onClick={fetchReport}
-            className="px-6 py-2 bg-[#A62639] text-white rounded-full hover:bg-[#8E1F31]"
-          >
-            Retry
-          </button>
+      <>
+        <Navigation />
+        <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
+          <div className="text-center max-w-md">
+            <p className="text-red-600 mb-4">{error}</p>
+            <button
+              onClick={fetchReport}
+              className="px-6 py-2 bg-[#A62639] text-white rounded-full hover:bg-[#8E1F31]"
+            >
+              Retry
+            </button>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   if (!reportData || reportData.total_insights === 0) {
     return (
-      <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
-        <div className="text-center max-w-md">
-          <h2 className="text-2xl font-bold text-[#1F1A1A] mb-4">No Insights Yet</h2>
-          <p className="text-[#6C5F5F] mb-6">Start by adding your first user research insight.</p>
-          <button
-            onClick={() => navigate('/add-insight')}
-            className="px-6 py-3 bg-[#A62639] text-white rounded-full hover:bg-[#8E1F31]"
-            data-testid="add-insight-btn"
-          >
-            Add Insight
-          </button>
+      <>
+        <Navigation />
+        <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
+          <div className="text-center max-w-md">
+            <h2 className="text-2xl font-bold text-[#1F1A1A] mb-4">No Insights Yet</h2>
+            <p className="text-[#6C5F5F] mb-6">Start by adding your first user research insight.</p>
+            <button
+              onClick={() => navigate('/add-insight')}
+              className="px-6 py-3 bg-[#A62639] text-white rounded-full hover:bg-[#8E1F31]"
+              data-testid="add-insight-btn"
+            >
+              Add Insight
+            </button>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
