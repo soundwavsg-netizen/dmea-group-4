@@ -112,6 +112,7 @@ const PersonaGenerator = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
