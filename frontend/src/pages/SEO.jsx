@@ -1,5 +1,4 @@
 import React from 'react';
-import Navigation from '../components/Navigation';
 import { useNavigate } from 'react-router-dom';
 
 const SEO = () => {
@@ -13,8 +12,7 @@ const SEO = () => {
   ];
 
   return (
-    <>
-      <Navigation />
+      
       <div className="min-h-screen w-full bg-[#F8F6F5]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <h1 className="text-4xl font-bold text-[#A62639] mb-2">SEO & Content</h1>
@@ -35,7 +33,6 @@ const SEO = () => {
           </div>
         </div>
       </div>
-    </>
   );
 };
 

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Navigation from '../components/Navigation';
 import featureFlagService from '../services/featureFlagService';
 
 const AdminPanel = () => {
@@ -23,8 +22,7 @@ const AdminPanel = () => {
   };
 
   return (
-    <>
-      <Navigation />
+      
       <div className="min-h-screen w-full bg-[#F8F6F5]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Header */}
@@ -100,7 +98,6 @@ const AdminPanel = () => {
           </div>
         </div>
       </div>
-    </>
   );
 };
 
