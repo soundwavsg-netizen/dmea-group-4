@@ -1,110 +1,110 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
+import featureFlagService from '../services/featureFlagService';
 
 const Navigation = () => {
   const navigate = useNavigate();
+  const session = authService.getSession();
+  const role = session?.role;
+  const isSuperAdmin = authService.isSuperAdmin();
   const isAdmin = authService.isAdmin();
   const isUser = authService.isUser();
-  const session = authService.getSession();
+  
+  const flags = featureFlagService.getFlags();
 
   const handleLogout = () => {
     authService.logout();
     navigate('/login');
   };
 
-  // Style for disabled links (USER role)
-  const disabledLinkStyle = "text-[#9CA3AF] font-semibold text-base cursor-not-allowed opacity-50";
   const activeLinkStyle = (isActive) => 
-    `text-[#4A3F35] font-semibold text-base transition-all ${
+    `text-[#4A3F35] font-semibold text-base transition-all py-2 ${
       isActive ? 'border-b-2 border-[#A62639] text-[#A62639]' : 'hover:text-[#A62639]'
     }`;
+
+  // Define navigation items based on role
+  const getNavigationItems = () => {
+    const items = [];
+    
+    // Dashboard - visible to all
+    items.push({ label: 'Dashboard', path: '/', visible: true });
+    
+    if (isUser) {
+      // USER: Only Dashboard + Add Insight
+      items.push({ label: 'Add Insight', path: '/add-insight', visible: true });
+    }
+    
+    if (isAdmin || isSuperAdmin) {
+      // ADMIN & SUPERADMIN: Buyer Persona Module
+      if (isSuperAdmin || flags.buyer_research) {
+        items.push({ label: 'Buyer Persona', path: '/report', visible: true, submenu: [
+          { label: 'Report', path: '/report' },
+          { label: 'Add Insight', path: '/add-insight' },
+          { label: 'Generator', path: '/persona-generator' },
+          { label: 'Personas', path: '/personas' }
+        ]});
+      }
+      
+      // SEO & Content Module
+      if (isSuperAdmin || flags.seo_content) {
+        items.push({ label: 'SEO & Content', path: '/seo', visible: true });
+      }
+      
+      // Social Media Module
+      if (isSuperAdmin || flags.social_media) {
+        items.push({ label: 'Social Media', path: '/social/library', visible: true });
+      }
+      
+      // Analytics Module
+      if (isSuperAdmin || flags.analytics) {
+        items.push({ label: 'Analytics', path: '/analytics/traffic', visible: true });
+      }
+      
+      // Presentation Module
+      if (isSuperAdmin || flags.presentation) {
+        items.push({ label: 'Presentation', path: '/presentation/drafts', visible: true });
+      }
+      
+      // Final Capstone Module
+      if (isSuperAdmin || flags.final_capstone) {
+        items.push({ label: 'Final Capstone', path: '/final/report', visible: true });
+      }
+    }
+    
+    // Admin Panel - SUPERADMIN only
+    if (isSuperAdmin) {
+      items.push({ label: 'Admin Panel', path: '/admin', visible: true });
+    }
+    
+    return items.filter(item => item.visible);
+  };
+
+  const navItems = getNavigationItems();
 
   return (
     <nav className="sticky top-0 z-50 bg-white h-[60px] shadow-sm" style={{boxShadow: '0 1px 4px rgba(0,0,0,0.08)'}}>
       <div className="max-w-7xl mx-auto h-full px-6 lg:px-8">
         <div className="flex items-center justify-between h-full">
+          {/* Left: Navigation Links */}
           <div className="flex items-center space-x-8">
-            {/* Home - Always accessible */}
-            <NavLink
-              to="/"
-              className={({ isActive }) => activeLinkStyle(isActive)}
-              data-testid="nav-home"
-            >
-              Home
-            </NavLink>
-
-            {/* Add Insight - Always accessible */}
-            <NavLink
-              to="/add-insight"
-              className={({ isActive }) => activeLinkStyle(isActive)}
-              data-testid="nav-add-insight"
-            >
-              Add Insight
-            </NavLink>
-
-            {/* Report - Admin only or disabled for users */}
-            {isAdmin ? (
+            {navItems.map((item, index) => (
               <NavLink
-                to="/report"
+                key={index}
+                to={item.path}
                 className={({ isActive }) => activeLinkStyle(isActive)}
-                data-testid="nav-report"
+                data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
               >
-                Report
+                {item.label}
               </NavLink>
-            ) : (
-              <span
-                className={disabledLinkStyle}
-                title="Admin access required"
-                data-testid="nav-report-disabled"
-              >
-                Report
-              </span>
-            )}
-
-            {/* Persona Generator - Admin only or disabled for users */}
-            {isAdmin ? (
-              <NavLink
-                to="/persona-generator"
-                className={({ isActive }) => activeLinkStyle(isActive)}
-                data-testid="nav-persona-generator"
-              >
-                Persona Generator
-              </NavLink>
-            ) : (
-              <span
-                className={disabledLinkStyle}
-                title="Admin access required"
-                data-testid="nav-persona-generator-disabled"
-              >
-                Persona Generator
-              </span>
-            )}
-
-            {/* Personas - Admin only or disabled for users */}
-            {isAdmin ? (
-              <NavLink
-                to="/personas"
-                className={({ isActive }) => activeLinkStyle(isActive)}
-                data-testid="nav-personas"
-              >
-                Personas
-              </NavLink>
-            ) : (
-              <span
-                className={disabledLinkStyle}
-                title="Admin access required"
-                data-testid="nav-personas-disabled"
-              >
-                Personas
-              </span>
-            )}
+            ))}
           </div>
 
-          {/* Right side: User info and Logout */}
+          {/* Right: User Info + Logout */}
           <div className="flex items-center space-x-4">
             <span className="text-[#6C5F5F] text-sm">
-              {session?.username} ({session?.role})
+              {session?.username} 
+              <span className="text-[#A62639] font-semibold">({role})</span>
             </span>
             <button
               onClick={handleLogout}
