@@ -90,8 +90,9 @@ const Sidebar = () => {
       {isOpen && (
         <div
           className="lg:hidden fixed inset-0 bg-black bg-opacity-50"
-          style={{ zIndex: 50 }}
+          style={{ zIndex: 59 }}
           onClick={() => setIsOpen(false)}
+          data-testid="sidebar-overlay"
         />
       )}
 
