@@ -32,9 +32,7 @@ const Report = () => {
 
   if (loading) {
     return (
-      <>
-        <Navigation />
-        <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
+      <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#A62639] mx-auto"></div>
           <p className="mt-4 text-[#6C5F5F]">Loading report...</p>
