@@ -486,7 +486,11 @@ def generate_persona_with_llm(cluster: Dict[str, Any], cluster_num: int) -> Dict
         llm_key = os.environ.get('EMERGENT_LLM_KEY')
         if not llm_key:
             raise ValueError("EMERGENT_LLM_KEY not set in environment")
-        llm_client = LLMClient(api_key=llm_key)
+        # Use OpenAI client with Emergent base URL
+        llm_client = OpenAI(
+            api_key=llm_key,
+            base_url="https://llm-router.emergentagent.com/v1"
+        )
     
     # Aggregate cluster data
     insights = cluster['insights']
