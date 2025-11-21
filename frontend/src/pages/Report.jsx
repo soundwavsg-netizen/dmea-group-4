@@ -38,13 +38,11 @@ const Report = () => {
           <p className="mt-4 text-[#6C5F5F]">Loading report...</p>
         </div>
       </div>
-      </>
     );
   }
 
   if (error) {
     return (
-      <>
         <Navigation />
         <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
           <div className="text-center max-w-md">
