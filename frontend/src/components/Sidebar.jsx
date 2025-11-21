@@ -65,11 +65,15 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Mobile Hamburger Button */}
+      {/* Mobile Hamburger Button - Highest z-index */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden fixed top-3 left-3 p-2 bg-white rounded-lg shadow-md"
-        style={{ zIndex: 1000, marginLeft: '12px', marginTop: '6px' }}
+        className="lg:hidden fixed p-2 bg-white rounded-lg shadow-md"
+        style={{ 
+          top: '12px',
+          left: '12px',
+          zIndex: 1100
+        }}
         id="burger-menu"
         data-testid="hamburger-menu"
       >
@@ -85,16 +89,18 @@ const Sidebar = () => {
       {/* Overlay for mobile */}
       {isOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+          className="lg:hidden fixed inset-0 bg-black bg-opacity-50"
+          style={{ zIndex: 50 }}
           onClick={() => setIsOpen(false)}
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar - Lowest z-index in mobile nav stack */}
       <div
-        className={`fixed top-0 left-0 h-screen w-64 bg-white shadow-lg z-40 transform transition-transform duration-300 ${
+        className={`fixed top-0 left-0 h-screen w-64 bg-white shadow-lg transform transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0`}
+        } lg:translate-x-0 lg:static`}
+        style={{ zIndex: 60 }}
       >
         {/* Header */}
         <div className="p-6 border-b border-[#E0AFA0]/30">
