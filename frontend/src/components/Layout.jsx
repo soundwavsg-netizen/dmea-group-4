@@ -16,17 +16,17 @@ const Layout = ({ children }) => {
   const showBuyerPersonaNav = isInBuyerPersona && (isAdminOrAbove || location.pathname === '/' || location.pathname === '/add-insight');
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-hidden w-full max-w-full">
       {/* Sidebar */}
       <Sidebar />
       
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col lg:ml-64">
+      <div className="flex-1 flex flex-col lg:ml-64 w-full max-w-full overflow-hidden">
         {/* Module Sub-Navigation (if applicable) */}
         {showBuyerPersonaNav && <BuyerPersonaNav />}
         
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto bg-[#F8F6F5]">
+        <main className="flex-1 overflow-y-auto bg-[#F8F6F5] w-full max-w-full">
           {children}
         </main>
       </div>
