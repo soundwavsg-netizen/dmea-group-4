@@ -197,7 +197,16 @@ Example:
 
           {/* Top Pain Points */}
           <div className="bg-white rounded-xl border border-[#E0AFA0]/50 p-6 shadow-sm">
-            <h3 className="text-lg font-bold text-[#1F1A1A] mb-4">Top Pain Points</h3>
+            <div className="flex items-center mb-4">
+              <h3 className="text-lg font-bold text-[#1F1A1A]">Top Pain Points</h3>
+              <InfoTooltip 
+                content={`Score = Frequency × Normalized Strength × Platform Weight
+
+Example:
+5 × 5.0 × 1.2 = 30`}
+                title="Pain Points"
+              />
+            </div>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={painsChartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E0AFA0" />
