@@ -69,6 +69,7 @@ class ClusteringService:
         
         # Fallback for small datasets
         if not qualified_clusters and is_small_dataset:
+            from utils import PLATFORM_WEIGHTS
             for key, cluster_insights in sorted(
                 clusters.items(),
                 key=lambda x: len(x[1]),
@@ -76,11 +77,20 @@ class ClusteringService:
             )[:3]:
                 high_scoring_items = set()
                 for insight in cluster_insights:
+                    method = insight.get('research_method', 'Other')
+                    weight = PLATFORM_WEIGHTS.get(method, 0.8)
+                    
                     for mot in insight.get('motivations', []):
-                        if mot['strength'] >= 50:
+                        # Convert strength (0-100) to normalized (0-5) and calculate weighted score
+                        normalized_strength = mot['strength'] / 20.0
+                        weighted_score = normalized_strength * weight * 10
+                        if weighted_score >= 40:
                             high_scoring_items.add(f"motivation:{mot['name']}")
                     for pain in insight.get('pains', []):
-                        if pain['strength'] >= 50:
+                        # Convert strength (0-100) to normalized (0-5) and calculate weighted score
+                        normalized_strength = pain['strength'] / 20.0
+                        weighted_score = normalized_strength * weight * 10
+                        if weighted_score >= 40:
                             high_scoring_items.add(f"pain:{pain['name']}")
                 
                 if len(high_scoring_items) >= 2:
