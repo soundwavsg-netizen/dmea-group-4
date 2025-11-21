@@ -35,5 +35,6 @@ PLATFORM_WEIGHTS = {
     "Shopee Review": 1.0,
     "Fly-on-the-wall": 0.9,
     "Unstructured Observation": 0.8,
+    "Face 2 Face": 1.2,
     "Other": 0.8
 }
