@@ -39,26 +39,34 @@ function App() {
         {/* Add Insight - All Users */}
         <Route path="/add-insight" element={
           <ProtectedRoute>
-            <AddInsight />
+            <Layout>
+              <AddInsight />
+            </Layout>
           </ProtectedRoute>
         } />
         
         {/* Buyer Persona Module - Admin Only + buyer_research flag */}
         <Route path="/report" element={
           <ProtectedRoute adminOnly={true} requiredFeature="buyer_research">
-            <Report />
+            <Layout>
+              <Report />
+            </Layout>
           </ProtectedRoute>
         } />
         
         <Route path="/persona-generator" element={
           <ProtectedRoute adminOnly={true} requiredFeature="buyer_research">
-            <PersonaGenerator />
+            <Layout>
+              <PersonaGenerator />
+            </Layout>
           </ProtectedRoute>
         } />
         
         <Route path="/personas" element={
           <ProtectedRoute adminOnly={true} requiredFeature="buyer_research">
-            <Personas />
+            <Layout>
+              <Personas />
+            </Layout>
           </ProtectedRoute>
         } />
         
