@@ -43,18 +43,17 @@ const Report = () => {
 
   if (error) {
     return (
-        <Navigation />
-        <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
-          <div className="text-center max-w-md">
-            <p className="text-red-600 mb-4">{error}</p>
-            <button
-              onClick={fetchReport}
-              className="px-6 py-2 bg-[#A62639] text-white rounded-full hover:bg-[#8E1F31]"
-            >
-              Retry
-            </button>
-          </div>
+      <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
+        <div className="text-center max-w-md">
+          <p className="text-red-600 mb-4">{error}</p>
+          <button
+            onClick={fetchReport}
+            className="px-6 py-2 bg-[#A62639] text-white rounded-full hover:bg-[#8E1F31]"
+          >
+            Retry
+          </button>
         </div>
+      </div>
     );
   }
 
