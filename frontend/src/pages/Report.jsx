@@ -185,7 +185,7 @@ Normalization: strength slider 0–100 → 0–5.`}
         <PlatformWeightTable />
 
         {/* Charts Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-full overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
           {/* Top Motivations */}
           <div className="bg-white rounded-xl border border-[#E0AFA0]/50 p-6 shadow-sm">
             <div className="flex items-center mb-4">
