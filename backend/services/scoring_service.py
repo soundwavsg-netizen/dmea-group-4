@@ -44,18 +44,18 @@ class ScoringService:
             method = data.get('research_method', 'Other')
             weight = PLATFORM_WEIGHTS.get(method, 0.8)
             
-            # Motivations
+            # Motivations (normalize by dividing by 20)
             for mot in data.get('motivations', []):
                 name = mot['name']
-                strength = mot['strength']
+                strength = mot['strength'] / 20.0  # Normalize 0-100 to 0-5
                 motivation_scores[name]['frequency'] += 1
                 motivation_scores[name]['total_strength'] += strength
                 motivation_scores[name]['total_weight'] += weight
             
-            # Pains
+            # Pains (normalize by dividing by 20)
             for pain in data.get('pains', []):
                 name = pain['name']
-                strength = pain['strength']
+                strength = pain['strength'] / 20.0  # Normalize 0-100 to 0-5
                 pain_scores[name]['frequency'] += 1
                 pain_scores[name]['total_strength'] += strength
                 pain_scores[name]['total_weight'] += weight
