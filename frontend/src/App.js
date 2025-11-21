@@ -73,62 +73,82 @@ function App() {
         {/* SEO & Content Module - Admin Only + seo_content flag */}
         <Route path="/seo" element={
           <ProtectedRoute adminOnly={true} requiredFeature="seo_content">
-            <SEO />
+            <Layout>
+              <SEO />
+            </Layout>
           </ProtectedRoute>
         } />
         <Route path="/seo/audit" element={
           <ProtectedRoute adminOnly={true} requiredFeature="seo_content">
-            <SEOAudit />
+            <Layout>
+              <SEOAudit />
+            </Layout>
           </ProtectedRoute>
         } />
         <Route path="/seo/keywords" element={
           <ProtectedRoute adminOnly={true} requiredFeature="seo_content">
-            <SEOKeywords />
+            <Layout>
+              <SEOKeywords />
+            </Layout>
           </ProtectedRoute>
         } />
         <Route path="/seo/content" element={
           <ProtectedRoute adminOnly={true} requiredFeature="seo_content">
-            <SEOContent />
+            <Layout>
+              <SEOContent />
+            </Layout>
           </ProtectedRoute>
         } />
         <Route path="/seo/strategy" element={
           <ProtectedRoute adminOnly={true} requiredFeature="seo_content">
-            <SEOStrategy />
+            <Layout>
+              <SEOStrategy />
+            </Layout>
           </ProtectedRoute>
         } />
         
         {/* Social Media Module - Admin Only + social_media flag */}
         <Route path="/social/library" element={
           <ProtectedRoute adminOnly={true} requiredFeature="social_media">
-            <SocialMedia />
+            <Layout>
+              <SocialMedia />
+            </Layout>
           </ProtectedRoute>
         } />
         
         {/* Analytics Module - Admin Only + analytics flag */}
         <Route path="/analytics/traffic" element={
           <ProtectedRoute adminOnly={true} requiredFeature="analytics">
-            <Analytics />
+            <Layout>
+              <Analytics />
+            </Layout>
           </ProtectedRoute>
         } />
         
         {/* Presentation Module - Admin Only + presentation flag */}
         <Route path="/presentation/drafts" element={
           <ProtectedRoute adminOnly={true} requiredFeature="presentation">
-            <Presentation />
+            <Layout>
+              <Presentation />
+            </Layout>
           </ProtectedRoute>
         } />
         
         {/* Final Capstone Module - Admin Only + final_capstone flag */}
         <Route path="/final/report" element={
           <ProtectedRoute adminOnly={true} requiredFeature="final_capstone">
-            <FinalCapstone />
+            <Layout>
+              <FinalCapstone />
+            </Layout>
           </ProtectedRoute>
         } />
         
         {/* Admin Panel - SuperAdmin Only */}
         <Route path="/admin" element={
           <ProtectedRoute superAdminOnly={true}>
-            <AdminPanel />
+            <Layout>
+              <AdminPanel />
+            </Layout>
           </ProtectedRoute>
         } />
         
