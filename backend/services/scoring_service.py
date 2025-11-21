@@ -79,9 +79,9 @@ class ScoringService:
             skin_tones[data.get('skin_tone', 'Unknown')] += 1
             lifestyles[data.get('lifestyle', 'Unknown')] += 1
             
-            # Intent and effect
-            purchase_intents.append(data.get('purchase_intent', 0))
-            influencer_effects.append(data.get('influencer_effect', 0))
+            # Intent and effect (normalize by dividing by 20)
+            purchase_intents.append(data.get('purchase_intent', 0) / 20.0)
+            influencer_effects.append(data.get('influencer_effect', 0) / 20.0)
         
         # Calculate weighted scores
         motivation_results = {}
