@@ -1,8 +1,9 @@
-// Hard-coded user credentials (DO NOT store in production like this)
-const USERS = {
-  "user1": { password: "mufe123", role: "user" },
-  "user2": { password: "team2024", role: "user" },
-  "admin": { password: "admin888", role: "admin" }
+// Hard-coded user credentials (3 ROLES: superadmin, admin, user)
+const ACCOUNTS = {
+  "superadmin": { password: "SUPERPASS", role: "superadmin" },
+  "admin": { password: "ADMINPASS", role: "admin" },
+  "user1": { password: "USERPASS", role: "user" },
+  "user2": { password: "USERPASS", role: "user" }
 };
 
 const AUTH_KEY = 'mufe_auth_session';
@@ -10,7 +11,7 @@ const AUTH_KEY = 'mufe_auth_session';
 class AuthService {
   // Login with username and password
   login(username, password) {
-    const user = USERS[username];
+    const user = ACCOUNTS[username];
     
     if (!user || user.password !== password) {
       throw new Error('Invalid username or password');
@@ -59,6 +60,11 @@ class AuthService {
     return session ? session.role : null;
   }
   
+  // Check if user is superadmin
+  isSuperAdmin() {
+    return this.getRole() === 'superadmin';
+  }
+  
   // Check if user is admin
   isAdmin() {
     return this.getRole() === 'admin';
@@ -67,6 +73,12 @@ class AuthService {
   // Check if user is regular user
   isUser() {
     return this.getRole() === 'user';
+  }
+  
+  // Check if user has admin or superadmin role
+  isAdminOrAbove() {
+    const role = this.getRole();
+    return role === 'admin' || role === 'superadmin';
   }
   
   // Generate random token
