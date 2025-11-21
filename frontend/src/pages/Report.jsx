@@ -147,11 +147,43 @@ const Report = () => {
           </div>
         </div>
 
+        {/* How Personas Are Formed */}
+        <div className="bg-gradient-to-r from-[#E0AFA0]/20 to-[#F8F6F5] rounded-xl border border-[#E0AFA0]/50 p-6 shadow-sm mb-6">
+          <div className="flex items-center">
+            <h3 className="text-xl font-bold text-[#1F1A1A]">ℹ️ How Personas Are Formed</h3>
+            <InfoTooltip 
+              content={`Personas are generated when:
+• ≥ 20% of insights share similar motivations/pains
+• AND at least 2 weighted scores ≥ 40
+
+Weighted Score = frequency × normalized strength × platform weight
+
+Normalization: strength slider 0–100 → 0–5.`}
+              title="How Personas Are Formed"
+            />
+          </div>
+          <p className="text-sm text-[#6C5F5F] mt-2">
+            Personas are created automatically when at least 20% of insights share similar traits and have weighted scores above 40.
+          </p>
+        </div>
+
+        {/* Platform Weight Table */}
+        <PlatformWeightTable />
+
         {/* Charts Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Top Motivations */}
           <div className="bg-white rounded-xl border border-[#E0AFA0]/50 p-6 shadow-sm">
-            <h3 className="text-lg font-bold text-[#1F1A1A] mb-4">Top Motivations</h3>
+            <div className="flex items-center mb-4">
+              <h3 className="text-lg font-bold text-[#1F1A1A]">Top Motivations</h3>
+              <InfoTooltip 
+                content={`Score = Frequency × Normalized Strength × Platform Weight
+
+Example:
+7 occurrences × (80→4.0) × 0.8 = 22.4`}
+                title="Motivations"
+              />
+            </div>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={motivationsChartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E0AFA0" />
