@@ -27,10 +27,12 @@ function App() {
         {/* Public Route - Login (No Layout) */}
         <Route path="/login" element={<Login />} />
         
-        {/* Protected Routes - Dashboard (All Users) */}
+        {/* Protected Routes with Layout */}
         <Route path="/" element={
           <ProtectedRoute>
-            <Home />
+            <Layout>
+              <Home />
+            </Layout>
           </ProtectedRoute>
         } />
         
