@@ -1,7 +1,11 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import authService from '../services/authService';
 
 const BuyerPersonaNav = () => {
+  const isUser = authService.isUser();
+  const isAdminOrAbove = authService.isAdminOrAbove();
+  
   const activeLinkStyle = (isActive) => 
     `px-4 py-3 md:py-2 font-semibold text-sm md:text-base transition-all whitespace-nowrap ${
       isActive
