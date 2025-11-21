@@ -24,12 +24,8 @@ const Login = () => {
     try {
       const session = authService.login(username, password);
       
-      // Redirect based on role
-      if (session.role === 'superadmin' || session.role === 'admin') {
-        navigate('/');  // Admins and SuperAdmins go to Buyer Persona Home
-      } else {
-        navigate('/add-insight');  // Users go to Add Insight
-      }
+      // Redirect all roles to home page
+      navigate('/');
     } catch (err) {
       setError(err.message);
     } finally {
