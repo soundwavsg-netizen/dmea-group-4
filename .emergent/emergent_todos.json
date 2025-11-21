@@ -1,7 +1,7 @@
 [
   {
     "content": "Phase 1: POC - Setup Firebase credentials and install dependencies",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Phase 1: POC - Create test_core.py with Firestore connection test",
