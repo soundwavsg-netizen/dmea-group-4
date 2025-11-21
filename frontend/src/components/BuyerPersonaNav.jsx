@@ -15,7 +15,7 @@ const BuyerPersonaNav = () => {
       id="top-module-tabs"
       style={{ zIndex: 1000 }}
     >
-      <div className="w-full px-3 md:px-6 lg:px-8">
+      <div className="w-full px-3 md:px-6 lg:px-8 pl-14 lg:pl-6">
         <div 
           className="flex items-center gap-4 md:gap-6 overflow-x-auto"
           style={{
