@@ -68,7 +68,9 @@ const Sidebar = () => {
       {/* Mobile Hamburger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow-md"
+        className="lg:hidden fixed top-3 left-3 p-2 bg-white rounded-lg shadow-md"
+        style={{ zIndex: 1000, marginLeft: '12px', marginTop: '6px' }}
+        id="burger-menu"
         data-testid="hamburger-menu"
       >
         <svg className="w-6 h-6 text-[#A62639]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
