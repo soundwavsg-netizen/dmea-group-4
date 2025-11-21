@@ -1,11 +1,11 @@
 [
   {
     "content": "Phase 1: POC - Setup Firebase credentials and install dependencies",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Phase 1: POC - Create test_core.py with Firestore connection test",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Phase 1: POC - Implement sample data generator (25-40 realistic insights)",
