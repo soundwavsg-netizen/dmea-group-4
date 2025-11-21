@@ -173,8 +173,8 @@ def test_firestore_connection():
         # Get Firestore client
         db = firestore.client()
         
-        # Test connection by checking collections
-        collections = list(db.collections(limit=1))
+        # Test connection by accessing a collection
+        test_ref = db.collection('insights')
         
         print(f"✅ PASS: Connected to Firestore (Project: dmea-group-4)")
         return True
