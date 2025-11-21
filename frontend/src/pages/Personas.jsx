@@ -30,46 +30,55 @@ const Personas = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#A62639] mx-auto"></div>
-          <p className="mt-4 text-[#6C5F5F]">Loading personas...</p>
+      <>
+        <Navigation />
+        <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#A62639] mx-auto"></div>
+            <p className="mt-4 text-[#6C5F5F]">Loading personas...</p>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
-        <div className="text-center max-w-md">
-          <p className="text-red-600 mb-4">{error}</p>
-          <button
-            onClick={fetchPersonas}
-            className="px-6 py-2 bg-[#A62639] text-white rounded-full hover:bg-[#8E1F31]"
-          >
-            Retry
-          </button>
+      <>
+        <Navigation />
+        <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
+          <div className="text-center max-w-md">
+            <p className="text-red-600 mb-4">{error}</p>
+            <button
+              onClick={fetchPersonas}
+              className="px-6 py-2 bg-[#A62639] text-white rounded-full hover:bg-[#8E1F31]"
+            >
+              Retry
+            </button>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   if (personas.length === 0) {
     return (
-      <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
-        <div className="text-center max-w-md">
-          <h2 className="text-2xl font-bold text-[#1F1A1A] mb-4">No Personas Yet</h2>
-          <p className="text-[#6C5F5F] mb-6">Generate personas from your research insights.</p>
-          <button
-            onClick={() => navigate('/persona-generator')}
-            className="px-6 py-3 bg-[#A62639] text-white rounded-full hover:bg-[#8E1F31]"
-            data-testid="generate-btn"
-          >
-            Generate Personas
-          </button>
+      <>
+        <Navigation />
+        <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
+          <div className="text-center max-w-md">
+            <h2 className="text-2xl font-bold text-[#1F1A1A] mb-4">No Personas Yet</h2>
+            <p className="text-[#6C5F5F] mb-6">Generate personas from your research insights.</p>
+            <button
+              onClick={() => navigate('/persona-generator')}
+              className="px-6 py-3 bg-[#A62639] text-white rounded-full hover:bg-[#8E1F31]"
+              data-testid="generate-btn"
+            >
+              Generate Personas
+            </button>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
