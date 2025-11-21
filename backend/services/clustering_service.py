@@ -32,14 +32,24 @@ class ClusteringService:
         for key, cluster_insights in clusters.items():
             percentage = (len(cluster_insights) / total_insights) * 100
             
-            # Count high-scoring items
+            # Count high-scoring items (weighted_score ≥ 40)
             high_scoring_items = set()
+            method = insight.get('research_method', 'Other')
+            from utils import PLATFORM_WEIGHTS
+            weight = PLATFORM_WEIGHTS.get(method, 0.8)
+            
             for insight in cluster_insights:
                 for mot in insight.get('motivations', []):
-                    if mot['strength'] >= 50:
+                    # Convert strength (0-100) to normalized (0-5) and calculate weighted score
+                    normalized_strength = mot['strength'] / 20.0
+                    weighted_score = normalized_strength * weight * 10  # Scale to comparable range
+                    if weighted_score >= 40:
                         high_scoring_items.add(f"motivation:{mot['name']}")
                 for pain in insight.get('pains', []):
-                    if pain['strength'] >= 50:
+                    # Convert strength (0-100) to normalized (0-5) and calculate weighted score
+                    normalized_strength = pain['strength'] / 20.0
+                    weighted_score = normalized_strength * weight * 10  # Scale to comparable range
+                    if weighted_score >= 40:
                         high_scoring_items.add(f"pain:{pain['name']}")
             
             # Qualify if meets threshold and has high-scoring items
