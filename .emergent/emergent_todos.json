@@ -9,10 +9,14 @@
   },
   {
     "content": "Phase 1: POC - Run test_core.py and fix until all tests pass",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
-    "content": "Phase 1: Verify all user stories are working in POC",
+    "content": "Phase 1: All user stories verified in POC (Firestore CRUD, scoring, clustering, LLM personas)",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 2: Get design guidelines from design agent",
     "status": "pending"
   },
   {
