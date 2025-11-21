@@ -4,28 +4,12 @@
     "status": "completed"
   },
   {
-    "content": "Phase 1: POC - Create test_core.py with Firestore connection test",
-    "status": "in_progress"
-  },
-  {
-    "content": "Phase 1: POC - Implement sample data generator (25-40 realistic insights)",
-    "status": "pending"
-  },
-  {
-    "content": "Phase 1: POC - Implement scoring engine with platform weights",
-    "status": "pending"
-  },
-  {
-    "content": "Phase 1: POC - Implement clustering algorithm",
-    "status": "pending"
-  },
-  {
-    "content": "Phase 1: POC - Implement LLM persona enrichment",
-    "status": "pending"
+    "content": "Phase 1: POC - Create test_core.py with all POC tests (Firestore, sample data, scoring, clustering, LLM)",
+    "status": "completed"
   },
   {
     "content": "Phase 1: POC - Run test_core.py and fix until all tests pass",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Phase 1: Verify all user stories are working in POC",
