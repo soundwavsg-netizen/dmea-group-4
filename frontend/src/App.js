@@ -17,13 +17,14 @@ import Analytics from './pages/Analytics';
 import Presentation from './pages/Presentation';
 import FinalCapstone from './pages/FinalCapstone';
 import ProtectedRoute from './components/ProtectedRoute';
+import Layout from './components/Layout';
 import './App.css';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public Route - Login */}
+        {/* Public Route - Login (No Layout) */}
         <Route path="/login" element={<Login />} />
         
         {/* Protected Routes - Dashboard (All Users) */}
