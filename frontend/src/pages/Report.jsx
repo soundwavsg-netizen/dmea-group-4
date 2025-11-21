@@ -265,7 +265,13 @@ Example:
 
         {/* Behaviours List */}
         <div className="mt-6 bg-white rounded-xl border border-[#E0AFA0]/50 p-6 shadow-sm">
-          <h3 className="text-lg font-bold text-[#1F1A1A] mb-4">Top Behaviours</h3>
+          <div className="flex items-center mb-4">
+            <h3 className="text-lg font-bold text-[#1F1A1A]">Top Behaviours</h3>
+            <InfoTooltip 
+              content="Based on the frequency of behaviour mentions across insights."
+              title="Behaviours"
+            />
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {Object.entries(reportData.top_behaviours).slice(0, 9).map(([name, count]) => (
               <div key={name} className="flex justify-between items-center p-3 bg-[#F8F6F5] rounded-lg">
