@@ -41,8 +41,8 @@ class ScoringService:
         # Process each insight
         for doc in insights:
             data = doc.to_dict()
-            method = data.get('research_method', 'Other')
-            weight = PLATFORM_WEIGHTS.get(method, 0.8)
+            platform = data.get('platform', 'Other')
+            weight = PLATFORM_WEIGHTS.get(platform, 0.8)
             
             # Motivations (normalize by dividing by 20)
             for mot in data.get('motivations', []):
