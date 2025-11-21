@@ -28,10 +28,10 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/app/backend/secrets/firebase-ad
 try:
     import firebase_admin
     from firebase_admin import credentials, firestore
-    from emergentintegrations import LLMClient
+    from openai import OpenAI
 except ImportError as e:
     print(f"❌ FAIL: Import error - {e}")
-    print("Please install: pip install firebase-admin emergentintegrations")
+    print("Please install: pip install firebase-admin openai")
     sys.exit(1)
 
 
