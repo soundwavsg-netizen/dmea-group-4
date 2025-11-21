@@ -34,11 +34,12 @@ class ClusteringService:
             
             # Count high-scoring items (weighted_score ≥ 40)
             high_scoring_items = set()
-            method = insight.get('research_method', 'Other')
             from utils import PLATFORM_WEIGHTS
-            weight = PLATFORM_WEIGHTS.get(method, 0.8)
             
             for insight in cluster_insights:
+                method = insight.get('research_method', 'Other')
+                weight = PLATFORM_WEIGHTS.get(method, 0.8)
+                
                 for mot in insight.get('motivations', []):
                     # Convert strength (0-100) to normalized (0-5) and calculate weighted score
                     normalized_strength = mot['strength'] / 20.0
