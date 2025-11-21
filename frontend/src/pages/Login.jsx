@@ -24,8 +24,12 @@ const Login = () => {
     try {
       const session = authService.login(username, password);
       
-      // Redirect to home page for all users
-      navigate('/');
+      // Redirect based on role
+      if (session.role === 'superadmin' || session.role === 'admin') {
+        navigate('/report');  // Admins and SuperAdmins go to Report
+      } else {
+        navigate('/add-insight');  // Users go to Add Insight
+      }
     } catch (err) {
       setError(err.message);
     } finally {
