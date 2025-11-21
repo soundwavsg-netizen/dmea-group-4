@@ -50,27 +50,32 @@ const BuyerPersonaNav = () => {
           >
             Add Insight
           </NavLink>
-          <NavLink
-            to="/report"
-            className={({ isActive }) => activeLinkStyle(isActive)}
-            data-testid="persona-nav-report"
-          >
-            Report
-          </NavLink>
-          <NavLink
-            to="/persona-generator"
-            className={({ isActive }) => activeLinkStyle(isActive)}
-            data-testid="persona-nav-generator"
-          >
-            Persona Generator
-          </NavLink>
-          <NavLink
-            to="/personas"
-            className={({ isActive }) => activeLinkStyle(isActive)}
-            data-testid="persona-nav-personas"
-          >
-            Personas
-          </NavLink>
+          {/* Only show Report, Persona Generator, and Personas to admin and superadmin */}
+          {isAdminOrAbove && (
+            <>
+              <NavLink
+                to="/report"
+                className={({ isActive }) => activeLinkStyle(isActive)}
+                data-testid="persona-nav-report"
+              >
+                Report
+              </NavLink>
+              <NavLink
+                to="/persona-generator"
+                className={({ isActive }) => activeLinkStyle(isActive)}
+                data-testid="persona-nav-generator"
+              >
+                Persona Generator
+              </NavLink>
+              <NavLink
+                to="/personas"
+                className={({ isActive }) => activeLinkStyle(isActive)}
+                data-testid="persona-nav-personas"
+              >
+                Personas
+              </NavLink>
+            </>
+          )}
         </div>
       </div>
     </div>
