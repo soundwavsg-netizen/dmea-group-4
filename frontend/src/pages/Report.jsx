@@ -73,7 +73,6 @@ const Report = () => {
             </button>
           </div>
         </div>
-      </>
     );
   }
 
