@@ -95,7 +95,6 @@ const AddInsight = () => {
 
   return (
     <div className="min-h-screen w-full bg-[#F8F6F5]">
-      <Navigation />
       <div className="max-w-[960px] mx-auto px-4 sm:px-8 md:px-20 lg:px-40 py-5">
         <main className="flex-1 py-8 sm:py-12">
           <div className="flex flex-wrap justify-between gap-4 p-4 mb-8">
