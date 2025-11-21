@@ -34,7 +34,9 @@ const PersonaGenerator = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#F8F6F5] relative overflow-hidden">
+    <>
+      <Navigation />
+      <div className="min-h-screen w-full bg-[#F8F6F5] relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 z-0 opacity-50">
         <svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
