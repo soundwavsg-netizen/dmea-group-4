@@ -10,7 +10,11 @@ const BuyerPersonaNav = () => {
     }`;
 
   return (
-    <div className="bg-white border-b border-[#E0AFA0]/30 sticky top-0 z-[900]" id="top-module-tabs">
+    <div 
+      className="bg-white border-b border-[#E0AFA0]/30 sticky top-0" 
+      id="top-module-tabs"
+      style={{ zIndex: 1000 }}
+    >
       <div className="w-full px-3 md:px-6 lg:px-8">
         <div 
           className="flex items-center gap-4 md:gap-6 overflow-x-auto"
