@@ -51,28 +51,24 @@ const Personas = () => {
             </button>
           </div>
         </div>
-      </>
     );
   }
 
   if (personas.length === 0) {
     return (
-      <>
-        <Navigation />
-        <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
-          <div className="text-center max-w-md">
-            <h2 className="text-2xl font-bold text-[#1F1A1A] mb-4">No Personas Yet</h2>
-            <p className="text-[#6C5F5F] mb-6">Generate personas from your research insights.</p>
-            <button
-              onClick={() => navigate('/persona-generator')}
-              className="px-6 py-3 bg-[#A62639] text-white rounded-full hover:bg-[#8E1F31]"
-              data-testid="generate-btn"
-            >
-              Generate Personas
-            </button>
-          </div>
+      <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
+        <div className="text-center max-w-md">
+          <h2 className="text-2xl font-bold text-[#1F1A1A] mb-4">No Personas Yet</h2>
+          <p className="text-[#6C5F5F] mb-6">Generate personas from your research insights.</p>
+          <button
+            onClick={() => navigate('/persona-generator')}
+            className="px-6 py-3 bg-[#A62639] text-white rounded-full hover:bg-[#8E1F31]"
+            data-testid="generate-btn"
+          >
+            Generate Personas
+          </button>
         </div>
-      </>
+      </div>
     );
   }
 
