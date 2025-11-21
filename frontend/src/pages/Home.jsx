@@ -1,14 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navigation from '../components/Navigation';
 
 const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <>
-      <Navigation />
-      <div className="min-h-screen w-full bg-gradient-to-br from-[#F8F6F5] to-[#F3ECE7]">
+    <div className="min-h-screen w-full bg-gradient-to-br from-[#F8F6F5] to-[#F3ECE7]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero Section */}
         <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#E0AFA0]/30 to-[#F8F6F5] my-10">
