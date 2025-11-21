@@ -134,11 +134,25 @@ const Report = () => {
             <p className="text-3xl font-bold text-[#A62639]">{reportData.total_insights}</p>
           </div>
           <div className="bg-white rounded-xl border border-[#E0AFA0]/50 p-6 shadow-sm">
-            <p className="text-sm text-[#6C5F5F] mb-2">Avg Purchase Intent</p>
+            <div className="flex items-center mb-2">
+              <p className="text-sm text-[#6C5F5F]">Avg Purchase Intent</p>
+              <InfoTooltip 
+                content={`Average normalized intent across all entries.
+Slider (0–100) → (0–5).`}
+                title="Purchase Intent"
+              />
+            </div>
             <p className="text-3xl font-bold text-[#A62639]">{Math.round(reportData.avg_purchase_intent)}</p>
           </div>
           <div className="bg-white rounded-xl border border-[#E0AFA0]/50 p-6 shadow-sm">
-            <p className="text-sm text-[#6C5F5F] mb-2">Avg Influencer Effect</p>
+            <div className="flex items-center mb-2">
+              <p className="text-sm text-[#6C5F5F]">Avg Influencer Effect</p>
+              <InfoTooltip 
+                content={`Average normalized influencer score.
+Slider (0–100) → (0–5).`}
+                title="Influencer Effect"
+              />
+            </div>
             <p className="text-3xl font-bold text-[#A62639]">{Math.round(reportData.avg_influencer_effect)}</p>
           </div>
           <div className="bg-white rounded-xl border border-[#E0AFA0]/50 p-6 shadow-sm">
