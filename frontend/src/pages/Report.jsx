@@ -242,7 +242,6 @@ const Report = () => {
         </div>
       </div>
     </div>
-    </>
   );
 };
 
