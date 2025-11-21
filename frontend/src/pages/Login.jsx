@@ -99,27 +99,6 @@ const Login = () => {
               {loading ? 'Logging in...' : 'Login'}
             </button>
           </form>
-
-          {/* Demo Credentials */}
-          <div className="mt-8 pt-6 border-t border-[#E0AFA0]/30">
-            <p className="text-xs text-[#6C5F5F] text-center mb-3">
-              Demo Credentials:
-            </p>
-            <div className="space-y-2 text-xs text-[#6C5F5F]">
-              <div className="flex justify-between items-center bg-[#F8F6F5] px-3 py-2 rounded">
-                <span>Admin:</span>
-                <span className="font-mono">admin / admin888</span>
-              </div>
-              <div className="flex justify-between items-center bg-[#F8F6F5] px-3 py-2 rounded">
-                <span>User 1:</span>
-                <span className="font-mono">user1 / mufe123</span>
-              </div>
-              <div className="flex justify-between items-center bg-[#F8F6F5] px-3 py-2 rounded">
-                <span>User 2:</span>
-                <span className="font-mono">user2 / team2024</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
