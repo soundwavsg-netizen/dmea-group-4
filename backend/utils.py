@@ -20,21 +20,16 @@ def serialize_firestore_doc(doc: DocumentSnapshot) -> Dict[str, Any]:
 
 # Platform weights for scoring
 PLATFORM_WEIGHTS = {
-    "User Interview": 1.2,
-    "Contextual Inquiry": 1.2,
+    "Face to Face": 1.2,
     "Lazada Review": 1.0,
+    "Shopee Review": 1.0,
     "Sephora Review": 1.0,
     "Xiaohongshu 小红书": 1.0,
     "Reddit": 1.0,
+    "FB Group": 0.9,
     "YouTube": 0.9,
+    "Blog/Article": 0.8,
     "TikTok": 0.8,
     "Instagram": 0.8,
-    "Secondary Research": 0.7,
-    "Blog/Article": 0.7,
-    "FB Group": 0.8,
-    "Shopee Review": 1.0,
-    "Fly-on-the-wall": 0.9,
-    "Unstructured Observation": 0.8,
-    "Face 2 Face": 1.2,
     "Other": 0.8
 }
