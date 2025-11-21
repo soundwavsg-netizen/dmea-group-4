@@ -41,6 +41,7 @@ const Report = () => {
           <p className="mt-4 text-[#6C5F5F]">Loading report...</p>
         </div>
       </div>
+      </>
     );
   }
 
