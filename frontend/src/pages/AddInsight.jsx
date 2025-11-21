@@ -486,8 +486,8 @@ const AddInsight = () => {
                   <textarea
                     value={formData.quote}
                     onChange={(e) => setFormData({...formData, quote: e.target.value})}
-                    className="flex w-full min-w-0 flex-1 resize-y overflow-hidden rounded-md text-[#1F1A1A] focus:outline-0 focus:ring-2 focus:ring-[#A62639] border border-[#E0AFA0] bg-white min-h-[100px] p-4 text-base font-normal leading-normal"
-                    placeholder="I'm looking for a foundation that feels weightless but still gives me good coverage..."
+                    className="flex w-full min-w-0 flex-1 resize-y overflow-hidden rounded-md text-[#1F1A1A] focus:outline-0 focus:ring-2 focus:ring-[#A62639] border border-[#E0AFA0] bg-white min-h-[100px] p-4 text-sm font-normal leading-normal"
+                    placeholder="I'm looking for a foundation that feels weightless but gives me good coverage..."
                     data-testid="quote-textarea"
                   />
                 </label>
