@@ -21,8 +21,10 @@ import random
 from datetime import datetime
 from collections import defaultdict
 from typing import List, Dict, Any
+from dotenv import load_dotenv
 
 # Set up environment
+load_dotenv('/app/backend/.env')
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/app/backend/secrets/firebase-admin.json'
 
 try:
