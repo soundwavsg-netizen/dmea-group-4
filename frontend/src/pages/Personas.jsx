@@ -29,23 +29,18 @@ const Personas = () => {
 
   if (loading) {
     return (
-      <>
-        <Navigation />
-        <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#A62639] mx-auto"></div>
-            <p className="mt-4 text-[#6C5F5F]">Loading personas...</p>
-          </div>
+      <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#A62639] mx-auto"></div>
+          <p className="mt-4 text-[#6C5F5F]">Loading personas...</p>
         </div>
-      </>
+      </div>
     );
   }
 
   if (error) {
     return (
-      <>
-        <Navigation />
-        <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
+      <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
           <div className="text-center max-w-md">
             <p className="text-red-600 mb-4">{error}</p>
             <button
