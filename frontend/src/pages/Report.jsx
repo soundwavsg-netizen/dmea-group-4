@@ -55,15 +55,12 @@ const Report = () => {
             </button>
           </div>
         </div>
-      </>
     );
   }
 
   if (!reportData || reportData.total_insights === 0) {
     return (
-      <>
-        <Navigation />
-        <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
+      <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
           <div className="text-center max-w-md">
             <h2 className="text-2xl font-bold text-[#1F1A1A] mb-4">No Insights Yet</h2>
             <p className="text-[#6C5F5F] mb-6">Start by adding your first user research insight.</p>
