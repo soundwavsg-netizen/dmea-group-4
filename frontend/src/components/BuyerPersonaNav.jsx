@@ -3,16 +3,31 @@ import { NavLink } from 'react-router-dom';
 
 const BuyerPersonaNav = () => {
   const activeLinkStyle = (isActive) => 
-    `px-4 py-2 font-semibold text-sm transition-all ${
+    `px-4 py-3 md:py-2 font-semibold text-sm md:text-base transition-all whitespace-nowrap ${
       isActive
         ? 'text-[#A62639] border-b-2 border-[#A62639]'
         : 'text-[#4A3F35] hover:text-[#A62639]'
     }`;
 
   return (
-    <div className="bg-white border-b border-[#E0AFA0]/30 sticky top-0 z-30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-6 overflow-x-auto scrollbar-hide">
+    <div className="bg-white border-b border-[#E0AFA0]/30 sticky top-0 z-[900]" id="top-module-tabs">
+      <div className="w-full px-3 md:px-6 lg:px-8">
+        <div 
+          className="flex items-center gap-4 md:gap-6 overflow-x-auto"
+          style={{
+            display: 'flex',
+            overflowX: 'auto',
+            whiteSpace: 'nowrap',
+            scrollbarWidth: 'none',
+            WebkitOverflowScrolling: 'touch',
+            msOverflowStyle: 'none'
+          }}
+        >
+          <style>{`
+            #top-module-tabs > div > div::-webkit-scrollbar {
+              display: none;
+            }
+          `}</style>
           <NavLink
             to="/"
             className={({ isActive }) => activeLinkStyle(isActive)}
