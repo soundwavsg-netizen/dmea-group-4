@@ -1,0 +1,78 @@
+// Hard-coded user credentials (DO NOT store in production like this)
+const USERS = {
+  "user1": { password: "mufe123", role: "user" },
+  "user2": { password: "team2024", role: "user" },
+  "admin": { password: "admin888", role: "admin" }
+};
+
+const AUTH_KEY = 'mufe_auth_session';
+
+class AuthService {
+  // Login with username and password
+  login(username, password) {
+    const user = USERS[username];
+    
+    if (!user || user.password !== password) {
+      throw new Error('Invalid username or password');
+    }
+    
+    // Create session token
+    const token = this.generateToken();
+    const session = {
+      username,
+      role: user.role,
+      token,
+      timestamp: Date.now()
+    };
+    
+    // Store in localStorage
+    localStorage.setItem(AUTH_KEY, JSON.stringify(session));
+    
+    return session;
+  }
+  
+  // Logout
+  logout() {
+    localStorage.removeItem(AUTH_KEY);
+  }
+  
+  // Get current session
+  getSession() {
+    const sessionData = localStorage.getItem(AUTH_KEY);
+    if (!sessionData) return null;
+    
+    try {
+      return JSON.parse(sessionData);
+    } catch (e) {
+      return null;
+    }
+  }
+  
+  // Check if user is authenticated
+  isAuthenticated() {
+    return this.getSession() !== null;
+  }
+  
+  // Get current user role
+  getRole() {
+    const session = this.getSession();
+    return session ? session.role : null;
+  }
+  
+  // Check if user is admin
+  isAdmin() {
+    return this.getRole() === 'admin';
+  }
+  
+  // Check if user is regular user
+  isUser() {
+    return this.getRole() === 'user';
+  }
+  
+  // Generate random token
+  generateToken() {
+    return Math.random().toString(36).substring(2) + Date.now().toString(36);
+  }
+}
+
+export default new AuthService();
