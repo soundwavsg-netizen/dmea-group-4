@@ -244,7 +244,13 @@ Example:
 
           {/* Top Channels */}
           <div className="bg-white rounded-xl border border-[#E0AFA0]/50 p-6 shadow-sm">
-            <h3 className="text-lg font-bold text-[#1F1A1A] mb-4">Top Channels</h3>
+            <div className="flex items-center mb-4">
+              <h3 className="text-lg font-bold text-[#1F1A1A]">Top Channels</h3>
+              <InfoTooltip 
+                content="Based on frequency of channels selected in insights."
+                title="Channels"
+              />
+            </div>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={channelsChartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E0AFA0" />
