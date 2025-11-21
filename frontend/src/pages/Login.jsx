@@ -26,7 +26,7 @@ const Login = () => {
       
       // Redirect based on role
       if (session.role === 'superadmin' || session.role === 'admin') {
-        navigate('/report');  // Admins and SuperAdmins go to Report
+        navigate('/');  // Admins and SuperAdmins go to Buyer Persona Home
       } else {
         navigate('/add-insight');  // Users go to Add Insight
       }
