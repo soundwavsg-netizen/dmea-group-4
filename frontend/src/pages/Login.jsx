@@ -12,12 +12,7 @@ const Login = () => {
   // If already logged in, redirect
   useEffect(() => {
     if (authService.isAuthenticated()) {
-      const role = authService.getRole();
-      if (role === 'admin') {
-        navigate('/report');
-      } else {
-        navigate('/add-insight');
-      }
+      navigate('/');
     }
   }, [navigate]);
 
@@ -29,12 +24,8 @@ const Login = () => {
     try {
       const session = authService.login(username, password);
       
-      // Redirect based on role
-      if (session.role === 'admin') {
-        navigate('/report');
-      } else {
-        navigate('/add-insight');
-      }
+      // Redirect to home page for all users
+      navigate('/');
     } catch (err) {
       setError(err.message);
     } finally {
