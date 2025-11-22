@@ -181,8 +181,7 @@ Normalization: strength slider 0–100 → 0–5.`}
           </p>
         </div>
 
-        {/* Platform Weight Table */}
-        <PlatformWeightTable />
+        {/* Platform Weight Table REMOVED - moved to Persona Generator page */}
 
         {/* Charts Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-full overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
