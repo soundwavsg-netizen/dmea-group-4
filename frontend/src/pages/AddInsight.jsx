@@ -219,7 +219,7 @@ const AddInsight = () => {
               </summary>
               <div className="pb-4 pt-2 space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <label className="flex flex-col">
+                  <label className="flex flex-col h-full">
                     <p className="text-[#1F1A1A] text-sm font-medium leading-normal pb-2">Platform (where this insight was collected) *</p>
                     <select
                       required
@@ -233,7 +233,7 @@ const AddInsight = () => {
                     </select>
                     <p className="text-xs text-[#6C5F5F] mt-1 italic">Example: TikTok, IG, XiaoHongShu, Shopee/Lazada Review, Face-to-Face.</p>
                   </label>
-                  <label className="flex flex-col">
+                  <label className="flex flex-col h-full">
                     <p className="text-[#1F1A1A] text-sm font-medium leading-normal pb-2">Research Method *</p>
                     <select
                       required
@@ -245,7 +245,7 @@ const AddInsight = () => {
                       <option value="">Select Method</option>
                       {METHODS.map(method => <option key={method} value={method}>{method}</option>)}
                     </select>
-                    <p className="text-xs text-[#6C5F5F] mt-1" style={{ height: '18px', visibility: 'hidden' }}>Helper text spacer</p>
+                    <p className="text-xs text-[#6C5F5F] mt-1 italic" style={{ visibility: 'hidden' }}>Example: TikTok, IG, XiaoHongShu, Shopee/Lazada Review, Face-to-Face.</p>
                   </label>
                 </div>
               </div>
