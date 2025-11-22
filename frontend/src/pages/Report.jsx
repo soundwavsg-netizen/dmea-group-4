@@ -190,10 +190,12 @@ Normalization: strength slider 0–100 → 0–5.`}
             <div className="flex items-center mb-4">
               <h3 className="text-lg font-bold text-[#1F1A1A]">Top Motivations</h3>
               <InfoTooltip 
-                content={`Score = Frequency × Normalized Strength × Platform Weight
+                content={`Raw Score = sum of normalized strength across all insights.
+(Strength slider ÷ 20 → converted to 0–5 scale)
 
 Example:
-7 occurrences × (80→4.0) × 0.8 = 22.4`}
+If 3 insights selected "Full Coverage" with strengths 100, 40, 80:
+Raw Score = (100/20) + (40/20) + (80/20) = 5 + 2 + 4 = 11`}
                 title="Motivations"
               />
             </div>
