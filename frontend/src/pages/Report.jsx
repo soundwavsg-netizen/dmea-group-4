@@ -215,10 +215,12 @@ Raw Score = (100/20) + (40/20) + (80/20) = 5 + 2 + 4 = 11`}
             <div className="flex items-center mb-4">
               <h3 className="text-lg font-bold text-[#1F1A1A]">Top Pain Points</h3>
               <InfoTooltip 
-                content={`Score = Frequency × Normalized Strength × Platform Weight
+                content={`Raw Score = sum of normalized strength across all insights.
+(Strength slider ÷ 20 → converted to 0–5 scale)
 
 Example:
-5 × 5.0 × 1.2 = 30`}
+If 3 insights selected "Oily Skin" with strengths 100, 60, 80:
+Raw Score = (100/20) + (60/20) + (80/20) = 5 + 3 + 4 = 12`}
                 title="Pain Points"
               />
             </div>
