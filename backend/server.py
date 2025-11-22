@@ -56,16 +56,27 @@ def health_check():
 # ==================== Insights Endpoints ====================
 
 @app.post("/api/insights", response_model=InsightResponse)
-def create_insight(insight: InsightCreate):
+def create_insight(
+    insight: InsightCreate, 
+    x_user_name: Optional[str] = Header(None),
+    x_user_role: Optional[str] = Header(None)
+):
     """Create a new user research insight"""
     try:
+        # Capture createdBy from header
+        if x_user_name:
+            insight.created_by = x_user_name
         return InsightsService.create_insight(insight)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/insights", response_model=List[InsightResponse])
-def get_all_insights(limit: int = 100):
-    """Get all insights"""
+def get_all_insights(
+    limit: int = 100,
+    x_user_role: Optional[str] = Header(None)
+):
+    """Get all insights - Admin/SuperAdmin only"""
+    check_admin_access(x_user_role)
     try:
         return InsightsService.get_all_insights(limit=limit)
     except Exception as e:
