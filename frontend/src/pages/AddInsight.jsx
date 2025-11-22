@@ -71,10 +71,16 @@ const AddInsight = () => {
         pains
       };
 
-      await axios.post(`${API}/insights`, payload);
+      const session = authService.getSession();
+      await axios.post(`${API}/insights`, payload, {
+        headers: {
+          'X-User-Name': session.username,
+          'X-User-Role': session.role
+        }
+      });
       setSuccess(true);
       setTimeout(() => {
-        navigate('/report');
+        navigate('/');
       }, 1500);
     } catch (err) {
       setError(err.response?.data?.detail || 'Failed to submit insight');
