@@ -74,6 +74,13 @@ const BuyerPersonaNav = () => {
               >
                 Personas
               </NavLink>
+              <NavLink
+                to="/manage-insights"
+                className={({ isActive }) => activeLinkStyle(isActive)}
+                data-testid="persona-nav-manage"
+              >
+                Manage Insights
+              </NavLink>
             </>
           )}
         </div>
