@@ -92,6 +92,7 @@ class ReportResponse(BaseModel):
     top_behaviours: Dict[str, int]
     top_channels: Dict[str, int]
     top_products: Dict[str, int]
+    platform_counts: Dict[str, int]  # NEW: Platform counts
     avg_purchase_intent: float
     avg_influencer_effect: float
     intent_distribution: Dict[str, int]
