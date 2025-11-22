@@ -411,6 +411,7 @@ const AddInsight = () => {
                 <span className="text-[#6C5F5F] group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <div className="pb-4 pt-2">
+                <p className="text-xs text-[#6C5F5F] mb-3 italic">Channels = where this user typically researches products (not where we collected this insight).</p>
                 <div className="flex flex-wrap gap-2">
                   {CHANNELS.map(channel => (
                     <button
