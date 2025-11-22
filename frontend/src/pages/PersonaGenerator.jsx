@@ -74,6 +74,36 @@ const PersonaGenerator = () => {
               </p>
             </div>
 
+            {/* Generate Personas Button - Moved Above Tables */}
+            <div className="mt-8 flex justify-center">
+              <button
+                onClick={handleGenerate}
+                disabled={loading}
+                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-8 bg-[#A62639] text-white text-base font-bold shadow-lg shadow-[#A62639]/30 transition-all hover:bg-[#8E1F31] hover:shadow-xl hover:-translate-y-1 active:translate-y-0 active:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                data-testid="generate-personas-btn"
+              >
+                <span className="truncate">{loading ? 'Generating...' : 'Generate Personas'}</span>
+              </button>
+            </div>
+
+            {error && (
+              <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 max-w-md">
+                {error}
+              </div>
+            )}
+
+            {result && !result.success && (
+              <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-700 max-w-md">
+                {result.message}
+              </div>
+            )}
+
+            {result && result.success && (
+              <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700 max-w-md">
+                ✓ {result.message}! Redirecting to personas...
+              </div>
+            )}
+
             {/* How Personas Are Formed */}
             <div className="mt-8 w-full max-w-4xl">
               <div className="bg-gradient-to-r from-[#E0AFA0]/20 to-[#F8F6F5] rounded-xl border border-[#E0AFA0]/50 p-6 shadow-sm mb-4">
@@ -97,35 +127,6 @@ Normalization: strength slider 0–100 → 0–5.`}
 
               {/* Platform Weight Table */}
               <PlatformWeightTable />
-            </div>
-
-            {error && (
-              <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 max-w-md">
-                {error}
-              </div>
-            )}
-
-            {result && !result.success && (
-              <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-700 max-w-md">
-                {result.message}
-              </div>
-            )}
-
-            {result && result.success && (
-              <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700 max-w-md">
-                ✓ {result.message}! Redirecting to personas...
-              </div>
-            )}
-
-            <div className="mt-12 flex justify-center">
-              <button
-                onClick={handleGenerate}
-                disabled={loading}
-                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-8 bg-[#A62639] text-white text-base font-bold shadow-lg shadow-[#A62639]/30 transition-all hover:bg-[#8E1F31] hover:shadow-xl hover:-translate-y-1 active:translate-y-0 active:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                data-testid="generate-personas-btn"
-              >
-                <span className="truncate">{loading ? 'Generating...' : 'Generate Personas'}</span>
-              </button>
             </div>
 
             {/* Decorative Icon */}
