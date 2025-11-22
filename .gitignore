@@ -84,3 +84,10 @@ frontend/node_modules/.cache/default-development/0.pack
 # Environment files
 *.env
 *.env.*
+frontend/.env
+backend/.env
+
+# Firebase and secret files
+backend/secrets/firebase-admin.json
+backend/secrets/*.json
+**/secrets/*.json
