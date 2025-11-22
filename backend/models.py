@@ -48,6 +48,7 @@ class InsightResponse(BaseModel):
     influencer_effect: int
     quote: str
     notes: str
+    created_by: Optional[str] = None
     created_at: str
 
 class PersonaDemographics(BaseModel):
