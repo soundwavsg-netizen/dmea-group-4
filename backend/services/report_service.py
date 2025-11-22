@@ -24,6 +24,7 @@ class ReportService:
                 top_behaviours={},
                 top_channels={},
                 top_products={},
+                platform_counts={},  # NEW
                 avg_purchase_intent=0,
                 avg_influencer_effect=0,
                 intent_distribution={},
