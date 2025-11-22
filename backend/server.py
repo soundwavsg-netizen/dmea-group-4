@@ -154,8 +154,9 @@ def generate_personas(x_user_role: Optional[str] = Header(None)):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/personas", response_model=List[PersonaResponse])
-def get_all_personas():
-    """Get all generated personas"""
+def get_all_personas(x_user_role: Optional[str] = Header(None)):
+    """Get all generated personas - Admin/SuperAdmin only"""
+    check_admin_access(x_user_role)
     try:
         return PersonaService.get_all_personas()
     except Exception as e:
