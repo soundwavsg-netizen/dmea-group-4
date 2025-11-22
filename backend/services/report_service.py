@@ -5,8 +5,8 @@ class ReportService:
     
     @staticmethod
     def generate_report() -> ReportResponse:
-        """Generate comprehensive report from scoring data"""
-        scoring_data = ScoringService.compute_scores()
+        """Generate comprehensive report from raw scoring data (no platform weights)"""
+        scoring_data = ScoringService.compute_raw_scores()
         
         if not scoring_data:
             # Return empty report
