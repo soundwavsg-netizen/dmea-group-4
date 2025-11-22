@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import authService from '../services/authService';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -17,7 +18,12 @@ const PersonaGenerator = () => {
     setResult(null);
 
     try {
-      const response = await axios.post(`${API}/personas/generate`);
+      const session = authService.getSession();
+      const response = await axios.post(`${API}/personas/generate`, {}, {
+        headers: {
+          'X-User-Role': session.role
+        }
+      });
       setResult(response.data);
       
       if (response.data.success) {
