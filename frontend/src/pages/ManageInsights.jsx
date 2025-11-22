@@ -81,6 +81,38 @@ const ManageInsights = () => {
     return items.map(item => `${item.name} (${item.strength})`).join(', ');
   };
 
+  const handleSort = (field) => {
+    if (sortField === field) {
+      // Toggle direction
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('desc');
+    }
+  };
+
+  const sortedInsights = [...insights].sort((a, b) => {
+    let aVal = a[sortField];
+    let bVal = b[sortField];
+
+    // Handle null/undefined values
+    if (!aVal && !bVal) return 0;
+    if (!aVal) return sortDirection === 'asc' ? 1 : -1;
+    if (!bVal) return sortDirection === 'asc' ? -1 : 1;
+
+    // Date comparison
+    if (sortField === 'created_at') {
+      aVal = new Date(aVal).getTime();
+      bVal = new Date(bVal).getTime();
+    }
+
+    if (sortDirection === 'asc') {
+      return aVal > bVal ? 1 : -1;
+    } else {
+      return aVal < bVal ? 1 : -1;
+    }
+  });
+
   if (loading) {
     return (
       <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
