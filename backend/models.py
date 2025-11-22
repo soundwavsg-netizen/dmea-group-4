@@ -70,12 +70,12 @@ class PersonaResponse(BaseModel):
 class MotivationScore(BaseModel):
     name: str
     score: float
-    frequency: int
+    frequency: Optional[int] = None  # Not used in raw score mode
 
 class PainScore(BaseModel):
     name: str
     score: float
-    frequency: int
+    frequency: Optional[int] = None  # Not used in raw score mode
 
 class DemographicBreakdown(BaseModel):
     age_groups: Dict[str, int]
