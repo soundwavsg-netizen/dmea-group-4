@@ -160,8 +160,30 @@ const ManageInsights = () => {
                 <thead className="bg-[#E0AFA0]/20 border-b border-[#E0AFA0]/30">
                   <tr>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Document ID</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Created At</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Created By</th>
+                    <th 
+                      className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase cursor-pointer hover:bg-[#E0AFA0]/30 transition-colors"
+                      onClick={() => handleSort('created_at')}
+                      data-testid="sort-created-at"
+                    >
+                      <div className="flex items-center gap-1">
+                        Created At
+                        {sortField === 'created_at' && (
+                          <span className="text-[#A62639]">{sortDirection === 'asc' ? '↑' : '↓'}</span>
+                        )}
+                      </div>
+                    </th>
+                    <th 
+                      className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase cursor-pointer hover:bg-[#E0AFA0]/30 transition-colors"
+                      onClick={() => handleSort('created_by')}
+                      data-testid="sort-created-by"
+                    >
+                      <div className="flex items-center gap-1">
+                        Created By
+                        {sortField === 'created_by' && (
+                          <span className="text-[#A62639]">{sortDirection === 'asc' ? '↑' : '↓'}</span>
+                        )}
+                      </div>
+                    </th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Platform</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Research Method</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Demographics</th>
@@ -176,7 +198,7 @@ const ManageInsights = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {insights.map((insight, index) => (
+                  {sortedInsights.map((insight, index) => (
                     <tr 
                       key={insight.id} 
                       className={`border-b border-[#E0AFA0]/10 hover:bg-[#F8F6F5] ${index % 2 === 0 ? 'bg-white' : 'bg-[#F8F6F5]/50'}`}
