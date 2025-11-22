@@ -46,3 +46,15 @@ class InsightsService:
             raise ValueError(f"Insight with ID {insight_id} not found")
         
         return InsightResponse(**serialize_firestore_doc(doc))
+    
+    @staticmethod
+    def delete_insight(insight_id: str) -> None:
+        """Delete an insight by ID"""
+        doc_ref = db.collection('insights').document(insight_id)
+        doc = doc_ref.get()
+        
+        if not doc.exists:
+            raise ValueError(f"Insight with ID {insight_id} not found")
+        
+        doc_ref.delete()
+        return None
