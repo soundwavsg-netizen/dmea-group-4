@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
   const isAdminOrAbove = authService.isAdminOrAbove();
   
   // Determine if we're in Buyer Persona module
-  const buyerPersonaPaths = ['/', '/add-insight', '/report', '/persona-generator', '/personas'];
+  const buyerPersonaPaths = ['/', '/add-insight', '/report', '/persona-generator', '/personas', '/manage-insights'];
   const isInBuyerPersona = buyerPersonaPaths.includes(location.pathname);
   
   // Show Buyer Persona sub-nav for admin/superadmin or if user is on allowed pages
