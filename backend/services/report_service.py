@@ -30,22 +30,20 @@ class ReportService:
                 influence_distribution={}
             )
         
-        # Format motivations
+        # Format motivations (raw scores don't have frequency)
         top_motivations = [
             MotivationScore(
                 name=name,
-                score=data['score'],
-                frequency=data['frequency']
+                score=data['score']
             )
             for name, data in scoring_data['top_motivations']
         ]
         
-        # Format pains
+        # Format pains (raw scores don't have frequency)
         top_pains = [
             PainScore(
                 name=name,
-                score=data['score'],
-                frequency=data['frequency']
+                score=data['score']
             )
             for name, data in scoring_data['top_pains']
         ]
