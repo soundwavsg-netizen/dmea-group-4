@@ -347,11 +347,12 @@ const AddInsight = () => {
                       key={pain}
                       type="button"
                       onClick={() => toggleArrayItem('pains', pain)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all min-w-fit ${
                         formData.pains.includes(pain)
-                          ? 'bg-[#A62639] text-white'
+                          ? 'bg-[#A62639] text-white border border-[#A62639]'
                           : 'bg-white border border-[#E0AFA0] text-[#6C5F5F] hover:border-[#A62639]'
                       }`}
+                      style={{ minHeight: '36px' }}
                       data-testid={`pain-${pain}`}
                     >
                       {pain}
