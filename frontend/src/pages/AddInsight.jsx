@@ -245,7 +245,7 @@ const AddInsight = () => {
                       <option value="">Select Method</option>
                       {METHODS.map(method => <option key={method} value={method}>{method}</option>)}
                     </select>
-                    <p className="text-xs text-[#6C5F5F] mt-1 invisible">Placeholder</p>
+                    <p className="text-xs text-[#6C5F5F] mt-1" style={{ height: '18px', visibility: 'hidden' }}>Helper text spacer</p>
                   </label>
                 </div>
               </div>
