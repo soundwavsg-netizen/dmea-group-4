@@ -90,6 +90,7 @@ class ReportService:
             top_behaviours=top_behaviours,
             top_channels=top_channels,
             top_products=top_products,
+            platform_counts=scoring_data.get('platform_counts', {}),  # NEW
             avg_purchase_intent=scoring_data['avg_purchase_intent'],
             avg_influencer_effect=scoring_data['avg_influencer_effect'],
             intent_distribution=scoring_data['intent_distribution'],
