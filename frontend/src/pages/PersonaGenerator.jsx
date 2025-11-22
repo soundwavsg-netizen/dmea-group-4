@@ -65,13 +65,38 @@ const PersonaGenerator = () => {
               </svg>
             </div>
 
-            <div className="flex max-w-xl flex-col gap-4">
+            <div className="flex max-w-4xl flex-col gap-4 w-full">
               <h1 className="text-5xl font-bold leading-tight tracking-tight text-[#1F1A1A] md:text-6xl">
                 Create Your Personas
               </h1>
               <p className="text-lg leading-relaxed text-[#6C5F5F]">
                 Turn your research into actionable user personas with a single click.
               </p>
+            </div>
+
+            {/* How Personas Are Formed */}
+            <div className="mt-8 w-full max-w-4xl">
+              <div className="bg-gradient-to-r from-[#E0AFA0]/20 to-[#F8F6F5] rounded-xl border border-[#E0AFA0]/50 p-6 shadow-sm mb-4">
+                <div className="flex items-center justify-center mb-2">
+                  <h3 className="text-xl font-bold text-[#1F1A1A]">ℹ️ How Personas Are Formed</h3>
+                  <InfoTooltip 
+                    content={`Personas are generated when:
+• ≥ 20% of insights share similar motivations/pains
+• AND at least 2 weighted scores ≥ 40
+
+Weighted Score = frequency × normalized strength × platform weight
+
+Normalization: strength slider 0–100 → 0–5.`}
+                    title="How Personas Are Formed"
+                  />
+                </div>
+                <p className="text-sm text-[#6C5F5F] text-center">
+                  Personas are created automatically when at least 20% of insights share similar traits and have weighted scores above 40.
+                </p>
+              </div>
+
+              {/* Platform Weight Table */}
+              <PlatformWeightTable />
             </div>
 
             {error && (
