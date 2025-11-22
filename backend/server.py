@@ -92,6 +92,21 @@ def get_insight(insight_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.delete("/api/insights/{insight_id}")
+def delete_insight(
+    insight_id: str,
+    x_user_role: Optional[str] = Header(None)
+):
+    """Delete an insight - Admin/SuperAdmin only"""
+    check_admin_access(x_user_role)
+    try:
+        InsightsService.delete_insight(insight_id)
+        return {"success": True, "message": "Insight deleted successfully"}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 # ==================== Report Endpoint ====================
 
 @app.get("/api/report", response_model=ReportResponse)
