@@ -213,7 +213,7 @@ const AddInsight = () => {
               <div className="pb-4 pt-2 space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <label className="flex flex-col">
-                    <p className="text-[#1F1A1A] text-sm font-medium leading-normal pb-2">Platform *</p>
+                    <p className="text-[#1F1A1A] text-sm font-medium leading-normal pb-2">Platform (where this insight was collected) *</p>
                     <select
                       required
                       value={formData.platform}
@@ -224,6 +224,7 @@ const AddInsight = () => {
                       <option value="">Select Platform</option>
                       {PLATFORMS.map(platform => <option key={platform} value={platform}>{platform}</option>)}
                     </select>
+                    <p className="text-xs text-[#6C5F5F] mt-1 italic">Example: TikTok, IG, XiaoHongShu, Shopee/Lazada Review, Face-to-Face.</p>
                   </label>
                   <label className="flex flex-col">
                     <p className="text-[#1F1A1A] text-sm font-medium leading-normal pb-2">Research Method *</p>
