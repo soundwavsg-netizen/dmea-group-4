@@ -71,6 +71,14 @@ function App() {
           </ProtectedRoute>
         } />
         
+        <Route path="/manage-insights" element={
+          <ProtectedRoute adminOnly={true}>
+            <Layout>
+              <ManageInsights />
+            </Layout>
+          </ProtectedRoute>
+        } />
+        
         {/* SEO & Content Module - Admin Only + seo_content flag */}
         <Route path="/seo" element={
           <ProtectedRoute adminOnly={true} requiredFeature="seo_content">
