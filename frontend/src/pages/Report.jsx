@@ -24,7 +24,12 @@ const Report = () => {
   const fetchReport = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API}/report`);
+      const session = authService.getSession();
+      const response = await axios.get(`${API}/report`, {
+        headers: {
+          'X-User-Role': session.role
+        }
+      });
       setReportData(response.data);
     } catch (err) {
       setError(err.response?.data?.detail || 'Failed to load report');
