@@ -6,8 +6,136 @@ from utils import PLATFORM_WEIGHTS
 class ScoringService:
     
     @staticmethod
+    def compute_raw_scores() -> Dict[str, Any]:
+        """Compute RAW scores for Report Page (no platform weights, no WTS)"""
+        # Fetch all insights
+        insights = list(db.collection('insights').stream())
+        
+        if not insights:
+            return {}
+        
+        # Initialize trackers
+        motivation_raw_scores = defaultdict(float)  # Sum of normalized strengths
+        pain_raw_scores = defaultdict(float)  # Sum of normalized strengths
+        purchase_intents = []
+        influencer_effects = []
+        behaviour_counts = defaultdict(int)
+        channel_counts = defaultdict(int)
+        product_counts = defaultdict(int)
+        platform_counts = defaultdict(int)  # NEW: Count insights per platform
+        
+        # Demographics
+        age_groups = defaultdict(int)
+        genders = defaultdict(int)
+        skin_types = defaultdict(int)
+        skin_tones = defaultdict(int)
+        lifestyles = defaultdict(int)
+        
+        # Process each insight
+        for doc in insights:
+            data = doc.to_dict()
+            
+            # Count platform (where insight was collected)
+            platform = data.get('platform', 'Other')
+            platform_counts[platform] += 1
+            
+            # Motivations - RAW SCORE = sum of (strength / 20)
+            for mot in data.get('motivations', []):
+                name = mot['name']
+                normalized_strength = mot['strength'] / 20.0  # 0-100 → 0-5
+                motivation_raw_scores[name] += normalized_strength
+            
+            # Pains - RAW SCORE = sum of (strength / 20)
+            for pain in data.get('pains', []):
+                name = pain['name']
+                normalized_strength = pain['strength'] / 20.0  # 0-100 → 0-5
+                pain_raw_scores[name] += normalized_strength
+            
+            # Behaviours
+            for behaviour in data.get('behaviours', []):
+                behaviour_counts[behaviour] += 1
+            
+            # Channels (where user researches, not where we collected)
+            for channel in data.get('channels', []):
+                channel_counts[channel] += 1
+            
+            # Products
+            for product in data.get('products', []):
+                product_counts[product] += 1
+            
+            # Demographics
+            age_groups[data.get('age_group', 'Unknown')] += 1
+            genders[data.get('gender', 'Unknown')] += 1
+            skin_types[data.get('skin_type', 'Unknown')] += 1
+            skin_tones[data.get('skin_tone', 'Unknown')] += 1
+            lifestyles[data.get('lifestyle', 'Unknown')] += 1
+            
+            # Intent and effect (keep as 0-100 for averages)
+            purchase_intents.append(data.get('purchase_intent', 0))
+            influencer_effects.append(data.get('influencer_effect', 0))
+        
+        # Sort motivations by raw score
+        top_motivations = sorted(
+            motivation_raw_scores.items(),
+            key=lambda x: x[1],
+            reverse=True
+        )[:10]
+        
+        # Sort pains by raw score
+        top_pains = sorted(
+            pain_raw_scores.items(),
+            key=lambda x: x[1],
+            reverse=True
+        )[:10]
+        
+        # Format results
+        top_motivations_formatted = [
+            (name, {"score": round(score, 2)}) for name, score in top_motivations
+        ]
+        
+        top_pains_formatted = [
+            (name, {"score": round(score, 2)}) for name, score in top_pains
+        ]
+        
+        # Calculate averages
+        avg_purchase_intent = sum(purchase_intents) / len(purchase_intents) if purchase_intents else 0
+        avg_influencer_effect = sum(influencer_effects) / len(influencer_effects) if influencer_effects else 0
+        
+        # Intent/Influence distributions (group into ranges)
+        intent_distribution = {}
+        for intent in purchase_intents:
+            bucket = f"{(intent // 20) * 20}-{((intent // 20) + 1) * 20}"
+            intent_distribution[bucket] = intent_distribution.get(bucket, 0) + 1
+        
+        influence_distribution = {}
+        for effect in influencer_effects:
+            bucket = f"{(effect // 20) * 20}-{((effect // 20) + 1) * 20}"
+            influence_distribution[bucket] = influence_distribution.get(bucket, 0) + 1
+        
+        return {
+            'total_insights': len(insights),
+            'top_motivations': top_motivations_formatted,
+            'top_pains': top_pains_formatted,
+            'demographics': {
+                'age_groups': dict(age_groups),
+                'genders': dict(genders),
+                'skin_types': dict(skin_types),
+                'skin_tones': dict(skin_tones),
+                'lifestyles': dict(lifestyles)
+            },
+            'behaviour_counts': dict(behaviour_counts),
+            'channel_counts': dict(channel_counts),
+            'product_counts': dict(product_counts),
+            'platform_counts': dict(platform_counts),  # NEW: Platform counts
+            'avg_purchase_intent': round(avg_purchase_intent, 1),
+            'avg_influencer_effect': round(avg_influencer_effect, 1),
+            'intent_distribution': intent_distribution,
+            'influence_distribution': influence_distribution
+        }
+    
+    @staticmethod
     def compute_scores() -> Dict[str, Any]:
-        """Compute weighted scores for all insights"""
+        """Compute weighted scores for Persona Generation (with platform weights)"""
         # Fetch all insights
         insights = list(db.collection('insights').stream())
         
