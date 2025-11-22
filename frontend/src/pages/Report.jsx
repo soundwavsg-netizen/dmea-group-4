@@ -311,6 +311,28 @@ Raw Score = (100/20) + (60/20) + (80/20) = 5 + 3 + 4 = 12`}
             ))}
           </div>
         </div>
+
+        {/* Platform Counts - NEW SECTION */}
+        <div className="mt-6 bg-white rounded-xl border border-[#E0AFA0]/50 p-6 shadow-sm">
+          <div className="flex items-center mb-4">
+            <h3 className="text-lg font-bold text-[#1F1A1A]">Platforms Used (Insight Source)</h3>
+            <InfoTooltip 
+              content="Platform count = where each insight was collected."
+              title="Platforms Used"
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {Object.entries(reportData.platform_counts || {})
+              .sort((a, b) => b[1] - a[1])
+              .map(([platform, count]) => (
+                <div key={platform} className="flex justify-between items-center p-3 bg-[#F8F6F5] rounded-lg">
+                  <span className="text-sm text-[#1F1A1A]">{platform}</span>
+                  <span className="text-sm font-bold text-[#A62639]">{count}</span>
+                </div>
+              ))}
+          </div>
+          <p className="text-xs text-[#6C5F5F] mt-4 italic">Platform count = where each insight was collected.</p>
+        </div>
       </div>
     </div>
   );
