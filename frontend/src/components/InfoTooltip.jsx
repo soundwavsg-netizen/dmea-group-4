@@ -19,17 +19,18 @@ const InfoTooltip = ({ content, title }) => {
       
       {isOpen && (
         <div 
-          className="absolute z-50 mt-2 bg-white rounded-lg shadow-xl border border-[#E0AFA0]/30 p-4 overflow-x-auto"
+          className="fixed z-50 bg-white rounded-lg shadow-xl border border-[#E0AFA0]/30 p-4"
           style={{
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '288px',
-            maxWidth: 'calc(100vw - 2rem)',
+            left: '1rem',
+            right: '1rem',
+            top: '50%',
+            transform: 'translateY(-50%)',
             maxHeight: '80vh',
-            overflowY: 'auto'
+            overflowY: 'auto',
+            overflowX: 'hidden'
           }}
         >
-          <div className="text-sm text-[#1F1A1A] whitespace-pre-wrap">
+          <div className="text-sm text-[#1F1A1A] whitespace-pre-wrap break-words">
             {content}
           </div>
         </div>
