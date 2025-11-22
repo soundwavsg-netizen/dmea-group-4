@@ -110,8 +110,9 @@ def delete_insight(
 # ==================== Report Endpoint ====================
 
 @app.get("/api/report", response_model=ReportResponse)
-def get_report():
-    """Get aggregated report of all insights"""
+def get_report(x_user_role: Optional[str] = Header(None)):
+    """Get aggregated report of all insights - Admin/SuperAdmin only"""
+    check_admin_access(x_user_role)
     try:
         return ReportService.generate_report()
     except Exception as e:
@@ -120,8 +121,9 @@ def get_report():
 # ==================== Persona Endpoints ====================
 
 @app.post("/api/personas/generate", response_model=GeneratePersonasResponse)
-def generate_personas():
-    """Generate personas from insights using clustering and LLM"""
+def generate_personas(x_user_role: Optional[str] = Header(None)):
+    """Generate personas from insights using clustering and LLM - Admin/SuperAdmin only"""
+    check_admin_access(x_user_role)
     try:
         # Step 1: Create clusters
         clusters = ClusteringService.create_clusters()
