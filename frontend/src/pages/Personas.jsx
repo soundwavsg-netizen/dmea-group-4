@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import authService from '../services/authService';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -18,7 +19,12 @@ const Personas = () => {
   const fetchPersonas = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API}/personas`);
+      const session = authService.getSession();
+      const response = await axios.get(`${API}/personas`, {
+        headers: {
+          'X-User-Role': session.role
+        }
+      });
       setPersonas(response.data);
     } catch (err) {
       setError(err.response?.data?.detail || 'Failed to load personas');
