@@ -35,6 +35,14 @@ app.add_middleware(
 # Initialize services
 persona_service = PersonaService()
 
+# ==================== Role-Based Access Control ====================
+
+def check_admin_access(x_user_role: Optional[str] = None):
+    """Check if user has admin or superadmin role"""
+    if not x_user_role or x_user_role not in ['admin', 'superadmin']:
+        raise HTTPException(status_code=403, detail="Access denied. Admin privileges required.")
+    return x_user_role
+
 # ==================== Health Check ====================
 
 @app.get("/")
