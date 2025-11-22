@@ -3,7 +3,16 @@ const ACCOUNTS = {
   "superadmin": { password: "SUPERPASS", role: "superadmin" },
   "admin": { password: "ADMINPASS", role: "admin" },
   "user1": { password: "USERPASS", role: "user" },
-  "user2": { password: "USERPASS", role: "user" }
+  "user2": { password: "USERPASS", role: "user" },
+  // 8 New User Accounts
+  "anthony": { password: "anthony", role: "user" },
+  "chris": { password: "chris", role: "user" },
+  "drgu": { password: "drgu", role: "user" },
+  "jessica": { password: "jessica", role: "user" },
+  "juliana": { password: "juliana", role: "user" },
+  "munifah": { password: "munifah", role: "user" },
+  "shannon": { password: "shannon", role: "user" },
+  "tasha": { password: "tasha", role: "user" }
 };
 
 const AUTH_KEY = 'mufe_auth_session';
