@@ -91,3 +91,7 @@ backend/.env
 backend/secrets/firebase-admin.json
 backend/secrets/*.json
 **/secrets/*.json
+-e 
+# Environment files
+*.env
+*.env.*
