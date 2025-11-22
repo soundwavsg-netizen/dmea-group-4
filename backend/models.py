@@ -25,6 +25,8 @@ class InsightCreate(BaseModel):
     influencer_effect: int = Field(ge=0, le=100)
     quote: Optional[str] = ''
     notes: Optional[str] = ''
+    created_by: Optional[str] = None  # Username of creator
+    created_at: Optional[str] = None  # Timestamp
 
 # ==================== Response Models ====================
 
