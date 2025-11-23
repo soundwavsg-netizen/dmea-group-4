@@ -1,0 +1,102 @@
+====================================================================
+CLEAN UP OLD BACKEND AND REDEPLOY - STEP BY STEP
+====================================================================
+
+STEP 1: DELETE OLD BACKEND FOLDER
+----------------------------------
+In Cloud Shell, run:
+
+cd ~
+rm -rf backend
+ls -la
+
+(Verify backend/ folder is gone)
+
+STEP 2: UPLOAD NEW BACKEND FOLDER
+----------------------------------
+1. In Cloud Shell, click the "Three dots" menu (⋮) in top-right
+2. Click "Upload"
+3. Click "Choose Files"
+4. Select ALL files from /app/deployment-package/backend/ folder:
+   - Dockerfile
+   - server.py
+   - config.py
+   - firebase_client.py
+   - models.py
+   - start.sh
+   - .dockerignore
+   - services/ folder (all .py files inside)
+
+5. Upload destination: /home/YOUR_USERNAME/
+6. Click "Upload"
+
+OR upload the entire folder:
+1. Zip the deployment-package/backend/ folder on your computer
+2. Upload the zip file to Cloud Shell
+3. Unzip it:
+   cd ~
+   unzip backend.zip
+
+STEP 3: VERIFY FILES ARE UPLOADED
+----------------------------------
+cd ~/backend
+ls -la
+
+You should see:
+- Dockerfile
+- server.py
+- config.py
+- firebase_client.py
+- models.py
+- start.sh
+- services/
+
+Check Dockerfile content:
+head -5 Dockerfile
+
+Should show: "# Bulletproof Dockerfile for Cloud Run"
+
+STEP 4: MAKE START.SH EXECUTABLE (if exists)
+--------------------------------------------
+chmod +x start.sh
+
+STEP 5: DEPLOY
+--------------
+gcloud run deploy mufe-backend \
+  --source . \
+  --platform managed \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --port 8080 \
+  --timeout 600 \
+  --memory 1Gi \
+  --cpu 1
+
+STEP 6: WATCH LOGS (in another tab)
+------------------------------------
+gcloud logging tail "resource.type=cloud_run_revision AND resource.labels.service_name=mufe-backend"
+
+====================================================================
+QUICK COMMANDS SUMMARY
+====================================================================
+
+# Delete old folder
+cd ~ && rm -rf backend
+
+# After uploading new files
+cd ~/backend
+ls -la
+chmod +x start.sh
+
+# Deploy
+gcloud run deploy mufe-backend \
+  --source . \
+  --platform managed \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --port 8080 \
+  --timeout 600 \
+  --memory 1Gi \
+  --cpu 1
+
+====================================================================
