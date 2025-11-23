@@ -721,10 +721,30 @@ const ClusteringTechnical = () => {
 
   // If in presentation mode, render full-screen version
   if (isPresentationMode) {
+    const isMobile = isMobileDevice();
+    const containerClasses = isFullScreen && isMobile 
+      ? "fixed inset-0 bg-[#FAF7F5] flex items-center justify-center p-2" 
+      : "fixed inset-0 bg-[#FAF7F5] flex items-center justify-center p-4 md:p-8 lg:p-16";
+    
     return (
-      <div className="fixed inset-0 bg-[#FAF7F5] flex items-center justify-center p-4 md:p-8 lg:p-16" style={{ zIndex: 9999 }}>
+      <div 
+        className={containerClasses}
+        style={{ 
+          zIndex: 9999,
+          ...(isFullScreen && isMobile ? {
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: '100vw',
+            height: '100vh',
+            overflow: 'hidden'
+          } : {})
+        }}
+      >
         {/* Top controls bar */}
-        <div className="fixed top-4 left-4 right-4 flex items-center justify-between" style={{ zIndex: 10000 }}>
+        <div className="fixed top-2 left-2 right-2 flex items-center justify-between" style={{ zIndex: 10000 }}>
           {/* Slide counter */}
           <div className="px-4 py-2 bg-white/90 rounded-full shadow-lg">
             <span className="text-sm font-semibold text-[#6C5F5F]">{currentSlide} / {totalSlides}</span>
