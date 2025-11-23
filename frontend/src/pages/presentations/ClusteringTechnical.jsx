@@ -817,39 +817,6 @@ const ClusteringTechnical = () => {
           <div className="flex-1 bg-white rounded-2xl shadow-2xl p-8 md:p-12 overflow-y-auto presentation-slide-content">
             {renderCurrentSlideContent()}
           </div>
-
-          {/* Navigation arrows */}
-          <div className="flex items-center justify-between mt-4 md:mt-6">
-            <button
-              onClick={prevSlide}
-              disabled={currentSlide === 1}
-              className={`flex items-center gap-1 md:gap-2 px-3 py-2 md:px-8 md:py-4 rounded-full font-semibold transition-all ${
-                currentSlide === 1
-                  ? 'bg-white/50 md:bg-gray-300 text-gray-400 md:text-gray-500 cursor-not-allowed backdrop-blur-sm'
-                  : 'bg-white/80 md:bg-[#A62639] text-[#A62639] md:text-white hover:bg-white/90 md:hover:bg-[#8a1f2d] shadow-lg backdrop-blur-sm active:scale-95'
-              }`}
-              data-testid="prev-slide-presentation-btn"
-            >
-              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
-              <span className="hidden sm:inline">Previous</span>
-              <span className="sm:hidden">Prev</span>
-            </button>
-
-            <button
-              onClick={nextSlide}
-              disabled={currentSlide === totalSlides}
-              className={`flex items-center gap-1 md:gap-2 px-3 py-2 md:px-8 md:py-4 rounded-full font-semibold transition-all ${
-                currentSlide === totalSlides
-                  ? 'bg-white/50 md:bg-gray-300 text-gray-400 md:text-gray-500 cursor-not-allowed backdrop-blur-sm'
-                  : 'bg-white/80 md:bg-[#A62639] text-[#A62639] md:text-white hover:bg-white/90 md:hover:bg-[#8a1f2d] shadow-lg backdrop-blur-sm active:scale-95'
-              }`}
-              data-testid="next-slide-presentation-btn"
-            >
-              <span className="hidden sm:inline">Next</span>
-              <span className="sm:hidden">Next</span>
-              <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
-            </button>
-          </div>
         </div>
 
         <style>{`
