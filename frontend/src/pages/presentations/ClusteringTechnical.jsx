@@ -696,20 +696,40 @@ const ClusteringTechnical = () => {
   // If in presentation mode, render full-screen version
   if (isPresentationMode) {
     return (
-      <div className="fixed inset-0 bg-[#FAF7F5] flex items-center justify-center p-8 md:p-16" style={{ zIndex: 9999 }}>
-        {/* Exit button */}
-        <button
-          onClick={exitPresentationMode}
-          className="fixed top-4 right-4 p-3 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all"
-          style={{ zIndex: 10000 }}
-          data-testid="exit-presentation-btn"
-        >
-          <X className="w-6 h-6 text-[#A62639]" />
-        </button>
+      <div className="fixed inset-0 bg-[#FAF7F5] flex items-center justify-center p-4 md:p-8 lg:p-16" style={{ zIndex: 9999 }}>
+        {/* Top controls bar */}
+        <div className="fixed top-4 left-4 right-4 flex items-center justify-between" style={{ zIndex: 10000 }}>
+          {/* Slide counter */}
+          <div className="px-4 py-2 bg-white/90 rounded-full shadow-lg">
+            <span className="text-sm font-semibold text-[#6C5F5F]">{currentSlide} / {totalSlides}</span>
+          </div>
 
-        {/* Slide counter */}
-        <div className="fixed top-4 left-4 px-4 py-2 bg-white/90 rounded-full shadow-lg" style={{ zIndex: 10000 }}>
-          <span className="text-sm font-semibold text-[#6C5F5F]">{currentSlide} / {totalSlides}</span>
+          {/* Right controls */}
+          <div className="flex items-center gap-2">
+            {/* Full-screen toggle */}
+            <button
+              onClick={toggleFullScreen}
+              className="p-3 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all"
+              title={isFullScreen ? "Exit Full Screen" : "Enter Full Screen"}
+              data-testid="toggle-fullscreen-btn"
+            >
+              {isFullScreen ? (
+                <Minimize className="w-5 h-5 text-[#A62639]" />
+              ) : (
+                <Maximize className="w-5 h-5 text-[#A62639]" />
+              )}
+            </button>
+
+            {/* Exit presentation mode */}
+            <button
+              onClick={exitPresentationMode}
+              className="p-3 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all"
+              title="Exit Presentation Mode"
+              data-testid="exit-presentation-btn"
+            >
+              <X className="w-6 h-6 text-[#A62639]" />
+            </button>
+          </div>
         </div>
 
         {/* Main slide content */}
