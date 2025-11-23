@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PersonaGen - How Personas Are Created</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;family=Playfair+Display:wght@700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+      }
+      .playfair-display { font-family: 'Playfair Display', serif; }
+      .inter { font-family: 'Inter', sans-serif; }
+    </style>
+<script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#A62639',
+              accent: '#E0AFA0',
+              background: '#FAF7F5',
+              'text-main': '#333333',
+              'text-subtle': '#5c5c5c',
+              'divider': '#EAE5E3'
+            },
+            fontFamily: {
+              display: ['Playfair Display', 'serif'],
+              body: ['Inter', 'sans-serif']
+            },
+            borderRadius: {
+              'DEFAULT': '1.5rem',
+              'lg': '2rem',
+              'xl': '3rem',
+              'full': '9999px'
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-background font-body text-text-main antialiased">
+<div class="relative flex min-h-screen w-full flex-col">
+<main class="flex-grow">
+<div class="container mx-auto px-4 py-12 lg:px-8 lg:py-20">
+<div class="mx-auto flex max-w-4xl flex-col gap-8">
+<section class="rounded-lg bg-white p-8 shadow-sm md:p-12">
+<div class="flex flex-col gap-3">
+<h1 class="playfair-display text-primary text-4xl font-bold md:text-5xl">What is User Research?</h1>
+<p class="inter text-text-subtle text-base leading-relaxed">
+                                Understand the foundational principles of our research methodology and how it drives meaningful insights.
+                            </p>
+</div>
+<hr class="my-6 border-divider"/>
+<p class="inter text-text-main text-base leading-loose">
+                            User research is the systematic study of target users to add realistic contexts and insights to design processes. It helps us understand how people live their lives so that we can design products and services that are more effective, efficient, and enjoyable for them. We focus on qualitative data to uncover deep-seated motivations and pain points.
+                        </p>
+</section>
+<section class="rounded-lg bg-white p-8 shadow-sm md:p-12">
+<div class="flex flex-col gap-3">
+<h2 class="playfair-display text-primary text-4xl font-bold md:text-5xl">Why Personas Matter?</h2>
+<p class="inter text-text-subtle text-base leading-relaxed">
+                                Discover how synthesizing research into personas creates a powerful tool for empathy and decision-making.
+                            </p>
+</div>
+<hr class="my-6 border-divider"/>
+<p class="inter text-text-main text-base leading-loose">
+                            Personas are fictional characters, which you create based upon your research in order to represent the different user types that might use your service or product. Creating personas helps the design team build a shared understanding of the user, keeping the entire process human-centered and focused on solving real-world problems for real people.
+                        </p>
+</section>
+<section class="rounded-lg bg-white p-8 shadow-sm md:p-12">
+<div class="flex flex-col gap-3">
+<h2 class="playfair-display text-primary text-4xl font-bold md:text-5xl">Our Data Clustering Method</h2>
+<p class="inter text-text-subtle text-base leading-relaxed">
+                                Learn how we process raw data into actionable patterns and groups.
+                            </p>
+</div>
+<hr class="my-6 border-divider"/>
+<p class="inter text-text-main text-base leading-loose">
+                            Our proprietary algorithm analyzes qualitative feedback from interviews, surveys, and usability tests. It identifies recurring themes and behaviors, grouping similar data points into meaningful clusters. This process moves beyond surface-level comments to reveal the core motivations and frustrations that define a user group, forming the empirical foundation for each persona.
+                        </p>
+</section>
+<section class="rounded-lg bg-white p-8 shadow-sm md:p-12">
+<div class="flex flex-col gap-3">
+<h2 class="playfair-display text-primary text-4xl font-bold md:text-5xl">How Personas Are Created</h2>
+<p class="inter text-text-subtle text-base leading-relaxed">
+                                From data clusters to human stories, this is how we bring your users to life.
+                            </p>
+</div>
+<hr class="my-6 border-divider"/>
+<div class="grid grid-cols-1 gap-12 lg:grid-cols-2">
+<div class="flex flex-col gap-6">
+<p class="inter text-text-main text-base leading-loose">
+                                We combine the strongest patterns from our data clusters to create a human-friendly persona. This process involves weaving together the most important aspects of:
+                                </p>
+<ul class="space-y-3">
+<li class="inter flex items-start gap-3 text-text-main">
+<span class="material-symbols-outlined mt-1 text-accent">check_circle</span>
+<span><strong class="font-bold">Motivations:</strong> What drives their choices?</span>
+</li>
+<li class="inter flex items-start gap-3 text-text-main">
+<span class="material-symbols-outlined mt-1 text-accent">check_circle</span>
+<span><strong class="font-bold">Pains:</strong> What are their biggest challenges?</span>
+</li>
+<li class="inter flex items-start gap-3 text-text-main">
+<span class="material-symbols-outlined mt-1 text-accent">check_circle</span>
+<span><strong class="font-bold">Behaviors:</strong> How do they act and shop?</span>
+</li>
+<li class="inter flex items-start gap-3 text-text-main">
+<span class="material-symbols-outlined mt-1 text-accent">check_circle</span>
+<span><strong class="font-bold">Influences:</strong> Where do they look for inspiration?</span>
+</li>
+</ul>
+</div>
+<div class="rounded-lg border border-divider bg-background p-6">
+<div class="flex flex-col gap-6">
+<div class="flex items-center gap-5">
+<div class="size-24 flex-shrink-0 rounded-full bg-center bg-cover bg-no-repeat" data-alt="Animated female picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAMVgJD5V3_0wcjm3DuONbgFF3XWHHbF7Ov7sj9RNjFis9ee15CiLeGSkq6WYIrnBRmltlZ7aqx-G8YCi3fIywtBltBg7AHy97Dvnxef-xox0zHGOziuHsJsERjgTwBHPdUHBqzzW5IJs8hTpT2mBHUOHOdtvvYLRjSppBhD5ONyAvzc6WcBgfw-VoAdm6qCa9WEXA1To5V_qmyWuJhy_A0Mh8P2hgMyEWTCm2YI3kpUjxd7eI1aMTvYzCjfHLm5yanq57W4S8-DsM');"></div>
+<div>
+<h3 class="playfair-display text-2xl font-bold text-primary">Isabella Rossi</h3>
+<p class="inter text-sm text-text-subtle">The Expressive Artist</p>
+</div>
+</div>
+<div class="text-sm italic text-text-subtle leading-relaxed">
+                                        "Makeup is my creative outlet. I love bold colors and unique textures that let me express myself."
+                                    </div>
+<div class="space-y-4">
+<div>
+<h4 class="inter mb-2 text-sm font-bold uppercase tracking-wider text-accent">Makeup Preferences</h4>
+<div class="flex flex-wrap gap-2">
+<span class="rounded-full bg-accent/20 px-3 py-1 text-xs font-medium text-text-main">Vibrant Eyeshadows</span>
+<span class="rounded-full bg-accent/20 px-3 py-1 text-xs font-medium text-text-main">Long-wear Lipstick</span>
+<span class="rounded-full bg-accent/20 px-3 py-1 text-xs font-medium text-text-main">Dewy Foundation</span>
+</div>
+</div>
+<div>
+<h4 class="inter mb-2 text-sm font-bold uppercase tracking-wider text-accent">Social Channels</h4>
+<div class="flex flex-wrap gap-2">
+<span class="rounded-full bg-accent/20 px-3 py-1 text-xs font-medium text-text-main">TikTok Tutorials</span>
+<span class="rounded-full bg-accent/20 px-3 py-1 text-xs font-medium text-text-main">Instagram Reels</span>
+<span class="rounded-full bg-accent/20 px-3 py-1 text-xs font-medium text-text-main">Pinterest Boards</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="mt-8 flex justify-start">
+<button class="inter flex cursor-pointer items-center justify-center gap-2 rounded-full border border-divider bg-white px-6 py-3 text-sm font-bold text-text-main transition-colors hover:bg-background">
+<span class="material-symbols-outlined">arrow_back</span>
+<span>Previous</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
