@@ -424,76 +424,112 @@ const ClusteringTechnical = () => {
             </div>
           )}
 
-          {/* Slide 4: Similarity & Clustering */}
+          {/* Slide 4: Cluster Profiling */}
           {currentSlide === 4 && (
-            <div className="space-y-6 animate-fade-in">
-              <div className="mb-8">
-                <h2 className="text-4xl font-bold text-[#A62639] mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
-                  Similarity & Clustering
+            <div className="space-y-8 animate-fade-in">
+              {/* Slide indicator dots */}
+              <div className="mb-8 text-center">
+                <div className="mb-4 flex items-center justify-center gap-2">
+                  <div className="h-1.5 w-8 rounded-full bg-[#E0AFA0]"></div>
+                  <div className="h-1.5 w-8 rounded-full bg-[#E0AFA0]"></div>
+                  <div className="h-1.5 w-8 rounded-full bg-[#E0AFA0]"></div>
+                  <div className="h-1.5 w-8 rounded-full bg-[#A62639]"></div>
+                  <div className="h-1.5 w-8 rounded-full bg-[#E0AFA0]"></div>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold text-[#A62639]" style={{ fontFamily: 'Playfair Display, serif' }}>
+                  Cluster Profiling
                 </h2>
-                <p className="text-[#333333]/70 text-lg">
-                  Discovering natural user segments through algorithmic pattern detection
+                <p className="mx-auto mt-4 max-w-2xl text-base text-[#333333]/80">
+                  From individual scores to collective identity, we aggregate insight metrics to define and profile distinct user clusters.
                 </p>
               </div>
 
-              <div className="bg-[#FAF7F5] rounded-xl p-8 mb-6">
-                <h3 className="text-2xl font-bold text-[#333333] mb-4">Clustering Algorithms</h3>
-                <p className="text-[#333333]/70 leading-relaxed mb-6">
-                  Once insights are vectorized, machine learning algorithms automatically group similar data points without any predefined categories. This unsupervised approach reveals organic user segments.
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div className="bg-white rounded-xl p-6 shadow-sm">
-                    <div className="w-12 h-12 bg-[#A62639]/10 text-[#A62639] rounded-full flex items-center justify-center mb-4 text-xl font-bold">
-                      K
+              {/* Score cards */}
+              <div className="space-y-6">
+                {/* Motivations Score */}
+                <section className="rounded-lg border border-[#E0AFA0]/30 bg-white p-6 shadow-sm transition-all hover:shadow-md">
+                  <div className="flex items-start gap-4">
+                    <div className="mt-1 flex-shrink-0 text-[#A62639]">
+                      <Lightbulb className="w-8 h-8" />
                     </div>
-                    <h4 className="font-bold text-[#333333] mb-2">K-Means Clustering</h4>
-                    <p className="text-[#333333]/70 text-sm">
-                      Partitions data into K distinct clusters by minimizing within-cluster variance. Fast and effective for well-separated groups.
-                    </p>
-                  </div>
-
-                  <div className="bg-white rounded-xl p-6 shadow-sm">
-                    <div className="w-12 h-12 bg-[#A62639]/10 text-[#A62639] rounded-full flex items-center justify-center mb-4 text-xl font-bold">
-                      H
+                    <div>
+                      <h3 className="text-xl font-bold text-[#333333]" style={{ fontFamily: 'Playfair Display, serif' }}>
+                        Motivations Score
+                      </h3>
+                      <p className="mt-1 text-sm leading-relaxed text-[#333333]/70">
+                        We analyze the core drivers behind user choices. By aggregating motivation scores, we identify the primary desires and aspirations that define each cluster, revealing what truly excites them about a product or service.
+                      </p>
                     </div>
-                    <h4 className="font-bold text-[#333333] mb-2">Hierarchical Clustering</h4>
-                    <p className="text-[#333333]/70 text-sm">
-                      Builds a tree of clusters, allowing analysis at different granularity levels. Useful for understanding nested user segments.
-                    </p>
                   </div>
-                </div>
+                </section>
 
-                <div className="space-y-4">
-                  <div className="bg-white rounded-xl p-6 shadow-sm">
-                    <div className="w-12 h-12 bg-[#A62639]/10 text-[#A62639] rounded-full flex items-center justify-center mb-4 text-xl font-bold">
-                      D
+                {/* Pain Points Score */}
+                <section className="rounded-lg border border-[#E0AFA0]/30 bg-white p-6 shadow-sm transition-all hover:shadow-md">
+                  <div className="flex items-start gap-4">
+                    <div className="mt-1 flex-shrink-0 text-[#A62639]">
+                      <span className="text-3xl">😔</span>
                     </div>
-                    <h4 className="font-bold text-[#333333] mb-2">DBSCAN</h4>
-                    <p className="text-[#333333]/70 text-sm">
-                      Density-based clustering that can find arbitrarily shaped clusters and identify outliers. Great for noisy real-world data.
-                    </p>
-                  </div>
-
-                  <div className="bg-white rounded-xl p-6 shadow-sm">
-                    <div className="w-12 h-12 bg-[#A62639]/10 text-[#A62639] rounded-full flex items-center justify-center mb-4 text-xl font-bold">
-                      G
+                    <div>
+                      <h3 className="text-xl font-bold text-[#333333]" style={{ fontFamily: 'Playfair Display, serif' }}>
+                        Pain Points Score
+                      </h3>
+                      <p className="mt-1 text-sm leading-relaxed text-[#333333]/70">
+                        Understanding frustrations is key. This score highlights the most significant challenges and obstacles users face. Within a cluster, common pain points emerge, pointing to critical areas for improvement and innovation.
+                      </p>
                     </div>
-                    <h4 className="font-bold text-[#333333] mb-2">Gaussian Mixture Models</h4>
-                    <p className="text-[#333333]/70 text-sm">
-                      Probabilistic approach that assigns soft cluster memberships. Users can belong to multiple personas with different probabilities.
-                    </p>
                   </div>
-                </div>
-              </div>
+                </section>
 
-              <div className="bg-gradient-to-r from-[#A62639]/10 to-[#E0AFA0]/10 rounded-xl p-6 border-l-4 border-[#A62639]">
-                <h4 className="font-bold text-[#333333] mb-2">Optimal Cluster Count</h4>
-                <p className="text-[#333333]/70 text-sm">
-                  We use the Elbow Method and Silhouette Analysis to determine the ideal number of personas. Too few loses nuance; too many creates overlap. Typically, 3-7 personas provide the right balance.
-                </p>
+                {/* Purchase Intent Score */}
+                <section className="rounded-lg border border-[#E0AFA0]/30 bg-white p-6 shadow-sm transition-all hover:shadow-md">
+                  <div className="flex items-start gap-4">
+                    <div className="mt-1 flex-shrink-0 text-[#A62639]">
+                      <span className="text-3xl">🛒</span>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-[#333333]" style={{ fontFamily: 'Playfair Display, serif' }}>
+                        Purchase Intent Score
+                      </h3>
+                      <p className="mt-1 text-sm leading-relaxed text-[#333333]/70">
+                        This metric quantifies a user's likelihood to convert. By rolling up these scores, we can profile clusters based on their buying readiness, from casual browsers to highly-motivated shoppers, enabling targeted sales strategies.
+                      </p>
+                    </div>
+                  </div>
+                </section>
+
+                {/* Influence Effect Score */}
+                <section className="rounded-lg border border-[#E0AFA0]/30 bg-white p-6 shadow-sm transition-all hover:shadow-md">
+                  <div className="flex items-start gap-4">
+                    <div className="mt-1 flex-shrink-0 text-[#A62639]">
+                      <span className="text-3xl">👥</span>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-[#333333]" style={{ fontFamily: 'Playfair Display, serif' }}>
+                        Influence Effect Score
+                      </h3>
+                      <p className="mt-1 text-sm leading-relaxed text-[#333333]/70">
+                        We measure how susceptible users are to external factors like reviews, social trends, or recommendations. This score helps identify which clusters are tastemakers versus followers, shaping influencer and community marketing.
+                      </p>
+                    </div>
+                  </div>
+                </section>
+
+                {/* Determining Cluster Identity */}
+                <section className="rounded-lg border border-[#E0AFA0]/30 bg-white p-6 shadow-sm transition-all hover:shadow-md">
+                  <div className="flex items-start gap-4">
+                    <div className="mt-1 flex-shrink-0 text-[#A62639]">
+                      <span className="text-3xl">🏆</span>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-[#333333]" style={{ fontFamily: 'Playfair Display, serif' }}>
+                        Determining Cluster Identity
+                      </h3>
+                      <p className="mt-1 text-sm leading-relaxed text-[#333333]/70">
+                        The culmination of our analysis. By synthesizing the aggregated scores for motivations, pain points, intent, and influence, we assign a distinct, descriptive identity to each cluster, transforming raw data into a strategic asset.
+                      </p>
+                    </div>
+                  </div>
+                </section>
               </div>
             </div>
           )}
