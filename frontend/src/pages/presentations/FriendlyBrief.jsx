@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, Presentation, X } from 'lucide-react';
 
 const FriendlyBrief = () => {
   const [currentSlide, setCurrentSlide] = useState(1);
+  const [isPresentationMode, setIsPresentationMode] = useState(false);
   const totalSlides = 4;
 
   const nextSlide = () => {
