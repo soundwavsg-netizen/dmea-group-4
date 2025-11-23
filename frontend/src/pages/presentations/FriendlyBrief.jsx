@@ -188,6 +188,14 @@ const FriendlyBrief = () => {
           {/* Slide 4: How Personas Are Created */}
           {currentSlide === 4 && (
             <div className="space-y-6 animate-fade-in">
+              {/* Main Title */}
+              <div className="text-center mb-8">
+                <h2 className="text-4xl md:text-5xl font-bold text-[#A62639]" style={{ fontFamily: 'Playfair Display, serif' }}>
+                  How Personas Are Created
+                </h2>
+                <div className="h-1 w-20 bg-[#E0AFA0] mx-auto mt-4"></div>
+              </div>
+
               {/* Section 1: What is User Research */}
               <div className="bg-white rounded-xl p-8 shadow-sm">
                 <h2 className="text-3xl md:text-4xl font-bold text-[#A62639] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
