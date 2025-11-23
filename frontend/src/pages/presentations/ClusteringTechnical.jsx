@@ -62,16 +62,18 @@ const ClusteringTechnical = () => {
 
                 {/* Step 1 */}
                 <div className="flex items-start gap-6">
-                  <div className="flex-shrink-0 w-20 h-20 bg-[#A62639] text-white rounded-full flex items-center justify-center text-2xl font-bold z-10">
+                  <div className="flex-shrink-0 w-12 md:w-20 h-12 md:h-20 bg-white border border-[#E0AFA0]/50 text-[#A62639] rounded-full flex items-center justify-center text-xl md:text-2xl font-bold z-10">
                     01
                   </div>
-                  <div className="flex-1 bg-[#FAF7F5] rounded-xl p-6 flex items-start gap-4">
+                  <div className="flex-1 bg-white rounded-xl p-6 shadow-sm flex flex-col md:flex-row items-start gap-6">
                     <div className="flex-shrink-0 w-14 h-14 bg-[#E0AFA0]/20 text-[#A62639] rounded-lg flex items-center justify-center">
                       <Filter className="w-7 h-7" />
                     </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-[#333333] mb-2">Insight Collection</h3>
-                      <p className="text-[#333333]/70 text-sm">
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-[#333333] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                        Insight Collection
+                      </h3>
+                      <p className="text-[#333333]/70 text-sm leading-relaxed">
                         This initial stage involves gathering raw user data from various sources, such as interviews, surveys, and feedback forms, to build a foundational dataset.
                       </p>
                     </div>
@@ -80,16 +82,18 @@ const ClusteringTechnical = () => {
 
                 {/* Step 2 */}
                 <div className="flex items-start gap-6">
-                  <div className="flex-shrink-0 w-20 h-20 bg-[#A62639] text-white rounded-full flex items-center justify-center text-2xl font-bold z-10">
+                  <div className="flex-shrink-0 w-12 md:w-20 h-12 md:h-20 bg-white border border-[#E0AFA0]/50 text-[#A62639] rounded-full flex items-center justify-center text-xl md:text-2xl font-bold z-10">
                     02
                   </div>
-                  <div className="flex-1 bg-[#FAF7F5] rounded-xl p-6 flex items-start gap-4">
+                  <div className="flex-1 bg-white rounded-xl p-6 shadow-sm flex flex-col md:flex-row items-start gap-6">
                     <div className="flex-shrink-0 w-14 h-14 bg-[#E0AFA0]/20 text-[#A62639] rounded-lg flex items-center justify-center">
                       <Code className="w-7 h-7" />
                     </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-[#333333] mb-2">Insight Vectorisation</h3>
-                      <p className="text-[#333333]/70 text-sm">
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-[#333333] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                        Insight Vectorisation
+                      </h3>
+                      <p className="text-[#333333]/70 text-sm leading-relaxed">
                         Qualitative data is converted into a quantifiable, numerical format. This process allows our algorithms to understand and process the nuances of user feedback.
                       </p>
                     </div>
@@ -98,16 +102,18 @@ const ClusteringTechnical = () => {
 
                 {/* Step 3 */}
                 <div className="flex items-start gap-6">
-                  <div className="flex-shrink-0 w-20 h-20 bg-[#A62639] text-white rounded-full flex items-center justify-center text-2xl font-bold z-10">
+                  <div className="flex-shrink-0 w-12 md:w-20 h-12 md:h-20 bg-white border border-[#E0AFA0]/50 text-[#A62639] rounded-full flex items-center justify-center text-xl md:text-2xl font-bold z-10">
                     03
                   </div>
-                  <div className="flex-1 bg-[#FAF7F5] rounded-xl p-6 flex items-start gap-4">
+                  <div className="flex-1 bg-white rounded-xl p-6 shadow-sm flex flex-col md:flex-row items-start gap-6">
                     <div className="flex-shrink-0 w-14 h-14 bg-[#E0AFA0]/20 text-[#A62639] rounded-lg flex items-center justify-center">
                       <Network className="w-7 h-7" />
                     </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-[#333333] mb-2">Similarity & Clustering</h3>
-                      <p className="text-[#333333]/70 text-sm">
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-[#333333] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                        Similarity & Clustering
+                      </h3>
+                      <p className="text-[#333333]/70 text-sm leading-relaxed">
                         Using advanced algorithms, we group similar insights together. This helps to identify patterns and common themes within the vast pool of user data.
                       </p>
                     </div>
@@ -116,17 +122,59 @@ const ClusteringTechnical = () => {
 
                 {/* Step 4 */}
                 <div className="flex items-start gap-6">
-                  <div className="flex-shrink-0 w-20 h-20 bg-[#A62639] text-white rounded-full flex items-center justify-center text-2xl font-bold z-10">
+                  <div className="flex-shrink-0 w-12 md:w-20 h-12 md:h-20 bg-white border border-[#E0AFA0]/50 text-[#A62639] rounded-full flex items-center justify-center text-xl md:text-2xl font-bold z-10">
                     04
                   </div>
-                  <div className="flex-1 bg-[#FAF7F5] rounded-xl p-6 flex items-start gap-4">
+                  <div className="flex-1 bg-white rounded-xl p-6 shadow-sm flex flex-col md:flex-row items-start gap-6">
                     <div className="flex-shrink-0 w-14 h-14 bg-[#E0AFA0]/20 text-[#A62639] rounded-lg flex items-center justify-center">
-                      <BarChart3 className="w-7 h-7" />
+                      <Lightbulb className="w-7 h-7" />
                     </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-[#333333] mb-2">Persona Generation</h3>
-                      <p className="text-[#333333]/70 text-sm">
-                        Finally, each cluster is analyzed and transformed into a detailed user persona with demographic information, behavioral patterns, and motivational drivers.
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-[#333333] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                        Cluster Profiling
+                      </h3>
+                      <p className="text-[#333333]/70 text-sm leading-relaxed">
+                        We analyze each cluster to identify its dominant themes, pain points, and motivations, forming the core identity of a potential user group.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Step 5 */}
+                <div className="flex items-start gap-6">
+                  <div className="flex-shrink-0 w-12 md:w-20 h-12 md:h-20 bg-white border border-[#E0AFA0]/50 text-[#A62639] rounded-full flex items-center justify-center text-xl md:text-2xl font-bold z-10">
+                    05
+                  </div>
+                  <div className="flex-1 bg-white rounded-xl p-6 shadow-sm flex flex-col md:flex-row items-start gap-6">
+                    <div className="flex-shrink-0 w-14 h-14 bg-[#E0AFA0]/20 text-[#A62639] rounded-lg flex items-center justify-center">
+                      <span className="text-3xl">👤</span>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-[#333333] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                        Persona Generation
+                      </h3>
+                      <p className="text-[#333333]/70 text-sm leading-relaxed">
+                        A foundational persona is synthesized from each cluster profile, encapsulating the key characteristics and goals of the identified user segment.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Step 6 */}
+                <div className="flex items-start gap-6">
+                  <div className="flex-shrink-0 w-12 md:w-20 h-12 md:h-20 bg-white border border-[#E0AFA0]/50 text-[#A62639] rounded-full flex items-center justify-center text-xl md:text-2xl font-bold z-10">
+                    06
+                  </div>
+                  <div className="flex-1 bg-white rounded-xl p-6 shadow-sm flex flex-col md:flex-row items-start gap-6">
+                    <div className="flex-shrink-0 w-14 h-14 bg-[#E0AFA0]/20 text-[#A62639] rounded-lg flex items-center justify-center">
+                      <span className="text-3xl">🎨</span>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-[#333333] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                        Demographic & Behavioural Painting
+                      </h3>
+                      <p className="text-[#333333]/70 text-sm leading-relaxed">
+                        We enrich the core persona with realistic demographic data, behavioral patterns, and personal details to bring them to life as a relatable character.
                       </p>
                     </div>
                   </div>
