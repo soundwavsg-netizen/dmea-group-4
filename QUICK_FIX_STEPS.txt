@@ -1,0 +1,158 @@
+====================================================================
+CLOUD RUN DEPLOYMENT - QUICK FIX STEPS
+====================================================================
+
+YOUR ERROR: Container failed to start on PORT 8080
+CAUSE: Missing Python dependencies in Dockerfile
+STATUS: FIXED - Updated Dockerfile ready
+
+====================================================================
+STEP 1: DOWNLOAD UPDATED FILES
+====================================================================
+
+Download these 2 files to your computer:
+1. /app/deployment-package/backend/Dockerfile
+2. /app/deployment-package/backend/start.sh
+
+====================================================================
+STEP 2: UPLOAD TO CLOUD SHELL
+====================================================================
+
+1. Go to: https://console.cloud.google.com
+2. Click "Activate Cloud Shell"
+3. Click "Upload" button (3 dots menu)
+4. Upload BOTH files to your backend/ folder
+5. Replace the old Dockerfile
+
+====================================================================
+STEP 3: MAKE START SCRIPT EXECUTABLE
+====================================================================
+
+In Cloud Shell, run:
+
+cd backend
+chmod +x start.sh
+ls -la
+
+(You should see start.sh with execute permissions)
+
+====================================================================
+STEP 4: REDEPLOY WITH FIX
+====================================================================
+
+Copy and paste this ENTIRE command:
+
+gcloud run deploy mufe-backend \
+  --source . \
+  --platform managed \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --port 8080 \
+  --timeout 300 \
+  --memory 512Mi
+
+Press ENTER and wait 3-5 minutes.
+
+====================================================================
+STEP 5: WATCH FOR SUCCESS
+====================================================================
+
+Look for this message:
+"Service [mufe-backend] revision [...] has been deployed"
+"Service URL: https://mufe-backend-xxxxx-uc.a.run.app"
+
+COPY THE SERVICE URL!
+
+====================================================================
+STEP 6: SET ENVIRONMENT VARIABLES (IMPORTANT!)
+====================================================================
+
+1. Go to Cloud Run console
+2. Click "mufe-backend" service
+3. Click "Edit & Deploy New Revision"
+4. Scroll to "Container, Variables & Secrets, Connections, Security"
+5. Click "Variables & Secrets" tab
+6. Click "ADD VARIABLE"
+   
+   Variable 1:
+   Name: CORS_ORIGINS
+   Value: https://mufegroup4.web.app,*
+   
+   Variable 2:
+   Name: FIREBASE_ADMIN_SDK
+   Value: (Get from Firebase Console - see instructions below)
+
+7. Click "DEPLOY"
+
+====================================================================
+HOW TO GET FIREBASE_ADMIN_SDK:
+====================================================================
+
+1. Go to: https://console.firebase.google.com
+2. Select: dmea-group-4 project
+3. Click gear icon → Project Settings
+4. Click "Service Accounts" tab
+5. Click "Generate New Private Key"
+6. Download the JSON file
+7. Open it with a text editor
+8. Copy the ENTIRE JSON (all of it!)
+9. Paste into FIREBASE_ADMIN_SDK value field
+
+====================================================================
+STEP 7: TEST YOUR DEPLOYMENT
+====================================================================
+
+Replace YOUR-URL with your actual Cloud Run URL:
+
+curl https://YOUR-URL/api/health
+
+Should return:
+{"status":"healthy"}
+
+Or open in browser:
+https://YOUR-URL/api/health
+
+====================================================================
+STEP 8: GIVE ME YOUR CLOUD RUN URL
+====================================================================
+
+Once everything works, provide me with your Cloud Run URL.
+I will update the frontend to connect to your backend.
+
+Example: https://mufe-backend-abcdefg-uc.a.run.app
+
+====================================================================
+TROUBLESHOOTING
+====================================================================
+
+If deployment STILL fails:
+
+1. Check logs:
+   gcloud logging tail "resource.type=cloud_run_revision"
+
+2. Common issues:
+   - Missing FIREBASE_ADMIN_SDK → Set in environment variables
+   - Timeout too short → Already increased to 300s
+   - Memory too low → Already increased to 512Mi
+
+3. Read detailed guide: /app/CLOUD_RUN_FIX.md
+
+====================================================================
+WHY THIS FIX WORKS
+====================================================================
+
+Old Dockerfile: Only installed 6 packages (missing dependencies)
+New Dockerfile: Installs all required packages + better startup
+
+Changes made:
+✓ Added missing Python packages
+✓ Better error handling
+✓ Startup script for debugging
+✓ Increased timeout and memory
+✓ Proper signal handling
+
+====================================================================
+
+Ready? Start with STEP 1 above!
+
+====================================================================
