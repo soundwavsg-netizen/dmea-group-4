@@ -82,6 +82,31 @@ function App() {
           </ProtectedRoute>
         } />
         
+        {/* Presentations Module - Admin Only (No feature flag needed) */}
+        <Route path="/presentations" element={
+          <ProtectedRoute adminOnly={true}>
+            <Layout>
+              <PresentationsHome />
+            </Layout>
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/presentations/friendly-brief" element={
+          <ProtectedRoute adminOnly={true}>
+            <Layout>
+              <FriendlyBrief />
+            </Layout>
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/presentations/clustering-technical" element={
+          <ProtectedRoute adminOnly={true}>
+            <Layout>
+              <ClusteringTechnical />
+            </Layout>
+          </ProtectedRoute>
+        } />
+        
         {/* SEO & Content Module - Admin Only + seo_content flag */}
         <Route path="/seo" element={
           <ProtectedRoute adminOnly={true} requiredFeature="seo_content">
