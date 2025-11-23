@@ -7,6 +7,12 @@ const ClusteringTechnical = () => {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const totalSlides = 5;
 
+  // Detect if device is mobile
+  const isMobileDevice = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+           (window.innerWidth <= 768);
+  };
+
   const nextSlide = () => {
     if (currentSlide < totalSlides) {
       setCurrentSlide(currentSlide + 1);
