@@ -1,0 +1,94 @@
+====================================================================
+CLOUD RUN - DEPLOY NOW (BULLETPROOF VERSION)
+====================================================================
+
+STEP 1: REPLACE YOUR DOCKERFILE
+--------------------------------
+In Cloud Shell, replace the Dockerfile content with this:
+
+---START DOCKERFILE---
+FROM python:3.11-slim
+WORKDIR /app
+RUN apt-get update && apt-get install -y gcc g++ && rm -rf /var/lib/apt/lists/*
+COPY . .
+RUN pip install --no-cache-dir fastapi==0.110.1 uvicorn[standard]==0.25.0 firebase-admin==7.1.0 pydantic==2.12.4 pydantic-core==2.41.5 python-dotenv==1.2.1 starlette==0.37.2 typing-extensions==4.15.0 annotated-types==0.7.0 anyio==4.11.0 idna==3.11 sniffio==1.3.1
+ENV PORT=8080
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+EXPOSE 8080
+CMD ["sh", "-c", "uvicorn server:app --host 0.0.0.0 --port ${PORT} --workers 1"]
+---END DOCKERFILE---
+
+STEP 2: DEPLOY WITH EXTENDED SETTINGS
+--------------------------------------
+cd ~/backend
+
+gcloud run deploy mufe-backend \
+  --source . \
+  --platform managed \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --port 8080 \
+  --timeout 600 \
+  --memory 1Gi \
+  --cpu 1
+
+STEP 3: WHILE DEPLOYING - WATCH LOGS
+-------------------------------------
+Open another Cloud Shell tab and run:
+
+gcloud logging tail "resource.type=cloud_run_revision AND resource.labels.service_name=mufe-backend"
+
+Look for:
+✅ "Application startup complete" = SUCCESS
+❌ "ModuleNotFoundError" = Tell me which module
+❌ "Firebase" error = Need to set environment variable
+❌ "Port" error = Tell me the exact error
+
+STEP 4: IF SUCCESS
+------------------
+1. COPY your Cloud Run URL (e.g., https://mufe-backend-xxxxx-uc.a.run.app)
+
+2. SET ENVIRONMENT VARIABLES:
+   Go to Cloud Run Console → mufe-backend → Edit & Deploy New Revision
+   Add:
+   - CORS_ORIGINS = https://mufegroup4.web.app,*
+   - FIREBASE_ADMIN_SDK = (Your Firebase JSON from Firebase Console)
+
+3. TEST:
+   curl https://YOUR-URL/api/health
+   
+   Should return: {"status":"healthy"}
+
+4. TELL ME YOUR CLOUD RUN URL
+   I'll update the frontend for you
+
+STEP 5: IF STILL FAILS
+-----------------------
+1. Copy the EXACT error from logs
+2. Tell me which step failed:
+   - Docker build?
+   - Container start?
+   - Port binding?
+   - Import error?
+
+3. Run this test:
+   cd ~/backend
+   python -c "import server; print('OK')"
+   
+   Tell me if it says OK or shows an error
+
+====================================================================
+KEY DIFFERENCES IN THIS VERSION:
+====================================================================
+
+✅ Installs ALL required Python packages
+✅ Uses simple uvicorn command (no shell script)
+✅ More memory (1Gi instead of 512Mi)
+✅ Longer timeout (600s instead of 300s)
+✅ Full CPU allocation
+✅ Direct port binding
+
+====================================================================
+DEPLOY NOW AND TELL ME THE RESULT!
+====================================================================
