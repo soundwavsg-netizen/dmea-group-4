@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Presentation, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Presentation, X, Maximize, Minimize } from 'lucide-react';
 
 const FriendlyBrief = () => {
   const [currentSlide, setCurrentSlide] = useState(1);
   const [isPresentationMode, setIsPresentationMode] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
   const totalSlides = 4;
 
   const nextSlide = () => {
