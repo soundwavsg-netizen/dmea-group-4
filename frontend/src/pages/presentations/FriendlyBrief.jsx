@@ -164,34 +164,34 @@ const FriendlyBrief = () => {
         {/* Top controls bar */}
         <div className="fixed top-2 left-2 right-2 flex items-center justify-between" style={{ zIndex: 10000 }}>
           {/* Slide counter */}
-          <div className="px-4 py-2 bg-white/90 rounded-full shadow-lg">
-            <span className="text-sm font-semibold text-[#6C5F5F]">{currentSlide} / {totalSlides}</span>
+          <div className="px-3 py-1.5 md:px-4 md:py-2 bg-white/90 rounded-full shadow-lg">
+            <span className="text-xs md:text-sm font-semibold text-[#6C5F5F]">{currentSlide} / {totalSlides}</span>
           </div>
 
           {/* Right controls */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 md:gap-2">
             {/* Full-screen toggle */}
             <button
               onClick={toggleFullScreen}
-              className="p-3 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all"
+              className="p-2 md:p-3 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all active:scale-95"
               title={isFullScreen ? "Exit Full Screen" : "Enter Full Screen"}
               data-testid="toggle-fullscreen-btn"
             >
               {isFullScreen ? (
-                <Minimize className="w-5 h-5 text-[#A62639]" />
+                <Minimize className="w-4 h-4 md:w-5 md:h-5 text-[#A62639]" />
               ) : (
-                <Maximize className="w-5 h-5 text-[#A62639]" />
+                <Maximize className="w-4 h-4 md:w-5 md:h-5 text-[#A62639]" />
               )}
             </button>
 
             {/* Exit presentation mode */}
             <button
               onClick={exitPresentationMode}
-              className="p-3 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all"
+              className="p-2 md:p-3 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all active:scale-95"
               title="Exit Presentation Mode"
               data-testid="exit-presentation-btn"
             >
-              <X className="w-6 h-6 text-[#A62639]" />
+              <X className="w-5 h-5 md:w-6 md:h-6 text-[#A62639]" />
             </button>
           </div>
         </div>
