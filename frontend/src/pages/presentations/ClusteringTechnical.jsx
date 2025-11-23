@@ -665,18 +665,19 @@ const ClusteringTechnical = () => {
   // If in presentation mode, render full-screen version
   if (isPresentationMode) {
     return (
-      <div className="fixed inset-0 bg-[#FAF7F5] z-50 flex items-center justify-center p-8 md:p-16">
+      <div className="fixed inset-0 bg-[#FAF7F5] flex items-center justify-center p-8 md:p-16" style={{ zIndex: 9999 }}>
         {/* Exit button */}
         <button
           onClick={exitPresentationMode}
-          className="fixed top-4 right-4 z-50 p-3 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all"
+          className="fixed top-4 right-4 p-3 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all"
+          style={{ zIndex: 10000 }}
           data-testid="exit-presentation-btn"
         >
           <X className="w-6 h-6 text-[#A62639]" />
         </button>
 
         {/* Slide counter */}
-        <div className="fixed top-4 left-4 z-50 px-4 py-2 bg-white/90 rounded-full shadow-lg">
+        <div className="fixed top-4 left-4 px-4 py-2 bg-white/90 rounded-full shadow-lg" style={{ zIndex: 10000 }}>
           <span className="text-sm font-semibold text-[#6C5F5F]">{currentSlide} / {totalSlides}</span>
         </div>
 
