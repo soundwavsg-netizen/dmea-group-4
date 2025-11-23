@@ -55,27 +55,47 @@ const FriendlyBrief = () => {
   };
 
   const toggleFullScreen = () => {
+    const isMobile = isMobileDevice();
+    
     if (!isFullScreen) {
       // Enter fullscreen
-      const elem = document.documentElement;
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-      } else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen();
+      if (isMobile) {
+        // For mobile: use CSS-based full-screen
+        setIsFullScreen(true);
+        // Try to minimize browser UI
+        window.scrollTo(0, 1);
+        // Request orientation lock
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('landscape').catch(() => {});
+        }
+      } else {
+        // For desktop: use Fullscreen API
+        const elem = document.documentElement;
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) {
+          elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) {
+          elem.msRequestFullscreen();
+        }
+        setIsFullScreen(true);
       }
-      setIsFullScreen(true);
     } else {
       // Exit fullscreen
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
+      if (isMobile) {
+        // For mobile: just toggle state
+        setIsFullScreen(false);
+      } else {
+        // For desktop: exit Fullscreen API
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+        setIsFullScreen(false);
       }
-      setIsFullScreen(false);
     }
   };
 
