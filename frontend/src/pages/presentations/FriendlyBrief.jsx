@@ -1,0 +1,286 @@
+import React, { useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const FriendlyBrief = () => {
+  const [currentSlide, setCurrentSlide] = useState(1);
+  const totalSlides = 4;
+
+  const nextSlide = () => {
+    if (currentSlide < totalSlides) {
+      setCurrentSlide(currentSlide + 1);
+    }
+  };
+
+  const prevSlide = () => {
+    if (currentSlide > 1) {
+      setCurrentSlide(currentSlide - 1);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#FAF7F5] py-8">
+      <div className="container mx-auto max-w-4xl px-4">
+        {/* Header */}
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold text-[#A62639] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+            Friendly Persona Brief
+          </h1>
+          <p className="text-[#6C5F5F]">Understanding User Research & Persona Generation</p>
+        </div>
+
+        {/* Slide Indicators */}
+        <div className="flex justify-center gap-2 mb-8">
+          {[1, 2, 3, 4].map((slide) => (
+            <button
+              key={slide}
+              onClick={() => setCurrentSlide(slide)}
+              className={`h-2 rounded-full transition-all ${
+                currentSlide === slide ? 'w-8 bg-[#A62639]' : 'w-2 bg-[#E0AFA0]'
+              }`}
+              aria-label={`Go to slide ${slide}`}
+            />
+          ))}
+        </div>
+
+        {/* Slide Content */}
+        <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 mb-8 min-h-[500px]">
+          {/* Slide 1: What We Do */}
+          {currentSlide === 1 && (
+            <div className="space-y-8 animate-fade-in">
+              <div>
+                <h2 className="text-4xl font-bold text-[#A62639] mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
+                  What We Do
+                </h2>
+                <div className="h-1 w-20 bg-[#E0AFA0] mb-6"></div>
+                <p className="text-[#333333]/80 text-lg leading-relaxed">
+                  We collect and synthesize deep user research insights to build actionable personas. Our process focuses on understanding the core drivers of consumer behavior, including their motivations, pain points, daily habits, preferred channels, purchase intent, and the key factors that influence their decisions.
+                </p>
+              </div>
+
+              <div className="flex items-center justify-center gap-4 text-2xl font-semibold text-[#A62639] py-6">
+                <span className="text-4xl">👤</span>
+                <span className="text-[#E0AFA0]">→</span>
+                <span className="text-4xl">📊</span>
+                <span className="text-[#E0AFA0]">→</span>
+                <span className="text-4xl">🎯</span>
+              </div>
+
+              <div className="border-t border-[#E0AFA0]/30 my-8"></div>
+
+              <div>
+                <h3 className="text-3xl font-bold text-[#333333] mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
+                  Generate Accurate Personas
+                </h3>
+                <div className="h-1 w-20 bg-[#E0AFA0] mb-6"></div>
+                <p className="text-[#333333]/80 text-lg leading-relaxed">
+                  Transform raw data into vivid, data-backed user personas. Understand your target audience with detailed profiles that highlight their goals, frustrations, and demographic information, allowing your team to design with empathy and precision.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Slide 2: Turning Insights Into Numbers */}
+          {currentSlide === 2 && (
+            <div className="space-y-6 animate-fade-in">
+              <div>
+                <h2 className="text-4xl font-bold text-[#A62639] mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
+                  Turning Insights Into Numbers
+                </h2>
+                <div className="h-1 w-20 bg-[#E0AFA0] mb-6"></div>
+                <p className="text-[#333333]/80 text-base leading-relaxed mb-6">
+                  Raw research insights—such as interview transcripts, survey responses, and user feedback—are qualitative by nature. To enable algorithmic analysis and pattern recognition, we transform this data into a numerical format through a process called vectorization.
+                </p>
+              </div>
+
+              <div className="bg-[#FAF7F5] rounded-xl p-6 space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 bg-[#A62639] text-white rounded-full flex items-center justify-center font-bold">
+                    1
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-[#333333] mb-2">Text Analysis</h4>
+                    <p className="text-[#333333]/70 text-sm">
+                      Each insight is broken down into key concepts, themes, and sentiment indicators.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 bg-[#A62639] text-white rounded-full flex items-center justify-center font-bold">
+                    2
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-[#333333] mb-2">Numerical Encoding</h4>
+                    <p className="text-[#333333]/70 text-sm">
+                      Concepts are mapped to multi-dimensional vectors that capture semantic meaning.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 bg-[#A62639] text-white rounded-full flex items-center justify-center font-bold">
+                    3
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-[#333333] mb-2">Pattern Recognition</h4>
+                    <p className="text-[#333333]/70 text-sm">
+                      Machine learning algorithms identify similarities and group related insights together.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <p className="text-[#333333]/70 text-sm italic border-l-4 border-[#E0AFA0] pl-4">
+                This transformation allows us to mathematically compare thousands of data points and discover meaningful patterns that would be impossible to detect manually.
+              </p>
+            </div>
+          )}
+
+          {/* Slide 3: How Clusters Form */}
+          {currentSlide === 3 && (
+            <div className="space-y-6 animate-fade-in">
+              <div>
+                <h2 className="text-4xl font-bold text-[#A62639] mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
+                  How Clusters Form
+                </h2>
+                <div className="h-1 w-20 bg-[#E0AFA0] mb-6"></div>
+                <p className="text-[#333333]/80 text-base leading-relaxed mb-6">
+                  Once insights are vectorized, we use clustering algorithms to group similar data points. This process reveals natural segments within your user base, each representing a distinct type of user with shared characteristics.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-gradient-to-br from-[#FAF7F5] to-[#E0AFA0]/10 rounded-xl p-6">
+                  <div className="text-3xl mb-3">🔍</div>
+                  <h4 className="font-bold text-[#333333] mb-2">Similarity Detection</h4>
+                  <p className="text-[#333333]/70 text-sm">
+                    Algorithms calculate "distance" between data points in multi-dimensional space, grouping those that are closest together.
+                  </p>
+                </div>
+
+                <div className="bg-gradient-to-br from-[#FAF7F5] to-[#E0AFA0]/10 rounded-xl p-6">
+                  <div className="text-3xl mb-3">🎯</div>
+                  <h4 className="font-bold text-[#333333] mb-2">Cluster Formation</h4>
+                  <p className="text-[#333333]/70 text-sm">
+                    Data points naturally organize into groups, each representing users with similar behaviors and needs.
+                  </p>
+                </div>
+
+                <div className="bg-gradient-to-br from-[#FAF7F5] to-[#E0AFA0]/10 rounded-xl p-6">
+                  <div className="text-3xl mb-3">📊</div>
+                  <h4 className="font-bold text-[#333333] mb-2">Pattern Analysis</h4>
+                  <p className="text-[#333333]/70 text-sm">
+                    Each cluster's characteristics are analyzed to understand what makes that user segment unique.
+                  </p>
+                </div>
+
+                <div className="bg-gradient-to-br from-[#FAF7F5] to-[#E0AFA0]/10 rounded-xl p-6">
+                  <div className="text-3xl mb-3">✨</div>
+                  <h4 className="font-bold text-[#333333] mb-2">Persona Generation</h4>
+                  <p className="text-[#333333]/70 text-sm">
+                    Clusters are transformed into detailed, actionable personas with names, stories, and goals.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Slide 4: How Personas Are Created */}
+          {currentSlide === 4 && (
+            <div className="space-y-6 animate-fade-in">
+              <div>
+                <h2 className="text-4xl font-bold text-[#A62639] mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
+                  How Personas Are Created
+                </h2>
+                <div className="h-1 w-20 bg-[#E0AFA0] mb-6"></div>
+              </div>
+
+              <div className="space-y-6">
+                <div className="border-l-4 border-[#A62639] pl-6">
+                  <h3 className="text-2xl font-bold text-[#333333] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                    What is User Research?
+                  </h3>
+                  <p className="text-[#333333]/70 text-base leading-relaxed">
+                    User research is the systematic study of target users to add realistic contexts and insights to design processes. It helps us understand how people live their lives so that we can design products and services that are more effective, efficient, and enjoyable for them. We focus on qualitative data to uncover deep-seated motivations and pain points.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-[#E0AFA0] pl-6">
+                  <h3 className="text-2xl font-bold text-[#333333] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                    Why Personas Matter?
+                  </h3>
+                  <p className="text-[#333333]/70 text-base leading-relaxed">
+                    Personas are fictional characters, which you create based upon your research in order to represent the different user types that might use your service or product. Creating personas helps the design team build a shared understanding of the user, keeping the entire process human-centered and focused on solving real-world problems for real people.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-[#A62639] pl-6">
+                  <h3 className="text-2xl font-bold text-[#333333] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                    Our Data Clustering Method
+                  </h3>
+                  <p className="text-[#333333]/70 text-base leading-relaxed">
+                    We use unsupervised machine learning algorithms to automatically discover patterns in your research data. This approach removes human bias and reveals user segments that might otherwise remain hidden, ensuring your personas are grounded in objective, data-driven insights.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Navigation Controls */}
+        <div className="flex items-center justify-between">
+          <button
+            onClick={prevSlide}
+            disabled={currentSlide === 1}
+            className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all ${
+              currentSlide === 1
+                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                : 'bg-[#A62639] text-white hover:bg-[#8a1f2d] shadow-md'
+            }`}
+            data-testid="prev-slide-btn"
+          >
+            <ChevronLeft className="w-5 h-5" />
+            Previous
+          </button>
+
+          <div className="text-[#6C5F5F] font-medium">
+            Slide {currentSlide} of {totalSlides}
+          </div>
+
+          <button
+            onClick={nextSlide}
+            disabled={currentSlide === totalSlides}
+            className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all ${
+              currentSlide === totalSlides
+                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                : 'bg-[#A62639] text-white hover:bg-[#8a1f2d] shadow-md'
+            }`}
+            data-testid="next-slide-btn"
+          >
+            Next
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .animate-fade-in {
+          animation: fade-in 0.3s ease-out;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default FriendlyBrief;
