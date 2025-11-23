@@ -157,15 +157,18 @@ const FriendlyBrief = () => {
 
   // Normal view mode
   return (
-    <div className="min-h-screen bg-[#FAF7F5] py-8">
-      <div className="container mx-auto max-w-4xl px-4">
-        {/* Header */}
-        <div className="mb-8 text-center">
+    <div className="min-h-screen bg-[#FAF7F5]">
+      {/* Sticky Header */}
+      <div className="sticky top-0 z-50 bg-[#FAF7F5]/80 backdrop-blur-sm border-b border-[#E0AFA0]/20 py-6">
+        <div className="container mx-auto max-w-4xl px-4 text-center">
           <h1 className="text-4xl font-bold text-[#A62639] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
             Friendly Persona Brief
           </h1>
           <p className="text-[#6C5F5F]">Understanding User Research & Persona Generation</p>
         </div>
+      </div>
+
+      <div className="container mx-auto max-w-4xl px-4 py-8">
 
         {/* Presentation Mode Button */}
         <div className="flex justify-center mb-6">
