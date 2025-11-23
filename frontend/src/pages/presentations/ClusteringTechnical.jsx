@@ -778,6 +778,40 @@ const ClusteringTechnical = () => {
           </div>
         </div>
 
+        {/* Navigation - Previous Button (Bottom Left) */}
+        <button
+          onClick={prevSlide}
+          disabled={currentSlide === 1}
+          className={`fixed bottom-4 left-4 flex items-center gap-1 px-3 py-2 rounded-full font-semibold transition-all ${
+            currentSlide === 1
+              ? 'bg-white/30 text-gray-400 cursor-not-allowed backdrop-blur-sm'
+              : 'bg-white/80 text-[#A62639] hover:bg-white/90 shadow-lg backdrop-blur-sm active:scale-95'
+          }`}
+          style={{ zIndex: 10000 }}
+          data-testid="prev-slide-presentation-btn"
+        >
+          <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+          <span className="hidden sm:inline">Previous</span>
+          <span className="sm:hidden">Prev</span>
+        </button>
+
+        {/* Navigation - Next Button (Bottom Right) */}
+        <button
+          onClick={nextSlide}
+          disabled={currentSlide === totalSlides}
+          className={`fixed bottom-4 right-4 flex items-center gap-1 px-3 py-2 rounded-full font-semibold transition-all ${
+            currentSlide === totalSlides
+              ? 'bg-white/30 text-gray-400 cursor-not-allowed backdrop-blur-sm'
+              : 'bg-white/80 text-[#A62639] hover:bg-white/90 shadow-lg backdrop-blur-sm active:scale-95'
+          }`}
+          style={{ zIndex: 10000 }}
+          data-testid="next-slide-presentation-btn"
+        >
+          <span className="hidden sm:inline">Next</span>
+          <span className="sm:hidden">Next</span>
+          <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+        </button>
+
         {/* Main slide content */}
         <div className="w-full h-full max-w-6xl max-h-full flex flex-col">
           <div className="flex-1 bg-white rounded-2xl shadow-2xl p-8 md:p-12 overflow-y-auto presentation-slide-content">
