@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Filter, Code, Network, BarChart3, Lightbulb, Presentation, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Filter, Code, Network, BarChart3, Lightbulb, Presentation, X, Maximize, Minimize } from 'lucide-react';
 
 const ClusteringTechnical = () => {
   const [currentSlide, setCurrentSlide] = useState(1);
   const [isPresentationMode, setIsPresentationMode] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
   const totalSlides = 5;
 
   const nextSlide = () => {
