@@ -188,39 +188,141 @@ const FriendlyBrief = () => {
           {/* Slide 4: How Personas Are Created */}
           {currentSlide === 4 && (
             <div className="space-y-6 animate-fade-in">
-              <div>
-                <h2 className="text-4xl font-bold text-[#A62639] mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
-                  How Personas Are Created
+              {/* Section 1: What is User Research */}
+              <div className="bg-white rounded-xl p-8 shadow-sm">
+                <h2 className="text-3xl md:text-4xl font-bold text-[#A62639] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                  What is User Research?
                 </h2>
-                <div className="h-1 w-20 bg-[#E0AFA0] mb-6"></div>
+                <p className="text-[#6C5F5F] text-base mb-4">
+                  Understand the foundational principles of our research methodology and how it drives meaningful insights.
+                </p>
+                <hr className="border-[#EAE5E3] my-4" />
+                <p className="text-[#333333] text-base leading-relaxed">
+                  User research is the systematic study of target users to add realistic contexts and insights to design processes. It helps us understand how people live their lives so that we can design products and services that are more effective, efficient, and enjoyable for them. We focus on qualitative data to uncover deep-seated motivations and pain points.
+                </p>
               </div>
 
-              <div className="space-y-6">
-                <div className="border-l-4 border-[#A62639] pl-6">
-                  <h3 className="text-2xl font-bold text-[#333333] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
-                    What is User Research?
-                  </h3>
-                  <p className="text-[#333333]/70 text-base leading-relaxed">
-                    User research is the systematic study of target users to add realistic contexts and insights to design processes. It helps us understand how people live their lives so that we can design products and services that are more effective, efficient, and enjoyable for them. We focus on qualitative data to uncover deep-seated motivations and pain points.
-                  </p>
-                </div>
+              {/* Section 2: Why Personas Matter */}
+              <div className="bg-white rounded-xl p-8 shadow-sm">
+                <h2 className="text-3xl md:text-4xl font-bold text-[#A62639] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                  Why Personas Matter?
+                </h2>
+                <p className="text-[#6C5F5F] text-base mb-4">
+                  Discover how synthesizing research into personas creates a powerful tool for empathy and decision-making.
+                </p>
+                <hr className="border-[#EAE5E3] my-4" />
+                <p className="text-[#333333] text-base leading-relaxed">
+                  Personas are fictional characters, which you create based upon your research in order to represent the different user types that might use your service or product. Creating personas helps the design team build a shared understanding of the user, keeping the entire process human-centered and focused on solving real-world problems for real people.
+                </p>
+              </div>
 
-                <div className="border-l-4 border-[#E0AFA0] pl-6">
-                  <h3 className="text-2xl font-bold text-[#333333] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
-                    Why Personas Matter?
-                  </h3>
-                  <p className="text-[#333333]/70 text-base leading-relaxed">
-                    Personas are fictional characters, which you create based upon your research in order to represent the different user types that might use your service or product. Creating personas helps the design team build a shared understanding of the user, keeping the entire process human-centered and focused on solving real-world problems for real people.
-                  </p>
-                </div>
+              {/* Section 3: Our Data Clustering Method */}
+              <div className="bg-white rounded-xl p-8 shadow-sm">
+                <h2 className="text-3xl md:text-4xl font-bold text-[#A62639] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                  Our Data Clustering Method
+                </h2>
+                <p className="text-[#6C5F5F] text-base mb-4">
+                  Learn how we process raw data into actionable patterns and groups.
+                </p>
+                <hr className="border-[#EAE5E3] my-4" />
+                <p className="text-[#333333] text-base leading-relaxed">
+                  Our proprietary algorithm analyzes qualitative feedback from interviews, surveys, and usability tests. It identifies recurring themes and behaviors, grouping similar data points into meaningful clusters. This process moves beyond surface-level comments to reveal the core motivations and frustrations that define a user group, forming the empirical foundation for each persona.
+                </p>
+              </div>
 
-                <div className="border-l-4 border-[#A62639] pl-6">
-                  <h3 className="text-2xl font-bold text-[#333333] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
-                    Our Data Clustering Method
-                  </h3>
-                  <p className="text-[#333333]/70 text-base leading-relaxed">
-                    We use unsupervised machine learning algorithms to automatically discover patterns in your research data. This approach removes human bias and reveals user segments that might otherwise remain hidden, ensuring your personas are grounded in objective, data-driven insights.
-                  </p>
+              {/* Section 4: How Personas Are Created */}
+              <div className="bg-white rounded-xl p-8 shadow-sm">
+                <h2 className="text-3xl md:text-4xl font-bold text-[#A62639] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                  How Personas Are Created
+                </h2>
+                <p className="text-[#6C5F5F] text-base mb-4">
+                  From data clusters to human stories, this is how we bring your users to life.
+                </p>
+                <hr className="border-[#EAE5E3] my-4" />
+                
+                <div className="grid lg:grid-cols-2 gap-8">
+                  {/* Left column - text content */}
+                  <div className="space-y-4">
+                    <p className="text-[#333333] text-base leading-relaxed">
+                      We combine the strongest patterns from our data clusters to create a human-friendly persona. This process involves weaving together the most important aspects of:
+                    </p>
+                    <ul className="space-y-3">
+                      <li className="flex items-start gap-3 text-[#333333]">
+                        <span className="text-[#E0AFA0] text-xl mt-1">✓</span>
+                        <span><strong className="font-bold">Motivations:</strong> What drives their choices?</span>
+                      </li>
+                      <li className="flex items-start gap-3 text-[#333333]">
+                        <span className="text-[#E0AFA0] text-xl mt-1">✓</span>
+                        <span><strong className="font-bold">Pains:</strong> What are their biggest challenges?</span>
+                      </li>
+                      <li className="flex items-start gap-3 text-[#333333]">
+                        <span className="text-[#E0AFA0] text-xl mt-1">✓</span>
+                        <span><strong className="font-bold">Behaviors:</strong> How do they act and shop?</span>
+                      </li>
+                      <li className="flex items-start gap-3 text-[#333333]">
+                        <span className="text-[#E0AFA0] text-xl mt-1">✓</span>
+                        <span><strong className="font-bold">Influences:</strong> Where do they look for inspiration?</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Right column - persona example */}
+                  <div className="rounded-xl border border-[#EAE5E3] bg-[#FAF7F5] p-6">
+                    <div className="space-y-6">
+                      {/* Avatar and name */}
+                      <div className="flex items-center gap-4">
+                        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#E0AFA0] to-[#A62639] flex-shrink-0"></div>
+                        <div>
+                          <h3 className="text-2xl font-bold text-[#A62639]" style={{ fontFamily: 'Playfair Display, serif' }}>
+                            Isabella Rossi
+                          </h3>
+                          <p className="text-sm text-[#6C5F5F]">The Expressive Artist</p>
+                        </div>
+                      </div>
+
+                      {/* Quote */}
+                      <div className="text-sm italic text-[#6C5F5F] leading-relaxed border-l-2 border-[#E0AFA0] pl-4">
+                        "Makeup is my creative outlet. I love bold colors and unique textures that let me express myself."
+                      </div>
+
+                      {/* Tags */}
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="text-xs font-bold uppercase tracking-wider text-[#E0AFA0] mb-2">
+                            Makeup Preferences
+                          </h4>
+                          <div className="flex flex-wrap gap-2">
+                            <span className="rounded-full bg-[#E0AFA0]/20 px-3 py-1 text-xs font-medium text-[#333333]">
+                              Vibrant Eyeshadows
+                            </span>
+                            <span className="rounded-full bg-[#E0AFA0]/20 px-3 py-1 text-xs font-medium text-[#333333]">
+                              Long-wear Lipstick
+                            </span>
+                            <span className="rounded-full bg-[#E0AFA0]/20 px-3 py-1 text-xs font-medium text-[#333333]">
+                              Dewy Foundation
+                            </span>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="text-xs font-bold uppercase tracking-wider text-[#E0AFA0] mb-2">
+                            Social Channels
+                          </h4>
+                          <div className="flex flex-wrap gap-2">
+                            <span className="rounded-full bg-[#E0AFA0]/20 px-3 py-1 text-xs font-medium text-[#333333]">
+                              TikTok Tutorials
+                            </span>
+                            <span className="rounded-full bg-[#E0AFA0]/20 px-3 py-1 text-xs font-medium text-[#333333]">
+                              Instagram Reels
+                            </span>
+                            <span className="rounded-full bg-[#E0AFA0]/20 px-3 py-1 text-xs font-medium text-[#333333]">
+                              Pinterest Boards
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
