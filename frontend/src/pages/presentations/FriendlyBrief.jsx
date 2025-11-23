@@ -80,6 +80,115 @@ const FriendlyBrief = () => {
     };
   }, []);
 
+  // If in presentation mode, render full-screen version
+  if (isPresentationMode) {
+    return (
+      <div className="fixed inset-0 bg-[#FAF7F5] z-50 flex items-center justify-center p-8 md:p-16">
+        {/* Exit button */}
+        <button
+          onClick={exitPresentationMode}
+          className="fixed top-4 right-4 z-50 p-3 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all"
+          data-testid="exit-presentation-btn"
+        >
+          <X className="w-6 h-6 text-[#A62639]" />
+        </button>
+
+        {/* Slide counter */}
+        <div className="fixed top-4 left-4 z-50 px-4 py-2 bg-white/90 rounded-full shadow-lg">
+          <span className="text-sm font-semibold text-[#6C5F5F]">{currentSlide} / {totalSlides}</span>
+        </div>
+
+        {/* Main slide content */}
+        <div className="w-full h-full max-w-6xl max-h-full flex flex-col">
+          <div className="flex-1 bg-white rounded-2xl shadow-2xl p-12 overflow-y-auto">
+            {/* Slide content - same as below but without navigation */}
+            {currentSlide === 1 && (
+              <div className="space-y-8 animate-fade-in h-full flex flex-col justify-center">
+                <div>
+                  <h2 className="text-5xl font-bold text-[#A62639] mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
+                    What We Do
+                  </h2>
+                  <div className="h-1 w-20 bg-[#E0AFA0] mb-6"></div>
+                  <p className="text-[#333333]/80 text-xl leading-relaxed">
+                    We collect and synthesize deep user research insights to build actionable personas. Our process focuses on understanding the core drivers of consumer behavior, including their motivations, pain points, daily habits, preferred channels, purchase intent, and the key factors that influence their decisions.
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-center gap-6 text-3xl font-semibold text-[#A62639] py-8">
+                  <span className="text-5xl">👤</span>
+                  <span className="text-[#E0AFA0]">→</span>
+                  <span className="text-5xl">📊</span>
+                  <span className="text-[#E0AFA0]">→</span>
+                  <span className="text-5xl">🎯</span>
+                </div>
+
+                <div className="border-t border-[#E0AFA0]/30 my-8"></div>
+
+                <div>
+                  <h3 className="text-4xl font-bold text-[#333333] mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
+                    Generate Accurate Personas
+                  </h3>
+                  <div className="h-1 w-20 bg-[#E0AFA0] mb-6"></div>
+                  <p className="text-[#333333]/80 text-xl leading-relaxed">
+                    Transform raw data into vivid, data-backed user personas. Understand your target audience with detailed profiles that highlight their goals, frustrations, and demographic information, allowing your team to design with empathy and precision.
+                  </p>
+                </div>
+              </div>
+            )}
+            {/* Add other slides with similar scaling... */}
+          </div>
+
+          {/* Navigation arrows */}
+          <div className="flex items-center justify-between mt-6">
+            <button
+              onClick={prevSlide}
+              disabled={currentSlide === 1}
+              className={`flex items-center gap-2 px-8 py-4 rounded-full font-semibold transition-all ${
+                currentSlide === 1
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  : 'bg-[#A62639] text-white hover:bg-[#8a1f2d] shadow-lg'
+              }`}
+            >
+              <ChevronLeft className="w-6 h-6" />
+              Previous
+            </button>
+
+            <button
+              onClick={nextSlide}
+              disabled={currentSlide === totalSlides}
+              className={`flex items-center gap-2 px-8 py-4 rounded-full font-semibold transition-all ${
+                currentSlide === totalSlides
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  : 'bg-[#A62639] text-white hover:bg-[#8a1f2d] shadow-lg'
+              }`}
+            >
+              Next
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+
+        <style>{`
+          @keyframes fade-in {
+            from {
+              opacity: 0;
+              transform: translateY(10px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
+          .animate-fade-in {
+            animation: fade-in 0.3s ease-out;
+          }
+        `}</style>
+      </div>
+    );
+  }
+
+  // Normal view mode
   return (
     <div className="min-h-screen bg-[#FAF7F5] py-8">
       <div className="container mx-auto max-w-4xl px-4">
@@ -89,6 +198,18 @@ const FriendlyBrief = () => {
             Friendly Persona Brief
           </h1>
           <p className="text-[#6C5F5F]">Understanding User Research & Persona Generation</p>
+        </div>
+
+        {/* Presentation Mode Button */}
+        <div className="flex justify-center mb-6">
+          <button
+            onClick={enterPresentationMode}
+            className="flex items-center gap-2 px-6 py-3 bg-[#A62639] text-white rounded-full font-semibold hover:bg-[#8a1f2d] shadow-md transition-all"
+            data-testid="enter-presentation-btn"
+          >
+            <Presentation className="w-5 h-5" />
+            Present Full Screen
+          </button>
         </div>
 
         {/* Slide Indicators */}
