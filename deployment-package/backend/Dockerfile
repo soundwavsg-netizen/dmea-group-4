@@ -10,20 +10,20 @@ RUN apt-get update && apt-get install -y \
     g++ \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for better caching
-COPY requirements.txt .
+# Copy application code first
+COPY . .
 
-# Install Python dependencies (only the essentials for Cloud Run)
+# Install Python dependencies
 RUN pip install --no-cache-dir \
     fastapi==0.110.1 \
-    uvicorn==0.25.0 \
+    uvicorn[standard]==0.25.0 \
     firebase-admin==7.1.0 \
     pydantic==2.12.4 \
+    pydantic-core==2.41.5 \
     python-dotenv==1.2.1 \
-    starlette==0.37.2
-
-# Copy application code
-COPY . .
+    starlette==0.37.2 \
+    typing-extensions==4.15.0 \
+    annotated-types==0.7.0
 
 # Expose port (Cloud Run will override this)
 EXPOSE 8080
@@ -31,6 +31,11 @@ EXPOSE 8080
 # Set environment variables
 ENV PORT=8080
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD python -c "import requests; requests.get('http://localhost:8080/api/health', timeout=5)"
 
 # Run the application
-CMD uvicorn server:app --host 0.0.0.0 --port $PORT
+CMD exec uvicorn server:app --host 0.0.0.0 --port $PORT --log-level info
