@@ -188,9 +188,6 @@ const ClusteringTechnical = () => {
             <div className="space-y-8 animate-fade-in">
               {/* Header */}
               <div className="text-center">
-                <p className="text-sm font-semibold uppercase tracking-widest text-[#A62639] mb-2">
-                  Cluster & Persona Technical Slides
-                </p>
                 <h2 className="text-4xl md:text-5xl font-bold text-[#A62639] mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
                   Insight Vectorisation
                 </h2>
