@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Filter, Code, Network, BarChart3, Lightbulb } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, Filter, Code, Network, BarChart3, Lightbulb, Presentation, X } from 'lucide-react';
 
 const ClusteringTechnical = () => {
   const [currentSlide, setCurrentSlide] = useState(1);
+  const [isPresentationMode, setIsPresentationMode] = useState(false);
   const totalSlides = 5;
 
   const nextSlide = () => {
