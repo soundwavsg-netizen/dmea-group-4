@@ -318,85 +318,109 @@ const ClusteringTechnical = () => {
             </div>
           )}
 
-          {/* Slide 3: Insight Vectorisation Part 2 - Technical Details */}
+          {/* Slide 3: Clustering Technique */}
           {currentSlide === 3 && (
-            <div className="space-y-6 animate-fade-in">
-              <div className="mb-8">
-                <h2 className="text-4xl font-bold text-[#A62639] mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
-                  Vectorisation: Technical Deep Dive
+            <div className="space-y-8 animate-fade-in">
+              {/* Progress bar */}
+              <div className="flex items-center gap-4 mb-8">
+                <span className="text-sm font-medium text-[#A62639]">3 / 5</span>
+                <div className="h-2 w-full flex-1 rounded-full bg-[#E0AFA0]/30">
+                  <div className="h-2 w-3/5 rounded-full bg-[#A62639]"></div>
+                </div>
+              </div>
+
+              {/* Title */}
+              <div>
+                <h2 className="text-4xl md:text-5xl font-bold text-[#A62639]" style={{ fontFamily: 'Playfair Display, serif' }}>
+                  Clustering Technique
                 </h2>
-                <p className="text-[#333333]/70 text-lg">
-                  Understanding the mathematics behind semantic representation
+                <div className="mt-2 h-px w-20 bg-[#E0AFA0]"></div>
+                <p className="mt-6 text-base md:text-lg leading-relaxed text-[#333333]/80">
+                  Our hybrid technique ensures nuanced and accurate persona grouping. We combine several powerful methods to identify meaningful patterns within your user data, moving beyond simple demographics to uncover behavioral archetypes.
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-gradient-to-br from-[#A62639]/5 to-[#E0AFA0]/5 rounded-xl p-6">
-                  <div className="w-12 h-12 bg-[#A62639] text-white rounded-lg flex items-center justify-center mb-4">
-                    <Code className="w-6 h-6" />
+              {/* Two-column layout */}
+              <div className="grid gap-8 md:grid-cols-2">
+                {/* Left column - Text content */}
+                <div className="space-y-6">
+                  <div className="flex items-start gap-4">
+                    <BarChart3 className="w-6 h-6 text-[#A62639] mt-1 flex-shrink-0" />
+                    <div>
+                      <h3 className="text-lg font-bold text-[#333333] mb-1" style={{ fontFamily: 'Playfair Display, serif' }}>
+                        Multi-dimensional Vectors
+                      </h3>
+                      <p className="text-sm text-[#333333]/70">
+                        User attributes and behaviors are converted into numeric vectors, creating a rich, multi-dimensional data space.
+                      </p>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-[#333333] mb-3">Embedding Models</h3>
-                  <p className="text-[#333333]/70 text-sm mb-4">
-                    We use state-of-the-art transformer-based models trained on vast corpora to generate semantically meaningful embeddings.
-                  </p>
-                  <ul className="space-y-2 text-sm text-[#333333]/70">
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#A62639] mt-1">•</span>
-                      <span>BERT for contextual understanding</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#A62639] mt-1">•</span>
-                      <span>Sentence transformers for paragraph-level encoding</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#A62639] mt-1">•</span>
-                      <span>Custom fine-tuning on domain data</span>
-                    </li>
-                  </ul>
+
+                  <div className="flex items-start gap-4">
+                    <Network className="w-6 h-6 text-[#A62639] mt-1 flex-shrink-0" />
+                    <div>
+                      <h3 className="text-lg font-bold text-[#333333] mb-1" style={{ fontFamily: 'Playfair Display, serif' }}>
+                        Cosine Similarity
+                      </h3>
+                      <p className="text-sm text-[#333333]/70">
+                        We measure the angular distance between vectors to determine similarity, grouping users with related interests and actions.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <span className="text-2xl text-[#A62639] mt-1 flex-shrink-0">🎯</span>
+                    <div>
+                      <h3 className="text-lg font-bold text-[#333333] mb-1" style={{ fontFamily: 'Playfair Display, serif' }}>
+                        K-Means Centroid Grouping
+                      </h3>
+                      <p className="text-sm text-[#333333]/70">
+                        An iterative algorithm groups vectors around central points (centroids), forming distinct user clusters.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <Lightbulb className="w-6 h-6 text-[#A62639] mt-1 flex-shrink-0" />
+                    <div>
+                      <h3 className="text-lg font-bold text-[#333333] mb-1" style={{ fontFamily: 'Playfair Display, serif' }}>
+                        Least-Square Refinement
+                      </h3>
+                      <p className="text-sm text-[#333333]/70">
+                        Cluster centroids are fine-tuned by minimizing the squared distance of vectors, ensuring optimal group cohesion.
+                      </p>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-[#A62639]/5 to-[#E0AFA0]/5 rounded-xl p-6">
-                  <div className="w-12 h-12 bg-[#A62639] text-white rounded-lg flex items-center justify-center mb-4">
-                    <BarChart3 className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-bold text-[#333333] mb-3">Vector Mathematics</h3>
-                  <p className="text-[#333333]/70 text-sm mb-4">
-                    Vectors enable precise mathematical operations that reveal semantic relationships.
-                  </p>
-                  <ul className="space-y-2 text-sm text-[#333333]/70">
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#A62639] mt-1">•</span>
-                      <span>Cosine similarity measures semantic closeness</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#A62639] mt-1">•</span>
-                      <span>Euclidean distance quantifies differences</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#A62639] mt-1">•</span>
-                      <span>Vector arithmetic reveals analogies</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="bg-[#FAF7F5] rounded-xl p-6">
-                <h3 className="text-xl font-bold text-[#333333] mb-4 flex items-center gap-2">
-                  <Lightbulb className="w-6 h-6 text-[#A62639]" />
-                  Example: Semantic Similarity
-                </h3>
-                <div className="space-y-3 text-sm">
-                  <div className="bg-white rounded-lg p-4">
-                    <span className="font-semibold text-[#333333]">Insight A:</span>
-                    <span className="text-[#333333]/70"> "Users find the checkout process confusing"</span>
-                  </div>
-                  <div className="bg-white rounded-lg p-4">
-                    <span className="font-semibold text-[#333333]">Insight B:</span>
-                    <span className="text-[#333333]/70"> "Customers struggle with payment steps"</span>
-                  </div>
-                  <div className="bg-[#A62639]/10 rounded-lg p-4 border-2 border-[#A62639]">
-                    <span className="font-semibold text-[#A62639]">Cosine Similarity:</span>
-                    <span className="text-[#333333]"> 0.89 (High similarity - will be clustered together)</span>
+                {/* Right column - Visual diagram */}
+                <div className="flex items-center justify-center rounded-lg bg-[#FAF7F5] p-6 md:p-8">
+                  <div className="flex w-full flex-col items-center justify-center gap-4 text-center sm:flex-row sm:gap-4">
+                    <div className="flex flex-col items-center">
+                      <div className="w-12 h-12 flex items-center justify-center text-[#A62639] mb-2">
+                        <span className="text-4xl">[</span>
+                        <span className="text-4xl">]</span>
+                      </div>
+                      <span className="text-sm font-medium text-[#333333]/80">Vectors</span>
+                    </div>
+                    <span className="text-3xl text-[#E0AFA0] transform rotate-0 sm:rotate-0">→</span>
+                    <div className="flex flex-col items-center">
+                      <div className="w-12 h-12 rounded-full border-4 border-[#A62639] flex items-center justify-center mb-2">
+                        <div className="w-3 h-3 rounded-full bg-[#A62639]"></div>
+                      </div>
+                      <span className="text-sm font-medium text-[#333333]/80">Centroid</span>
+                    </div>
+                    <span className="text-3xl text-[#E0AFA0] transform rotate-0 sm:rotate-0">→</span>
+                    <div className="flex flex-col items-center">
+                      <div className="w-12 h-12 flex items-center justify-center mb-2">
+                        <div className="relative w-full h-full">
+                          <div className="absolute top-0 right-0 w-4 h-4 rounded-full bg-[#A62639]"></div>
+                          <div className="absolute top-1/2 left-1/4 w-5 h-5 rounded-full bg-[#A62639]"></div>
+                          <div className="absolute bottom-0 right-1/4 w-3 h-3 rounded-full bg-[#A62639]"></div>
+                        </div>
+                      </div>
+                      <span className="text-sm font-medium text-[#333333]/80">Clusters</span>
+                    </div>
                   </div>
                 </div>
               </div>
