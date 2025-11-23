@@ -249,3 +249,204 @@ Exit Criteria
 - Phase 2: Five routes delivered; Add Insight form complete; Report auto-updates; Persona generation flow works end-to-end
 - No hardcoded URLs; all API calls via REACT_APP_BACKEND_URL + /api; robust serialization for Firestore timestamps
 - All features validated by testing agent; no critical UI/console/backend errors
+
+---
+
+## Phase 5: Presentations Module - Presentation Mode & Enhancements (Status: In Progress)
+
+### Objective
+Complete the presentation mode feature for both presentation pages and add optional UI enhancements (smooth animations, sticky headers).
+
+### 5.1 Complete Presentation Mode Feature (Status: In Progress)
+
+#### Context
+- FriendlyBrief.jsx already has COMPLETE presentation mode implementation
+- ClusteringTechnical.jsx needs presentation mode added
+- Features required:
+  - Full-screen mode with landscape view
+  - Keyboard navigation (Arrow keys, Space, Escape)
+  - Exit button
+  - Slide counter display
+  - Navigation buttons in presentation mode
+
+#### Tasks
+- [x] Analyze FriendlyBrief.jsx implementation (lines 6, 21-82, 84-156)
+  - State: isPresentationMode
+  - Functions: enterPresentationMode, exitPresentationMode
+  - Keyboard event handlers with cleanup
+  - Fullscreen API with vendor prefixes
+  - Conditional rendering for presentation vs normal mode
+- [ ] Implement presentation mode in ClusteringTechnical.jsx
+  - Add isPresentationMode state
+  - Add enterPresentationMode() function with fullscreen API
+  - Add exitPresentationMode() function
+  - Add keyboard navigation useEffect (Arrow keys, Space, Escape)
+  - Add fullscreen change event handlers
+  - Create presentation mode UI with:
+    - Fixed full-screen container with bg-[#FAF7F5]
+    - Exit button (top-right)
+    - Slide counter (top-left)
+    - Main slide content area
+    - Navigation buttons (Previous/Next)
+  - Add "Present Full Screen" button in normal view
+  - Render slide content in both modes
+- [ ] Test presentation mode functionality
+  - Full-screen activation works
+  - Keyboard shortcuts functional
+  - Exit button works
+  - Browser fullscreen exit detected
+  - Slide navigation in presentation mode
+
+### 5.2 Optional UI Enhancements (Status: Not Started)
+
+#### Enhancement 1: Smooth Fade Animation ✅
+**Status:** Already implemented in both pages
+- CSS keyframes defined (fade-in animation)
+- Class `animate-fade-in` applied to slide content
+- Duration: 0.3s ease-out
+
+#### Enhancement 2: Slide Indicator Dots ✅
+**Status:** Already implemented in both pages
+- FriendlyBrief: Lines 183-194 (interactive dots)
+- ClusteringTechnical: Lines 32-43 (interactive dots)
+- Features: Click to navigate, visual current slide indicator
+
+#### Enhancement 3: Sticky Header with Page Title
+**Status:** To be implemented
+- [ ] Add sticky header to FriendlyBrief.jsx normal view
+  - Position: sticky top-0 z-50
+  - Contains: Page title
+  - Backdrop blur effect
+  - Subtle border-bottom
+- [ ] Add sticky header to ClusteringTechnical.jsx normal view
+  - Same styling as FriendlyBrief
+  - Consistent design language
+
+### 5.3 Testing & Polish (Status: Not Started)
+
+#### Functional Testing
+- [ ] Test ClusteringTechnical presentation mode
+  - Enter/exit full-screen
+  - Keyboard shortcuts (←, →, Space, Esc)
+  - Button interactions
+  - Slide counter accuracy
+- [ ] Test sticky headers
+  - Scroll behavior
+  - Z-index layering
+  - Visual appearance
+- [ ] Cross-browser testing
+  - Chrome/Edge (webkit prefix)
+  - Firefox (standard API)
+  - Safari (webkit prefix)
+
+#### Visual QA
+- [ ] Verify design consistency
+  - Colors match design guidelines (#A62639, #E0AFA0, #FAF7F5)
+  - Typography (Playfair Display for headings)
+  - Spacing and alignment
+- [ ] Test responsive behavior
+  - Mobile view
+  - Tablet view
+  - Desktop view
+- [ ] Animation polish
+  - Smooth transitions
+  - No jank or flicker
+
+### 5.4 Design Reference (from design_guidelines.md)
+
+**Color Palette:**
+- Primary: #A62639 (burgundy)
+- Accent: #E0AFA0 (rose/peach)
+- Background: #FAF7F5 (warm off-white)
+- Text Primary: #333333
+- Text Muted: #6C5F5F
+
+**Typography:**
+- Display Headings: Playfair Display (serif)
+- Body: Manrope (sans-serif)
+
+**Animation Standards:**
+- Duration: 0.3s for slide transitions
+- Easing: ease-out
+- Properties: opacity, transform (translateY)
+
+**Button Styling:**
+- Primary: bg-[#A62639] hover:bg-[#8a1f2d]
+- Disabled: bg-gray-300 text-gray-500
+- Shape: rounded-full for presentation controls
+- Shadow: shadow-md or shadow-lg
+
+### 5.5 Technical Implementation Notes
+
+**Fullscreen API Pattern:**
+```javascript
+// Enter fullscreen with vendor prefixes
+const enterPresentationMode = () => {
+  setIsPresentationMode(true);
+  const elem = document.documentElement;
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) {
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    elem.msRequestFullscreen();
+  }
+};
+```
+
+**Keyboard Navigation Pattern:**
+```javascript
+useEffect(() => {
+  const handleKeyPress = (e) => {
+    if (isPresentationMode) {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'Escape') {
+        exitPresentationMode();
+      }
+    }
+  };
+  window.addEventListener('keydown', handleKeyPress);
+  return () => window.removeEventListener('keydown', handleKeyPress);
+}, [isPresentationMode, currentSlide]);
+```
+
+**Conditional Rendering Pattern:**
+```javascript
+if (isPresentationMode) {
+  return (
+    <div className="fixed inset-0 bg-[#FAF7F5] z-50...">
+      {/* Presentation mode UI */}
+    </div>
+  );
+}
+// Normal view
+return (
+  <div className="min-h-screen bg-[#FAF7F5]...">
+    {/* Normal view UI */}
+  </div>
+);
+```
+
+### 5.6 Completed in Previous Session
+- ✅ Created Presentations module structure
+- ✅ Added role-restricted sidebar link (admin/superadmin only)
+- ✅ Created PresentationsNav component
+- ✅ Implemented FriendlyBrief.jsx with full slide content
+- ✅ Implemented ClusteringTechnical.jsx with full slide content
+- ✅ Added presentation mode to FriendlyBrief.jsx (COMPLETE)
+- ✅ Integrated all slide images from presentations_bundle.zip
+- ✅ Configured routes in App.js
+
+### 5.7 Exit Criteria for Phase 5
+- [ ] Presentation mode works on both pages
+- [ ] All keyboard shortcuts functional
+- [ ] Sticky headers implemented and tested
+- [ ] No console errors or warnings
+- [ ] Visual design matches guidelines
+- [ ] Testing agent validates all features
+- [ ] User can seamlessly present slides in full-screen landscape mode
