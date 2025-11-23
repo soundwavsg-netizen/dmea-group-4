@@ -183,65 +183,138 @@ const ClusteringTechnical = () => {
             </div>
           )}
 
-          {/* Slide 2: Insight Vectorisation Part 1 */}
+          {/* Slide 2: Insight Vectorisation */}
           {currentSlide === 2 && (
-            <div className="space-y-6 animate-fade-in">
-              <div className="mb-8">
-                <h2 className="text-4xl font-bold text-[#A62639] mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
+            <div className="space-y-8 animate-fade-in">
+              {/* Header */}
+              <div className="text-center">
+                <p className="text-sm font-semibold uppercase tracking-widest text-[#A62639] mb-2">
+                  Cluster & Persona Technical Slides
+                </p>
+                <h2 className="text-4xl md:text-5xl font-bold text-[#A62639] mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
                   Insight Vectorisation
                 </h2>
-                <p className="text-[#333333]/70 text-lg">
-                  Converting qualitative research into quantifiable numerical representations
+                <p className="text-lg text-[#6C5F5F] max-w-3xl mx-auto">
+                  An overview of how user insights are processed and clustered to generate meaningful personas.
                 </p>
               </div>
 
-              <div className="bg-[#FAF7F5] rounded-xl p-8 mb-6">
-                <h3 className="text-2xl font-bold text-[#333333] mb-4">The Transformation Process</h3>
-                <p className="text-[#333333]/70 leading-relaxed mb-6">
-                  Vectorization is the bridge between human language and machine understanding. By converting text into numerical vectors, we enable algorithms to mathematically compare and analyze qualitative insights at scale.
+              {/* Introduction */}
+              <section className="bg-white rounded-lg shadow-sm p-6 md:p-8">
+                <h3 className="text-2xl font-bold text-[#333333] mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
+                  Introduction to Vectorisation
+                </h3>
+                <p className="text-[#6C5F5F] leading-relaxed">
+                  Insight vectorisation is the process of converting qualitative user feedback into a quantitative format. This allows our system to identify patterns and group similar insights together based on their underlying meaning, forming the foundation of our data-driven personas.
                 </p>
-                
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div className="bg-white rounded-lg p-6 text-center">
-                    <div className="text-4xl mb-3">📝</div>
-                    <h4 className="font-bold text-[#333333] mb-2">Input</h4>
-                    <p className="text-sm text-[#333333]/70">Raw text from user research</p>
-                  </div>
-                  <div className="bg-white rounded-lg p-6 text-center">
-                    <div className="text-4xl mb-3">🔢</div>
-                    <h4 className="font-bold text-[#333333] mb-2">Processing</h4>
-                    <p className="text-sm text-[#333333]/70">Natural language processing & embedding</p>
-                  </div>
-                  <div className="bg-white rounded-lg p-6 text-center">
-                    <div className="text-4xl mb-3">📊</div>
-                    <h4 className="font-bold text-[#333333] mb-2">Output</h4>
-                    <p className="text-sm text-[#333333]/70">Multi-dimensional numerical vectors</p>
-                  </div>
-                </div>
+              </section>
+
+              {/* Two-column grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Categories Used for Clustering */}
+                <section className="bg-white rounded-lg shadow-sm p-6 md:p-8">
+                  <h3 className="text-2xl font-bold text-[#333333] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                    Categories Used for Clustering
+                  </h3>
+                  <p className="text-[#6C5F5F] text-sm mb-6">
+                    The following psychographic categories are actively used to group user insights.
+                  </p>
+                  <ul className="space-y-4">
+                    <li className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#E0AFA0]/20 text-[#E0AFA0] flex items-center justify-center">
+                        <span className="text-xl">❤️</span>
+                      </div>
+                      <span className="text-[#333333] font-medium">Motivations</span>
+                    </li>
+                    <li className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#E0AFA0]/20 text-[#E0AFA0] flex items-center justify-center">
+                        <span className="text-xl">⚡</span>
+                      </div>
+                      <span className="text-[#333333] font-medium">Pain Points</span>
+                    </li>
+                    <li className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#E0AFA0]/20 text-[#E0AFA0] flex items-center justify-center">
+                        <span className="text-xl">🛒</span>
+                      </div>
+                      <span className="text-[#333333] font-medium">Purchase Intent</span>
+                    </li>
+                    <li className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#E0AFA0]/20 text-[#E0AFA0] flex items-center justify-center">
+                        <span className="text-xl">👥</span>
+                      </div>
+                      <span className="text-[#333333] font-medium">Influence Effect</span>
+                    </li>
+                  </ul>
+                </section>
+
+                {/* Categories Excluded from Clustering */}
+                <section className="bg-white rounded-lg shadow-sm p-6 md:p-8">
+                  <h3 className="text-2xl font-bold text-[#333333] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                    Categories Excluded from Clustering
+                  </h3>
+                  <p className="text-[#6C5F5F] text-sm mb-6">
+                    These data points are retained as metadata but not used for clustering.
+                  </p>
+                  <ul className="space-y-4">
+                    <li className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center">
+                        <span className="text-xl">🏃</span>
+                      </div>
+                      <span className="text-[#333333]">Behaviours</span>
+                    </li>
+                    <li className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center">
+                        <span className="text-xl">🌐</span>
+                      </div>
+                      <span className="text-[#333333]">Channels</span>
+                    </li>
+                    <li className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center">
+                        <span className="text-xl">👤</span>
+                      </div>
+                      <span className="text-[#333333]">Demographics</span>
+                    </li>
+                    <li className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center">
+                        <span className="text-xl">📱</span>
+                      </div>
+                      <span className="text-[#333333]">Platform</span>
+                    </li>
+                    <li className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center">
+                        <span className="text-xl">🔬</span>
+                      </div>
+                      <span className="text-[#333333]">Method</span>
+                    </li>
+                    <li className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center">
+                        <span className="text-xl">💬</span>
+                      </div>
+                      <span className="text-[#333333]">Quotes & Notes</span>
+                    </li>
+                  </ul>
+                </section>
               </div>
 
-              <div className="space-y-4">
-                <div className="border-l-4 border-[#A62639] pl-6">
-                  <h4 className="font-bold text-[#333333] mb-2">Semantic Encoding</h4>
-                  <p className="text-[#333333]/70 text-sm">
-                    Each word and phrase is mapped to a point in high-dimensional space, where proximity indicates semantic similarity. This allows "excited" and "enthusiastic" to be mathematically close.
-                  </p>
-                </div>
+              {/* Rationale for Selection */}
+              <section className="bg-white rounded-lg shadow-sm p-6 md:p-8">
+                <h3 className="text-2xl font-bold text-[#333333] mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
+                  Rationale for Selection
+                </h3>
+                <p className="text-[#6C5F5F] leading-relaxed">
+                  Our clustering model prioritizes psychographic data—the 'why' behind user actions—over demographic or behavioral data. By focusing on motivations and pain points, we create personas that represent core user mindsets rather than superficial groupings. Demographics and behaviors are then used to enrich these core personas, providing a complete and actionable profile.
+                </p>
+              </section>
 
-                <div className="border-l-4 border-[#E0AFA0] pl-6">
-                  <h4 className="font-bold text-[#333333] mb-2">Context Preservation</h4>
-                  <p className="text-[#333333]/70 text-sm">
-                    Advanced models capture not just individual words, but their relationships and context, ensuring the true meaning of insights is preserved in numerical form.
-                  </p>
-                </div>
-
-                <div className="border-l-4 border-[#A62639] pl-6">
-                  <h4 className="font-bold text-[#333333] mb-2">Dimensionality</h4>
-                  <p className="text-[#333333]/70 text-sm">
-                    Typical vectors contain 384-1536 dimensions, each capturing a different aspect of meaning. This high dimensionality enables nuanced comparison and clustering.
-                  </p>
-                </div>
-              </div>
+              {/* Implications & Next Steps */}
+              <section className="bg-white rounded-lg shadow-sm p-6 md:p-8">
+                <h3 className="text-2xl font-bold text-[#333333] mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
+                  Implications & Next Steps
+                </h3>
+                <p className="text-[#6C5F5F] leading-relaxed">
+                  This focused vectorisation ensures that the generated personas are deeply rooted in user psychology, leading to more empathetic and effective product decisions. The output of this stage directly feeds into the persona generation algorithm, which synthesizes these clustered insights into distinct, narrative-driven user archetypes.
+                </p>
+              </section>
             </div>
           )}
 
