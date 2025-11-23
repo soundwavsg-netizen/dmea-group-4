@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cluster &amp; Persona Technical Slides - Clustering Technique</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        .font-body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#A62639",
+                        "accent": "#E0AFA0",
+                        "background": "#FAF7F5",
+                        "text-main": "#333333",
+                        "card-bg": "#FFFFFF"
+                    },
+                    fontFamily: {
+                        "display": ["Playfair Display", "serif"],
+                        "body": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "1.5rem",
+                        "xl": "2rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background font-body text-text-main">
+<div class="relative flex min-h-screen w-full flex-col">
+<main class="flex-grow">
+<div class="container mx-auto max-w-4xl px-4 py-12 sm:py-16 md:py-24">
+<div class="w-full bg-card-bg p-8 shadow-lg sm:rounded-lg sm:p-12">
+<div class="mb-8 flex items-center gap-4">
+<span class="text-sm font-medium text-primary">3 / 5</span>
+<div class="h-2 w-full flex-1 rounded-full bg-accent/30">
+<div class="h-2 w-3/5 rounded-full bg-primary"></div>
+</div>
+</div>
+<h1 class="font-display text-4xl font-bold text-primary sm:text-5xl">Clustering Technique</h1>
+<div class="mt-2 h-px w-20 bg-accent"></div>
+<p class="mt-6 text-base leading-relaxed text-text-main/80 sm:text-lg">
+                    Our hybrid technique ensures nuanced and accurate persona grouping. We combine several powerful methods to identify meaningful patterns within your user data, moving beyond simple demographics to uncover behavioral archetypes.
+                </p>
+<div class="mt-8 grid gap-8 md:grid-cols-2">
+<div class="space-y-6">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined mt-1 text-primary">analytics</span>
+<div>
+<h3 class="font-display text-lg font-bold text-text-main">Multi-dimensional Vectors</h3>
+<p class="text-sm text-text-main/70">User attributes and behaviors are converted into numeric vectors, creating a rich, multi-dimensional data space.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined mt-1 text-primary">spatial_tracking</span>
+<div>
+<h3 class="font-display text-lg font-bold text-text-main">Cosine Similarity</h3>
+<p class="text-sm text-text-main/70">We measure the angular distance between vectors to determine similarity, grouping users with related interests and actions.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined mt-1 text-primary">hub</span>
+<div>
+<h3 class="font-display text-lg font-bold text-text-main">K-Means Centroid Grouping</h3>
+<p class="text-sm text-text-main/70">An iterative algorithm groups vectors around central points (centroids), forming distinct user clusters.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined mt-1 text-primary">model_training</span>
+<div>
+<h3 class="font-display text-lg font-bold text-text-main">Least-Square Refinement</h3>
+<p class="text-sm text-text-main/70">Cluster centroids are fine-tuned by minimizing the squared distance of vectors, ensuring optimal group cohesion.</p>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-center rounded-lg bg-background p-6">
+<div class="flex w-full flex-col items-center justify-center gap-2 text-center sm:flex-row sm:gap-4">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-4xl text-primary">data_array</span>
+<span class="text-sm font-medium text-text-main/80">Vectors</span>
+</div>
+<span class="text-3xl text-accent">→</span>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-4xl text-primary">gps_fixed</span>
+<span class="text-sm font-medium text-text-main/80">Centroid</span>
+</div>
+<span class="text-3xl text-accent">→</span>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-4xl text-primary">bubble_chart</span>
+<span class="text-sm font-medium text-text-main/80">Clusters</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-12 border-t border-accent/30 pt-6">
+<div class="flex flex-col-reverse items-center justify-between gap-4 sm:flex-row">
+<button class="flex h-11 w-full items-center justify-center gap-2 rounded-full border border-accent bg-transparent px-6 text-sm font-bold text-primary transition-colors hover:bg-accent/20 sm:w-auto">
+<span class="material-symbols-outlined">arrow_back</span>
+                            Previous
+                        </button>
+<button class="flex h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-bold text-white transition-colors hover:bg-primary/90 sm:w-auto">
+                            Next
+                            <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

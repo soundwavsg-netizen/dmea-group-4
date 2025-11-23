@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cluster &amp; Persona Technical Slides - Cluster Profiling</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        .font-body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#A62639",
+                        "accent": "#E0AFA0",
+                        "background": "#FAF7F5",
+                        "text-main": "#333333",
+                        "card-bg": "#FFFFFF"
+                    },
+                    fontFamily: {
+                        "display": ["Playfair Display", "serif"],
+                        "body": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "1.5rem",
+                        "xl": "2rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background font-body text-text-main">
+<div class="relative flex min-h-screen w-full flex-col">
+<main class="flex-grow">
+<div class="container mx-auto max-w-4xl px-4 py-12 sm:py-16 md:py-24">
+<div class="flex flex-col gap-4">
+<div class="mb-8 text-center">
+<div class="mb-4 flex items-center justify-center gap-2">
+<div class="h-1.5 w-8 rounded-full bg-accent"></div>
+<div class="h-1.5 w-8 rounded-full bg-accent"></div>
+<div class="h-1.5 w-8 rounded-full bg-accent"></div>
+<div class="h-1.5 w-8 rounded-full bg-primary"></div>
+<div class="h-1.5 w-8 rounded-full bg-accent"></div>
+</div>
+<h1 class="font-display text-4xl font-bold text-primary sm:text-5xl">Cluster Profiling</h1>
+<p class="mx-auto mt-4 max-w-2xl text-base text-text-main/80">From individual scores to collective identity, we aggregate insight metrics to define and profile distinct user clusters.</p>
+</div>
+<div class="space-y-6">
+<section class="rounded-lg border border-accent/30 bg-card-bg p-6 shadow-sm transition-all hover:shadow-md">
+<div class="flex items-start gap-4">
+<div class="mt-1 flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-3xl">emoji_objects</span>
+</div>
+<div>
+<h3 class="font-display text-xl font-bold text-text-main">Motivations Score</h3>
+<p class="mt-1 text-sm leading-relaxed text-text-main/70">We analyze the core drivers behind user choices. By aggregating motivation scores, we identify the primary desires and aspirations that define each cluster, revealing what truly excites them about a product or service.</p>
+</div>
+</div>
+</section>
+<section class="rounded-lg border border-accent/30 bg-card-bg p-6 shadow-sm transition-all hover:shadow-md">
+<div class="flex items-start gap-4">
+<div class="mt-1 flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-3xl">sentiment_dissatisfied</span>
+</div>
+<div>
+<h3 class="font-display text-xl font-bold text-text-main">Pain Points Score</h3>
+<p class="mt-1 text-sm leading-relaxed text-text-main/70">Understanding frustrations is key. This score highlights the most significant challenges and obstacles users face. Within a cluster, common pain points emerge, pointing to critical areas for improvement and innovation.</p>
+</div>
+</div>
+</section>
+<section class="rounded-lg border border-accent/30 bg-card-bg p-6 shadow-sm transition-all hover:shadow-md">
+<div class="flex items-start gap-4">
+<div class="mt-1 flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-3xl">shopping_cart</span>
+</div>
+<div>
+<h3 class="font-display text-xl font-bold text-text-main">Purchase Intent Score</h3>
+<p class="mt-1 text-sm leading-relaxed text-text-main/70">This metric quantifies a user's likelihood to convert. By rolling up these scores, we can profile clusters based on their buying readiness, from casual browsers to highly-motivated shoppers, enabling targeted sales strategies.</p>
+</div>
+</div>
+</section>
+<section class="rounded-lg border border-accent/30 bg-card-bg p-6 shadow-sm transition-all hover:shadow-md">
+<div class="flex items-start gap-4">
+<div class="mt-1 flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-3xl">groups</span>
+</div>
+<div>
+<h3 class="font-display text-xl font-bold text-text-main">Influence Effect Score</h3>
+<p class="mt-1 text-sm leading-relaxed text-text-main/70">We measure how susceptible users are to external factors like reviews, social trends, or recommendations. This score helps identify which clusters are tastemakers versus followers, shaping influencer and community marketing.</p>
+</div>
+</div>
+</section>
+<section class="rounded-lg border border-accent/30 bg-card-bg p-6 shadow-sm transition-all hover:shadow-md">
+<div class="flex items-start gap-4">
+<div class="mt-1 flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-3xl">badge</span>
+</div>
+<div>
+<h3 class="font-display text-xl font-bold text-text-main">Determining Cluster Identity</h3>
+<p class="mt-1 text-sm leading-relaxed text-text-main/70">The culmination of our analysis. By synthesizing the aggregated scores for motivations, pain points, intent, and influence, we assign a distinct, descriptive identity to each cluster, transforming raw data into a strategic asset.</p>
+</div>
+</div>
+</section>
+</div>
+<div class="mt-12 flex items-center justify-between">
+<button class="inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-primary/20 bg-transparent text-primary hover:bg-accent/20 h-11 px-8 gap-2">
+<span class="material-symbols-outlined">arrow_back</span>
+                        Previous
+                    </button>
+<button class="inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-white hover:bg-primary/90 h-11 px-8 gap-2">
+                        Next
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

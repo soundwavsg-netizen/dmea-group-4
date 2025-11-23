@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PersonaGen - What We Do</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        .font-body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#A62639",
+                        "accent": "#E0AFA0",
+                        "background": "#FAF7F5",
+                        "text-main": "#333333",
+                        "card-bg": "#FFFFFF"
+                    },
+                    fontFamily: {
+                        "display": ["Playfair Display", "serif"],
+                        "body": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "1.5rem",
+                        "xl": "2rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background font-body text-text-main">
+<div class="relative flex min-h-screen w-full flex-col">
+<main class="flex-grow">
+<div class="container mx-auto max-w-3xl px-4 py-12 sm:py-16 md:py-24">
+<div class="flex flex-col gap-8">
+<section class="rounded-lg bg-card-bg p-8 shadow-sm sm:p-12">
+<h1 class="font-display text-4xl font-bold text-primary sm:text-5xl">What We Do</h1>
+<div class="mt-2 h-px w-20 bg-accent"></div>
+<p class="mt-6 text-base leading-relaxed text-text-main/80">
+                            We collect and synthesize deep user research insights to build actionable personas. Our process focuses on understanding the core drivers of consumer behavior, including their motivations, pain points, daily habits, preferred channels, purchase intent, and the key factors that influence their decisions.
+                        </p>
+<div class="mt-8 flex items-center justify-center gap-4 text-2xl font-semibold text-primary">
+<span class="material-symbols-outlined text-4xl">person</span>
+<span class="text-accent">→</span>
+<span class="material-symbols-outlined text-4xl">bar_chart</span>
+<span class="text-accent">→</span>
+<span class="material-symbols-outlined text-4xl">target</span>
+</div>
+</section>
+<div class="flex justify-center">
+<div class="h-px w-1/3 bg-accent/50"></div>
+</div>
+<section class="rounded-lg bg-card-bg p-8 shadow-sm sm:p-12">
+<h2 class="font-display text-3xl font-bold text-text-main sm:text-4xl">Generate Accurate Personas</h2>
+<div class="mt-2 h-px w-20 bg-accent"></div>
+<p class="mt-6 text-base leading-relaxed text-text-main/80">
+                            Transform raw data into vivid, data-backed user personas. Understand your target audience with detailed profiles that highlight their goals, frustrations, and demographic information, allowing your team to design with empathy and precision.
+                        </p>
+</section>
+<div class="mt-8 flex justify-center">
+<button class="flex min-w-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-6 bg-primary text-white text-base font-bold tracking-wide shadow-md transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background">
+<span class="truncate">Next</span>
+<span class="material-symbols-outlined ml-2">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

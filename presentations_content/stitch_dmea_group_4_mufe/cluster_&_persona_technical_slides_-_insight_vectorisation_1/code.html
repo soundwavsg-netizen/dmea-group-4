@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Persona Generation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#A62639",
+                        "accent": "#E0AFA0",
+                        "background": "#FAF7F5",
+                        "content-text": "#333333",
+                        "muted-text": "#666666",
+                    },
+                    fontFamily: {
+                        "display": ["Playfair Display", "serif"],
+                        "body": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px",
+                    },
+                    boxShadow: {
+                        'subtle': '0 4px 12px 0 rgba(0, 0, 0, 0.05)',
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-body bg-background text-content-text">
+<div class="relative flex min-h-screen w-full flex-col">
+<div class="flex-grow">
+<main class="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+<div class="flex flex-col gap-12">
+<div class="text-center">
+<h1 class="font-display text-4xl sm:text-5xl font-bold text-primary">Persona Generation</h1>
+<p class="mt-4 text-lg text-muted-text max-w-3xl mx-auto">This is the final stage where clustered insights are synthesized into rich, narrative-driven user personas.</p>
+</div>
+<div class="space-y-8">
+<section class="bg-white rounded-lg shadow-subtle p-6 sm:p-8">
+<h2 class="font-display text-2xl font-bold text-gray-800">The Generation Process</h2>
+<p class="mt-4 text-muted-text leading-relaxed">
+                                Our algorithm synthesizes the vectorized data into distinct user archetypes. Each step in the process builds upon the last, transforming raw data into a relatable and actionable persona that represents a key segment of your audience.
+                            </p>
+</section>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="bg-white rounded-lg shadow-subtle p-6 flex flex-col items-center text-center">
+<div class="flex size-12 items-center justify-center rounded-full bg-accent/20 text-accent mb-4">
+<span class="material-symbols-outlined">insights</span>
+</div>
+<h3 class="font-display text-xl font-bold text-gray-800">Select Strong Patterns</h3>
+<p class="mt-2 text-muted-text text-sm">Identify the most cohesive and significant insight clusters to form the core of each persona.</p>
+</div>
+<div class="bg-white rounded-lg shadow-subtle p-6 flex flex-col items-center text-center">
+<div class="flex size-12 items-center justify-center rounded-full bg-accent/20 text-accent mb-4">
+<span class="material-symbols-outlined">percent</span>
+</div>
+<h3 class="font-display text-xl font-bold text-gray-800">Incorporate Frequencies</h3>
+<p class="mt-2 text-muted-text text-sm">Assign weight to patterns based on their prevalence in the data, ensuring personas reflect reality.</p>
+</div>
+<div class="bg-white rounded-lg shadow-subtle p-6 flex flex-col items-center text-center">
+<div class="flex size-12 items-center justify-center rounded-full bg-accent/20 text-accent mb-4">
+<span class="material-symbols-outlined">person_search</span>
+</div>
+<h3 class="font-display text-xl font-bold text-gray-800">Identify Demographics</h3>
+<p class="mt-2 text-muted-text text-sm">Layer demographic metadata onto the psychographic core to create a recognizable character.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-white rounded-lg shadow-subtle p-6 flex flex-col items-center text-center">
+<div class="flex size-12 items-center justify-center rounded-full bg-accent/20 text-accent mb-4">
+<span class="material-symbols-outlined">format_quote</span>
+</div>
+<h3 class="font-display text-xl font-bold text-gray-800">Add Verbatim Quotes</h3>
+<p class="mt-2 text-muted-text text-sm">Select powerful, representative quotes from the raw data to give each persona a unique voice.</p>
+</div>
+<div class="bg-white rounded-lg shadow-subtle p-6 flex flex-col items-center text-center">
+<div class="flex size-12 items-center justify-center rounded-full bg-accent/20 text-accent mb-4">
+<span class="material-symbols-outlined">edit_note</span>
+</div>
+<h3 class="font-display text-xl font-bold text-gray-800">Write Lifestyle Summary</h3>
+<p class="mt-2 text-muted-text text-sm">Craft a narrative summary that brings the data to life, describing the persona's daily life and goals.</p>
+</div>
+</div>
+</div>
+<div class="flex justify-center pt-8">
+<button class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium py-2 px-6 rounded-lg transition-colors duration-200">
+                            Previous
+                        </button>
+</div>
+</div>
+</main>
+</div>
+</div>
+
+</body></html>

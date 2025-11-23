@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Insight Vectorisation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#A62639",
+                        "accent": "#E0AFA0",
+                        "background": "#FAF7F5",
+                        "content-text": "#333333",
+                        "muted-text": "#666666",
+                    },
+                    fontFamily: {
+                        "display": ["Playfair Display", "serif"],
+                        "body": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px",
+                    },
+                    boxShadow: {
+                        'subtle': '0 4px 12px 0 rgba(0, 0, 0, 0.05)',
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-body bg-background text-content-text">
+<div class="relative flex min-h-screen w-full flex-col">
+<div class="flex-grow">
+<main class="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+<div class="flex flex-col gap-12">
+<div class="text-center">
+<p class="font-body text-sm font-semibold uppercase tracking-widest text-primary">Cluster &amp; Persona Technical Slides</p>
+<h1 class="mt-2 font-display text-4xl sm:text-5xl font-bold text-primary">Insight Vectorisation</h1>
+<p class="mt-4 text-lg text-muted-text max-w-3xl mx-auto">An overview of how user insights are processed and clustered to generate meaningful personas.</p>
+</div>
+<div class="space-y-8">
+<section class="bg-white rounded-lg shadow-subtle p-6 sm:p-8">
+<h2 class="font-display text-2xl font-bold text-gray-800">Introduction to Vectorisation</h2>
+<p class="mt-4 text-muted-text leading-relaxed">
+                                Insight vectorisation is the process of converting qualitative user feedback into a quantitative format. This allows our system to identify patterns and group similar insights together based on their underlying meaning, forming the foundation of our data-driven personas.
+                            </p>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<section class="bg-white rounded-lg shadow-subtle p-6 sm:p-8">
+<h3 class="font-display text-2xl font-bold text-gray-800">Categories Used for Clustering</h3>
+<p class="mt-2 text-muted-text">The following psychographic categories are actively used to group user insights.</p>
+<ul class="mt-6 space-y-4">
+<li class="flex items-center gap-4">
+<div class="flex size-10 items-center justify-center rounded-full bg-accent/20 text-accent">
+<span class="material-symbols-outlined">favorite</span>
+</div>
+<span class="text-content-text">Motivations</span>
+</li>
+<li class="flex items-center gap-4">
+<div class="flex size-10 items-center justify-center rounded-full bg-accent/20 text-accent">
+<span class="material-symbols-outlined">bolt</span>
+</div>
+<span class="text-content-text">Pain Points</span>
+</li>
+<li class="flex items-center gap-4">
+<div class="flex size-10 items-center justify-center rounded-full bg-accent/20 text-accent">
+<span class="material-symbols-outlined">shopping_cart</span>
+</div>
+<span class="text-content-text">Purchase Intent</span>
+</li>
+<li class="flex items-center gap-4">
+<div class="flex size-10 items-center justify-center rounded-full bg-accent/20 text-accent">
+<span class="material-symbols-outlined">groups</span>
+</div>
+<span class="text-content-text">Influence Effect</span>
+</li>
+</ul>
+</section>
+<section class="bg-white rounded-lg shadow-subtle p-6 sm:p-8">
+<h3 class="font-display text-2xl font-bold text-gray-800">Categories Excluded from Clustering</h3>
+<p class="mt-2 text-muted-text">These data points are retained as metadata but not used for clustering.</p>
+<ul class="mt-6 space-y-4">
+<li class="flex items-center gap-4">
+<div class="flex size-10 items-center justify-center rounded-full bg-gray-100 text-gray-500">
+<span class="material-symbols-outlined">directions_run</span>
+</div>
+<span class="text-content-text">Behaviours</span>
+</li>
+<li class="flex items-center gap-4">
+<div class="flex size-10 items-center justify-center rounded-full bg-gray-100 text-gray-500">
+<span class="material-symbols-outlined">public</span>
+</div>
+<span class="text-content-text">Channels</span>
+</li>
+<li class="flex items-center gap-4">
+<div class="flex size-10 items-center justify-center rounded-full bg-gray-100 text-gray-500">
+<span class="material-symbols-outlined">person</span>
+</div>
+<span class="text-content-text">Demographics</span>
+</li>
+<li class="flex items-center gap-4">
+<div class="flex size-10 items-center justify-center rounded-full bg-gray-100 text-gray-500">
+<span class="material-symbols-outlined">smartphone</span>
+</div>
+<span class="text-content-text">Platform</span>
+</li>
+<li class="flex items-center gap-4">
+<div class="flex size-10 items-center justify-center rounded-full bg-gray-100 text-gray-500">
+<span class="material-symbols-outlined">science</span>
+</div>
+<span class="text-content-text">Method</span>
+</li>
+<li class="flex items-center gap-4">
+<div class="flex size-10 items-center justify-center rounded-full bg-gray-100 text-gray-500">
+<span class="material-symbols-outlined">format_quote</span>
+</div>
+<span class="text-content-text">Quotes &amp; Notes</span>
+</li>
+</ul>
+</section>
+</div>
+<section class="bg-white rounded-lg shadow-subtle p-6 sm:p-8">
+<h2 class="font-display text-2xl font-bold text-gray-800">Rationale for Selection</h2>
+<p class="mt-4 text-muted-text leading-relaxed">
+                                Our clustering model prioritizes psychographic data—the 'why' behind user actions—over demographic or behavioral data. By focusing on motivations and pain points, we create personas that represent core user mindsets rather than superficial groupings. Demographics and behaviors are then used to enrich these core personas, providing a complete and actionable profile.
+                            </p>
+</section>
+<section class="bg-white rounded-lg shadow-subtle p-6 sm:p-8">
+<h2 class="font-display text-2xl font-bold text-gray-800">Implications &amp; Next Steps</h2>
+<p class="mt-4 text-muted-text leading-relaxed">
+                               This focused vectorisation ensures that the generated personas are deeply rooted in user psychology, leading to more empathetic and effective product decisions. The output of this stage directly feeds into the persona generation algorithm, which synthesizes these clustered insights into distinct, narrative-driven user archetypes.
+                            </p>
+</section>
+</div>
+<div class="mt-16 flex justify-between items-center">
+<button class="inline-flex items-center gap-2 rounded-full border border-accent bg-transparent px-6 py-3 font-semibold text-primary transition-colors hover:bg-accent/20 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-background">
+<span class="material-symbols-outlined">arrow_back</span>
+<span>Previous</span>
+</button>
+<button class="inline-flex items-center gap-2 rounded-full border border-transparent bg-primary px-6 py-3 font-semibold text-white transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background">
+<span>Next</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>
