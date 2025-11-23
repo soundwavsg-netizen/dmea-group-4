@@ -105,7 +105,7 @@ const Sidebar = () => {
       >
         {/* Header */}
         <div className="p-6 border-b border-[#E0AFA0]/30">
-          <h1 className="text-xl font-bold text-[#A62639]">DMEA Group 4</h1>
+          <h1 className="text-xl font-bold text-[#A62639]">MUFE GROUP 4</h1>
           <p className="text-sm text-[#6C5F5F] mt-1">Research Portal</p>
         </div>
 
