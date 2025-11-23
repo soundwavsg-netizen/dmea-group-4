@@ -1,4 +1,4 @@
-# Use official Python runtime as base image
+# Bulletproof Dockerfile for Cloud Run
 FROM python:3.11-slim
 
 # Set working directory
@@ -10,10 +10,10 @@ RUN apt-get update && apt-get install -y \
     g++ \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy application code first
+# Copy all application files
 COPY . .
 
-# Install Python dependencies
+# Install Python dependencies - ALL of them
 RUN pip install --no-cache-dir \
     fastapi==0.110.1 \
     uvicorn[standard]==0.25.0 \
@@ -23,19 +23,18 @@ RUN pip install --no-cache-dir \
     python-dotenv==1.2.1 \
     starlette==0.37.2 \
     typing-extensions==4.15.0 \
-    annotated-types==0.7.0
-
-# Expose port (Cloud Run will override this)
-EXPOSE 8080
+    annotated-types==0.7.0 \
+    anyio==4.11.0 \
+    idna==3.11 \
+    sniffio==1.3.1
 
 # Set environment variables
 ENV PORT=8080
 ENV PYTHONUNBUFFERED=1
-ENV PYTHONPATH=/app
+ENV PYTHONDONTWRITEBYTECODE=1
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8080/api/health', timeout=5)"
+# Expose port
+EXPOSE 8080
 
-# Run the application
-CMD exec uvicorn server:app --host 0.0.0.0 --port $PORT --log-level info
+# Simple, direct command - no shell script
+CMD ["sh", "-c", "uvicorn server:app --host 0.0.0.0 --port ${PORT} --workers 1"]
