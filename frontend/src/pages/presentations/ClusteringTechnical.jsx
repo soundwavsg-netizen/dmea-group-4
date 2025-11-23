@@ -740,15 +740,18 @@ const ClusteringTechnical = () => {
 
   // Normal view mode
   return (
-    <div className="min-h-screen bg-[#FAF7F5] py-8">
-      <div className="container mx-auto max-w-5xl px-4">
-        {/* Header */}
-        <div className="mb-8 text-center">
+    <div className="min-h-screen bg-[#FAF7F5]">
+      {/* Sticky Header */}
+      <div className="sticky top-0 z-50 bg-[#FAF7F5]/80 backdrop-blur-sm border-b border-[#E0AFA0]/20 py-6">
+        <div className="container mx-auto max-w-5xl px-4 text-center">
           <h1 className="text-4xl font-bold text-[#A62639] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
             Cluster & Persona Technical Slides
           </h1>
           <p className="text-[#6C5F5F]">Deep Dive into Our Insight-to-Persona Pipeline</p>
         </div>
+      </div>
+
+      <div className="container mx-auto max-w-5xl px-4 py-8">
 
         {/* Presentation Mode Button */}
         <div className="flex justify-center mb-6">
