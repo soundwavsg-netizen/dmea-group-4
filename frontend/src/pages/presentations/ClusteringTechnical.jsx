@@ -93,12 +93,11 @@ const ClusteringTechnical = () => {
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [isPresentationMode, currentSlide]);
 
-  // Handle fullscreen exit
+  // Handle fullscreen exit (browser back button or F11)
   useEffect(() => {
     const handleFullscreenChange = () => {
-      if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
-        setIsPresentationMode(false);
-      }
+      const isCurrentlyFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
+      setIsFullScreen(isCurrentlyFullscreen);
     };
 
     document.addEventListener('fullscreenchange', handleFullscreenChange);
