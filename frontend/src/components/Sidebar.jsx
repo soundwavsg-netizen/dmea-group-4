@@ -27,6 +27,9 @@ const Sidebar = () => {
     modules.push({ label: 'Buyer Persona', path: '/report', icon: '👥' });
     
     if (isAdmin || isSuperAdmin) {
+      // Presentations - Admin and SuperAdmin only
+      modules.push({ label: 'Presentations', path: '/presentations', icon: '📊' });
+      
       // SEO & Content
       if (isSuperAdmin || flags.seo_content) {
         modules.push({ label: 'SEO & Content', path: '/seo', icon: '🔍' });
