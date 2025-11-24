@@ -83,9 +83,9 @@ function App() {
           </ProtectedRoute>
         } />
         
-        {/* Daily Reflections Module - SuperAdmin or with daily_reflections permission */}
+        {/* Daily Reflections Module - Available to all authenticated users (private per user) */}
         <Route path="/daily-reflections" element={
-          <ProtectedRoute superAdminOnly={true} requiredFeature="daily_reflections">
+          <ProtectedRoute>
             <Layout>
               <DailyReflections />
             </Layout>
