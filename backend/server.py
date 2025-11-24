@@ -49,17 +49,13 @@ def check_admin_access(x_user_role: Optional[str] = None):
         raise HTTPException(status_code=403, detail="Access denied. Admin privileges required.")
     return x_user_role
 
-def check_daily_reflections_access(x_user_role: Optional[str] = None, x_user_permissions: Optional[str] = None):
-    """Check if user has access to Daily Reflections module"""
-    # SuperAdmin always has access
-    if x_user_role == 'superadmin':
-        return True
-    
-    # Check if user has explicit permission
-    if x_user_permissions and 'daily_reflections' in x_user_permissions:
-        return True
-    
-    raise HTTPException(status_code=403, detail="Access denied. Daily Reflections permission required.")
+def check_daily_reflections_access(x_user_name: Optional[str] = None):
+    """Check if user has access to Daily Reflections module - All authenticated users have access"""
+    # Daily Reflections is available to ALL authenticated users
+    # Each user can only see their own reflections
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="User identification required.")
+    return x_user_name
 
 # ==================== Health Check ====================
 
