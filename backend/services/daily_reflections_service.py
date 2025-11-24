@@ -119,7 +119,7 @@ class DailyReflectionsService:
             
             # Security check: Verify the reflection belongs to the user
             if reflection.get('created_by') != user_id:
-                raise PermissionError(f"Access denied. This reflection belongs to another user.")
+                raise PermissionError("Access denied. This reflection belongs to another user.")
             
             reflection['id'] = doc.id
             
