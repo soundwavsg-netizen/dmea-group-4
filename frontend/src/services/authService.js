@@ -2,6 +2,7 @@
 const ACCOUNTS = {
   "superadmin": { password: "SUPERPASS", role: "superadmin" },
   "admin": { password: "ADMINPASS", role: "admin" },
+  "admin2": { password: "ADMINPASS2", role: "admin" },
   "user1": { password: "USERPASS", role: "user" },
   "user2": { password: "USERPASS", role: "user" },
   // 8 New User Accounts
