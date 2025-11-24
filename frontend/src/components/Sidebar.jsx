@@ -26,6 +26,11 @@ const Sidebar = () => {
     // Buyer Persona - visible to all authenticated users
     modules.push({ label: 'Buyer Persona', path: '/report', icon: '👥' });
     
+    // Daily Reflections - SuperAdmin or with explicit permission
+    if (isSuperAdmin || flags.daily_reflections) {
+      modules.push({ label: 'Daily Reflections', path: '/daily-reflections', icon: '📓' });
+    }
+    
     if (isAdmin || isSuperAdmin) {
       // Presentations - Admin and SuperAdmin only
       modules.push({ label: 'Presentations', path: '/presentations', icon: '📊' });
