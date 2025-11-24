@@ -138,13 +138,14 @@ class DailyReflectionsService:
             raise Exception(f"Failed to fetch reflection: {str(e)}")
     
     @staticmethod
-    def update_reflection(reflection_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
+    def update_reflection(reflection_id: str, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
         """
-        Update an existing reflection
+        Update an existing reflection (user can only update their own reflections)
         
         Args:
             reflection_id: Reflection document ID
             data: Updated reflection data
+            user_id: User identifier (username or email)
         
         Returns:
             Updated reflection
@@ -153,8 +154,14 @@ class DailyReflectionsService:
             doc_ref = db.collection(DailyReflectionsService.COLLECTION_NAME).document(reflection_id)
             
             # Check if document exists
-            if not doc_ref.get().exists:
+            doc = doc_ref.get()
+            if not doc.exists:
                 raise ValueError(f"Reflection with ID {reflection_id} not found")
+            
+            # Security check: Verify the reflection belongs to the user
+            reflection_data = doc.to_dict()
+            if reflection_data.get('created_by') != user_id:
+                raise PermissionError(f"Access denied. You can only update your own reflections.")
             
             # Prepare update data
             update_data = {
