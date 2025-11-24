@@ -178,7 +178,7 @@ const ChangePasswordModal = ({ isOpen, onClose, username }) => {
                 {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
-            <p className="text-xs text-[#6C5F5F] mt-1">Minimum 6 characters</p>
+            <p className="text-xs text-[#6C5F5F] mt-1">Minimum 5 characters</p>
           </div>
 
           {/* Confirm Password */}
