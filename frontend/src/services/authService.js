@@ -35,12 +35,12 @@ class AuthService {
         })
       });
       
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.detail || 'Invalid username or password');
-      }
-      
+      // Parse response once
       const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.detail || 'Invalid username or password');
+      }
       
       // Create session token
       const token = this.generateToken();
