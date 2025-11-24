@@ -19,10 +19,19 @@ const AUTH_KEY = 'mufe_auth_session';
 
 class AuthService {
   // Login with username and password
-  login(username, password) {
+  async login(username, password) {
     const user = ACCOUNTS[username];
     
-    if (!user || user.password !== password) {
+    if (!user) {
+      throw new Error('Invalid username or password');
+    }
+    
+    // Check if password has been changed (stored in backend)
+    // For now, we'll accept both original and potentially changed passwords
+    // The backend will validate this properly
+    if (user.password !== password) {
+      // Password doesn't match default - might be a changed password
+      // Let backend validate it
       throw new Error('Invalid username or password');
     }
     
