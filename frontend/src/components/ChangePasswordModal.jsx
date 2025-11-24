@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Eye, EyeOff } from 'lucide-react';
 import authService from '../services/authService';
 
 const ChangePasswordModal = ({ isOpen, onClose, username }) => {
@@ -9,6 +10,9 @@ const ChangePasswordModal = ({ isOpen, onClose, username }) => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
   const session = authService.getSession();
