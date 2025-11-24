@@ -71,10 +71,10 @@ class DailyReflectionsService:
         try:
             reflections = []
             
-            # Query Firestore filtered by user, with ordering and limit
+            # Query Firestore filtered by user only (no ordering to avoid index requirement)
+            # We'll sort in Python instead
             docs = db.collection(DailyReflectionsService.COLLECTION_NAME) \
                 .where('created_by', '==', user_id) \
-                .order_by('created_at', direction=firestore.Query.DESCENDING) \
                 .limit(limit) \
                 .stream()
             
