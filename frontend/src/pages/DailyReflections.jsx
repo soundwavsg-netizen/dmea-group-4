@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Eye } from 'lucide-react';
 import authService from '../services/authService';
 import AddReflectionModal from '../components/AddReflectionModal';
 import EditReflectionModal from '../components/EditReflectionModal';
+import ViewReflectionModal from '../components/ViewReflectionModal';
 import DeleteConfirmModal from '../components/DeleteConfirmModal';
 
 const DailyReflections = () => {
