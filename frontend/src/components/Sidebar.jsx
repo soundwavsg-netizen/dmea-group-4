@@ -104,13 +104,13 @@ const Sidebar = () => {
 
       {/* Sidebar - Lowest z-index in mobile nav stack */}
       <div
-        className={`fixed top-0 left-0 h-screen w-64 bg-white shadow-lg transform transition-transform duration-300 ${
+        className={`fixed top-0 left-0 h-screen w-64 bg-white shadow-lg transform transition-transform duration-300 flex flex-col ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         } lg:translate-x-0 lg:static`}
         style={{ zIndex: 60 }}
       >
         {/* Header */}
-        <div className="p-6 border-b border-[#E0AFA0]/30">
+        <div className="flex-shrink-0 p-6 border-b border-[#E0AFA0]/30">
           <h1 className="text-xl font-bold text-[#A62639]">MUFE GROUP 4</h1>
           <p className="text-sm text-[#6C5F5F] mt-1">Research Portal</p>
         </div>
