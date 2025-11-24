@@ -6,6 +6,7 @@ import Report from './pages/Report';
 import PersonaGenerator from './pages/PersonaGenerator';
 import Personas from './pages/Personas';
 import ManageInsights from './pages/ManageInsights';
+import DailyReflections from './pages/DailyReflections';
 import Login from './pages/Login';
 import AdminPanel from './pages/AdminPanel';
 import SEO from './pages/SEO';
