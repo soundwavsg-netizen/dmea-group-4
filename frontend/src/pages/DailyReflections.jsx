@@ -121,8 +121,8 @@ const DailyReflections = () => {
   });
 
   return (
-    <div className="min-h-screen bg-[#F8F6F5] p-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="w-full h-full bg-[#F8F6F5]">
+      <div className="w-full h-full px-8 py-6">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-[#A62639] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
