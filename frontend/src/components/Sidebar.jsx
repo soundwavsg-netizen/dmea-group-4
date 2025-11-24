@@ -117,8 +117,8 @@ const Sidebar = () => {
           <p className="text-sm text-[#6C5F5F] mt-1">Research Portal</p>
         </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto p-4">
+        {/* Navigation - Make sure this scrolls */}
+        <nav className="flex-1 overflow-y-auto p-4" style={{ minHeight: 0 }}>
           <div className="space-y-2">
             {modules.map((module, index) => (
               <NavLink
