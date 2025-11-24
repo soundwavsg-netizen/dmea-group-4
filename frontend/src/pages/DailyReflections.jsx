@@ -27,8 +27,7 @@ const DailyReflections = () => {
       setLoading(true);
       const response = await axios.get(`${backendUrl}/api/daily-reflections`, {
         headers: {
-          'X-User-Role': session.role,
-          'X-User-Permissions': session.permissions?.daily_reflections ? 'daily_reflections' : ''
+          'X-User-Name': session.username || session.email
         }
       });
       setReflections(response.data);
