@@ -232,7 +232,7 @@ class DailyReflectionsService:
             
             return True
             
-        except ValueError:
+        except (ValueError, PermissionError):
             raise
         except Exception as e:
             print(f"Error deleting reflection: {e}")
