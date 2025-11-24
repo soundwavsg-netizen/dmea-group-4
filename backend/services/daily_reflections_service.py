@@ -57,21 +57,23 @@ class DailyReflectionsService:
             raise Exception(f"Failed to create reflection: {str(e)}")
     
     @staticmethod
-    def get_all_reflections(limit: int = 100) -> List[Dict[str, Any]]:
+    def get_all_reflections(user_id: str, limit: int = 100) -> List[Dict[str, Any]]:
         """
-        Get all daily reflections, sorted by created_at DESC
+        Get all daily reflections for a specific user, sorted by created_at DESC
         
         Args:
+            user_id: User identifier (username or email)
             limit: Maximum number of reflections to return
         
         Returns:
-            List of reflections
+            List of reflections for the user
         """
         try:
             reflections = []
             
-            # Query Firestore with ordering and limit
+            # Query Firestore filtered by user, with ordering and limit
             docs = db.collection(DailyReflectionsService.COLLECTION_NAME) \
+                .where('created_by', '==', user_id) \
                 .order_by('created_at', direction=firestore.Query.DESCENDING) \
                 .limit(limit) \
                 .stream()
