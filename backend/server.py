@@ -263,6 +263,77 @@ def delete_daily_reflection(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# ==================== Authentication Endpoints ====================
+
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+
+@app.post("/api/login")
+def login(request: LoginRequest):
+    """Login endpoint - validates credentials against hardcoded accounts and password overrides"""
+    username = request.username
+    password = request.password
+    
+    # Hardcoded credentials (matching frontend authService.js)
+    HARDCODED_ACCOUNTS = {
+        "superadmin": {"password": "SUPERPASS", "role": "superadmin"},
+        "admin": {"password": "ADMINPASS", "role": "admin"},
+        "user1": {"password": "USERPASS", "role": "user"},
+        "user2": {"password": "USERPASS", "role": "user"},
+        "anthony": {"password": "anthony", "role": "user"},
+        "chris": {"password": "chris", "role": "user"},
+        "drgu": {"password": "drgu", "role": "user"},
+        "jessica": {"password": "jessica", "role": "user"},
+        "juliana": {"password": "juliana", "role": "user"},
+        "munifah": {"password": "munifah", "role": "user"},
+        "shannon": {"password": "shannon", "role": "user"},
+        "tasha": {"password": "tasha", "role": "user"}
+    }
+    
+    # Check if user exists in hardcoded accounts
+    if username not in HARDCODED_ACCOUNTS:
+        raise HTTPException(status_code=401, detail="Invalid username or password")
+    
+    user_data = HARDCODED_ACCOUNTS[username]
+    
+    try:
+        # FIRST: Check if password has been overridden in Firestore
+        password_override_ref = db.collection('password_overrides').document(username)
+        password_override_doc = password_override_ref.get()
+        
+        if password_override_doc.exists:
+            # Password override exists - ONLY validate against new password
+            override_data = password_override_doc.to_dict()
+            new_password = override_data.get('new_password')
+            
+            if password != new_password:
+                raise HTTPException(status_code=401, detail="Invalid username or password")
+            
+            # New password is valid
+            return {
+                "success": True,
+                "username": username,
+                "role": user_data["role"]
+            }
+        
+        # NO override exists - validate against hardcoded password
+        if password != user_data["password"]:
+            raise HTTPException(status_code=401, detail="Invalid username or password")
+        
+        # Hardcoded password is valid
+        return {
+            "success": True,
+            "username": username,
+            "role": user_data["role"]
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error during login: {e}")
+        raise HTTPException(status_code=500, detail="Login failed")
+
 # ==================== Change Password Endpoint ====================
 
 @app.post("/api/change-password")
