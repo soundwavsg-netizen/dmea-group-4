@@ -140,7 +140,7 @@ const Sidebar = () => {
         </nav>
 
         {/* Footer */}
-        <div className="p-4 border-t border-[#E0AFA0]/30">
+        <div className="flex-shrink-0 p-4 border-t border-[#E0AFA0]/30">
           <div className="mb-3 px-2">
             <p className="text-xs text-[#6C5F5F]">Logged in as</p>
             <p className="text-sm font-semibold text-[#1F1A1A]">{session?.username}</p>
