@@ -365,6 +365,7 @@ def change_password(
     HARDCODED_ACCOUNTS = {
         "superadmin": "SUPERPASS",
         "admin": "ADMINPASS",
+        "admin2": "ADMINPASS2",
         "user1": "USERPASS",
         "user2": "USERPASS",
         "anthony": "anthony",
