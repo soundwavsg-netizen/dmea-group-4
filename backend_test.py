@@ -20,7 +20,7 @@ from datetime import datetime
 from typing import Dict, Any, List
 
 # Backend URL from frontend .env
-BASE_URL = "https://slidedeck-17.preview.emergentagent.com"
+BASE_URL = "https://reflect-journal-2.preview.emergentagent.com"
 API_URL = f"{BASE_URL}/api"
 
 class BackendTester:
@@ -331,7 +331,7 @@ class BackendTester:
         """Run all backend tests"""
         print("\n" + "="*70)
         print("  MUFE GROUP 4 - BACKEND API TEST SUITE")
-        print("  Testing: https://slidedeck-17.preview.emergentagent.com/api")
+        print("  Testing: https://reflect-journal-2.preview.emergentagent.com/api")
         print("="*70)
         
         # Run tests in sequence
