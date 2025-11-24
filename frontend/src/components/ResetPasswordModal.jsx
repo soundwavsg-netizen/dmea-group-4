@@ -44,8 +44,8 @@ const ResetPasswordModal = ({ isOpen, onClose }) => {
       return;
     }
 
-    if (newPassword.length < 6) {
-      setError('New password must be at least 6 characters');
+    if (newPassword.length < 5) {
+      setError('New password must be at least 5 characters');
       return;
     }
 
