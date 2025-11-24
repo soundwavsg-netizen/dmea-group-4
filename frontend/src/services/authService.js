@@ -19,43 +19,46 @@ const AUTH_KEY = 'mufe_auth_session';
 
 class AuthService {
   // Login with username and password
-  login(username, password) {
-    const user = ACCOUNTS[username];
+  async login(username, password) {
+    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
     
-    if (!user) {
-      throw new Error('Invalid username or password');
+    try {
+      // Call backend login endpoint
+      const response = await fetch(`${backendUrl}/api/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password
+        })
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || 'Invalid username or password');
+      }
+      
+      const data = await response.json();
+      
+      // Create session token
+      const token = this.generateToken();
+      const session = {
+        username: data.username,
+        role: data.role,
+        token,
+        timestamp: Date.now()
+      };
+      
+      // Store in localStorage
+      localStorage.setItem(AUTH_KEY, JSON.stringify(session));
+      
+      return session;
+      
+    } catch (error) {
+      throw new Error(error.message || 'Invalid username or password');
     }
-    
-    // Check if password has been changed (override exists in localStorage)
-    const passwordOverride = localStorage.getItem(`pwd_override_${username}`);
-    
-    let isValidPassword = false;
-    
-    if (passwordOverride) {
-      // If password override exists, ONLY accept the new password (reject old password)
-      isValidPassword = (passwordOverride === password);
-    } else {
-      // No override exists, use default password
-      isValidPassword = (user.password === password);
-    }
-    
-    if (!isValidPassword) {
-      throw new Error('Invalid username or password');
-    }
-    
-    // Create session token
-    const token = this.generateToken();
-    const session = {
-      username,
-      role: user.role,
-      token,
-      timestamp: Date.now()
-    };
-    
-    // Store in localStorage
-    localStorage.setItem(AUTH_KEY, JSON.stringify(session));
-    
-    return session;
   }
   
   // Logout
