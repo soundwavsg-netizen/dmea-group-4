@@ -118,23 +118,24 @@ Solution: create a content calendar and system.""",
 
 def seed_daily_reflections():
     """
-    Seed 10 daily reflections into Firestore
+    Seed 10 daily reflections into Firestore for superadmin and admin2
     """
     print("Starting Daily Reflections seed...")
     print(f"Target collection: {COLLECTION_NAME}")
     
     try:
-        # Check if collection already has documents
-        existing_docs = list(db.collection(COLLECTION_NAME).limit(1).stream())
+        # First, clear any existing reflections to avoid duplicates
+        print("Clearing existing reflections...")
+        existing_docs = db.collection(COLLECTION_NAME).stream()
+        deleted_count = 0
+        for doc in existing_docs:
+            doc.reference.delete()
+            deleted_count += 1
+        if deleted_count > 0:
+            print(f"✓ Cleared {deleted_count} existing reflections")
         
-        if existing_docs:
-            print(f"⚠️  Collection '{COLLECTION_NAME}' already contains documents.")
-            response = input("Do you want to proceed anyway? This will add more reflections. (yes/no): ")
-            if response.lower() != 'yes':
-                print("❌ Seed cancelled.")
-                return
-        
-        # Insert reflections
+        # Insert reflections for superadmin
+        print("\n--- Seeding for superadmin ---")
         inserted_count = 0
         base_date = datetime.now()
         
@@ -147,16 +148,37 @@ def seed_daily_reflections():
             
             doc_data = {
                 **reflection_data,
-                'created_by': 'system',
+                'created_by': 'superadmin',
                 'created_at': created_date,
                 'updated_at': created_date
             }
             
             doc_ref.set(doc_data)
             inserted_count += 1
-            print(f"✓ Inserted: {reflection_data['topic']}")
+            print(f"✓ Inserted for superadmin: {reflection_data['topic']}")
+        
+        # Insert reflections for admin2
+        print("\n--- Seeding for admin2 ---")
+        for idx, reflection_data in enumerate(SEED_REFLECTIONS):
+            # Create document with server timestamps
+            created_date = base_date - timedelta(days=(9 - idx))  # Most recent first
+            
+            doc_ref = db.collection(COLLECTION_NAME).document()
+            
+            doc_data = {
+                **reflection_data,
+                'created_by': 'admin2',
+                'created_at': created_date,
+                'updated_at': created_date
+            }
+            
+            doc_ref.set(doc_data)
+            inserted_count += 1
+            print(f"✓ Inserted for admin2: {reflection_data['topic']}")
         
         print(f"\n✅ Successfully seeded {inserted_count} daily reflections!")
+        print(f"   - 10 reflections for superadmin")
+        print(f"   - 10 reflections for admin2")
         print(f"Collection: {COLLECTION_NAME}")
         
     except Exception as e:
