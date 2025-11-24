@@ -49,6 +49,11 @@ const DailyReflections = () => {
     setAddModalOpen(true);
   };
 
+  const handleViewClick = (reflection) => {
+    setSelectedReflection(reflection);
+    setViewModalOpen(true);
+  };
+
   const handleEditClick = (reflection) => {
     setSelectedReflection(reflection);
     setEditModalOpen(true);
