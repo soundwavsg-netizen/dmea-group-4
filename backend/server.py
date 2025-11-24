@@ -180,6 +180,93 @@ def get_all_personas(x_user_role: Optional[str] = Header(None)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# ==================== Daily Reflections Endpoints ====================
+
+@app.post("/api/daily-reflections", response_model=DailyReflectionResponse)
+def create_daily_reflection(
+    reflection: DailyReflectionCreate,
+    x_user_name: Optional[str] = Header(None),
+    x_user_role: Optional[str] = Header(None),
+    x_user_permissions: Optional[str] = Header(None)
+):
+    """Create a new daily reflection"""
+    check_daily_reflections_access(x_user_role, x_user_permissions)
+    try:
+        # Use user name or default to 'unknown'
+        created_by = x_user_name if x_user_name else 'unknown'
+        
+        result = DailyReflectionsService.create_reflection(
+            data=reflection.dict(),
+            created_by=created_by
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/daily-reflections", response_model=List[DailyReflectionResponse])
+def get_all_daily_reflections(
+    limit: int = 100,
+    x_user_role: Optional[str] = Header(None),
+    x_user_permissions: Optional[str] = Header(None)
+):
+    """Get all daily reflections"""
+    check_daily_reflections_access(x_user_role, x_user_permissions)
+    try:
+        return DailyReflectionsService.get_all_reflections(limit=limit)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/daily-reflections/{reflection_id}", response_model=DailyReflectionResponse)
+def get_daily_reflection(
+    reflection_id: str,
+    x_user_role: Optional[str] = Header(None),
+    x_user_permissions: Optional[str] = Header(None)
+):
+    """Get a single daily reflection by ID"""
+    check_daily_reflections_access(x_user_role, x_user_permissions)
+    try:
+        return DailyReflectionsService.get_reflection_by_id(reflection_id)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.put("/api/daily-reflections/{reflection_id}", response_model=DailyReflectionResponse)
+def update_daily_reflection(
+    reflection_id: str,
+    reflection: DailyReflectionUpdate,
+    x_user_role: Optional[str] = Header(None),
+    x_user_permissions: Optional[str] = Header(None)
+):
+    """Update an existing daily reflection"""
+    check_daily_reflections_access(x_user_role, x_user_permissions)
+    try:
+        result = DailyReflectionsService.update_reflection(
+            reflection_id=reflection_id,
+            data=reflection.dict(exclude_unset=True)
+        )
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/api/daily-reflections/{reflection_id}")
+def delete_daily_reflection(
+    reflection_id: str,
+    x_user_role: Optional[str] = Header(None),
+    x_user_permissions: Optional[str] = Header(None)
+):
+    """Delete a daily reflection"""
+    check_daily_reflections_access(x_user_role, x_user_permissions)
+    try:
+        DailyReflectionsService.delete_reflection(reflection_id)
+        return {"message": "Reflection deleted successfully"}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 # ==================== Main ====================
 
 if __name__ == "__main__":
