@@ -82,6 +82,9 @@ class DailyReflectionsService:
                 reflection = doc.to_dict()
                 reflection['id'] = doc.id
                 
+                # Store original timestamp for sorting before converting to ISO
+                reflection['_sort_timestamp'] = reflection.get('created_at')
+                
                 # Convert timestamps to ISO strings
                 if reflection.get('created_at'):
                     reflection['created_at'] = reflection['created_at'].isoformat()
@@ -89,6 +92,13 @@ class DailyReflectionsService:
                     reflection['updated_at'] = reflection['updated_at'].isoformat()
                 
                 reflections.append(reflection)
+            
+            # Sort by created_at DESC (newest first) using the original timestamp
+            reflections.sort(key=lambda x: x.get('_sort_timestamp') or datetime.min, reverse=True)
+            
+            # Remove the temporary sorting field
+            for reflection in reflections:
+                reflection.pop('_sort_timestamp', None)
             
             return reflections
             
