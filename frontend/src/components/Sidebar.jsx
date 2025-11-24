@@ -148,6 +148,17 @@ const Sidebar = () => {
             <p className="text-sm font-semibold text-[#1F1A1A]">{session?.username}</p>
             <p className="text-xs text-[#A62639]">{role}</p>
           </div>
+          
+          {/* Change Password Button */}
+          <button
+            onClick={() => setChangePasswordOpen(true)}
+            className="w-full px-4 py-2 mb-2 bg-white border border-[#E0AFA0] text-[#A62639] rounded-lg text-sm font-semibold hover:bg-[#FAF7F5] transition-colors"
+            data-testid="change-password-btn"
+          >
+            Change Password
+          </button>
+          
+          {/* Logout Button */}
           <button
             onClick={handleLogout}
             className="w-full px-4 py-2 bg-[#E0AFA0] text-[#1F1A1A] rounded-lg text-sm font-semibold hover:bg-[#D19F90] transition-colors"
@@ -157,6 +168,13 @@ const Sidebar = () => {
           </button>
         </div>
       </div>
+      
+      {/* Change Password Modal */}
+      <ChangePasswordModal
+        isOpen={changePasswordOpen}
+        onClose={() => setChangePasswordOpen(false)}
+        username={session?.username}
+      />
     </>
   );
 };
