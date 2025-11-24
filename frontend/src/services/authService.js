@@ -19,19 +19,25 @@ const AUTH_KEY = 'mufe_auth_session';
 
 class AuthService {
   // Login with username and password
-  async login(username, password) {
+  login(username, password) {
     const user = ACCOUNTS[username];
     
     if (!user) {
       throw new Error('Invalid username or password');
     }
     
-    // Check if password has been changed (stored in backend)
-    // For now, we'll accept both original and potentially changed passwords
-    // The backend will validate this properly
-    if (user.password !== password) {
-      // Password doesn't match default - might be a changed password
-      // Let backend validate it
+    // Check password - accept either original or changed password
+    // We'll validate with backend if needed, but for now check the default first
+    const isDefaultPassword = user.password === password;
+    
+    // For now, accept the default password
+    // If password was changed, the password_overrides collection in backend will handle it
+    // But since we're doing frontend-only auth, we need to check localStorage for override
+    const passwordOverride = localStorage.getItem(`pwd_override_${username}`);
+    
+    const isValidPassword = isDefaultPassword || (passwordOverride && passwordOverride === password);
+    
+    if (!isValidPassword) {
       throw new Error('Invalid username or password');
     }
     
