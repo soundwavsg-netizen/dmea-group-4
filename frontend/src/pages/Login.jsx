@@ -17,13 +17,13 @@ const Login = () => {
     }
   }, [navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
     try {
-      const session = authService.login(username, password);
+      const session = await authService.login(username, password);
       
       // Redirect all roles to home page
       navigate('/');
