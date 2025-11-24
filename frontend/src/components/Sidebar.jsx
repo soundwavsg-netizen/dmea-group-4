@@ -160,6 +160,17 @@ const Sidebar = () => {
             Change Password
           </button>
           
+          {/* Reset Password Button (Superadmin only) */}
+          {isSuperAdmin && (
+            <button
+              onClick={() => setResetPasswordOpen(true)}
+              className="w-full px-4 py-2 mb-2 bg-[#A62639] text-white rounded-lg text-sm font-semibold hover:bg-[#8a1f2d] transition-colors"
+              data-testid="reset-password-btn"
+            >
+              Reset User Password
+            </button>
+          )}
+          
           {/* Logout Button */}
           <button
             onClick={handleLogout}
@@ -176,6 +187,12 @@ const Sidebar = () => {
         isOpen={changePasswordOpen}
         onClose={() => setChangePasswordOpen(false)}
         username={session?.username}
+      />
+      
+      {/* Reset Password Modal (Superadmin only) */}
+      <ResetPasswordModal
+        isOpen={resetPasswordOpen}
+        onClose={() => setResetPasswordOpen(false)}
       />
     </>
   );
