@@ -24,6 +24,7 @@ from services.report_service import ReportService
 from services.clustering_service import ClusteringService
 from services.persona_service import PersonaService
 from services.daily_reflections_service import DailyReflectionsService
+from firebase_client import db
 from config import settings
 
 # Initialize FastAPI app
