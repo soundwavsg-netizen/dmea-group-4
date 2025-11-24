@@ -166,7 +166,7 @@ const ChangePasswordModal = ({ isOpen, onClose, username }) => {
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 required
-                minLength={6}
+                minLength={5}
                 className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A62639] focus:border-transparent"
                 data-testid="new-password-input"
               />
