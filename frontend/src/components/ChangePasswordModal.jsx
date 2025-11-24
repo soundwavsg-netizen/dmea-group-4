@@ -81,7 +81,7 @@ const ChangePasswordModal = ({ isOpen, onClose, username }) => {
 
   if (isAccountLocked) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+      <div className="fixed inset-0 flex items-center justify-center p-4 bg-black/50" style={{ zIndex: 100 }}>
         <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
           <h2 className="text-2xl font-bold text-[#A62639] mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
             Change Password
