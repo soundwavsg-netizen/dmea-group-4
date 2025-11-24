@@ -97,12 +97,13 @@ class DailyReflectionsService:
             raise Exception(f"Failed to fetch reflections: {str(e)}")
     
     @staticmethod
-    def get_reflection_by_id(reflection_id: str) -> Dict[str, Any]:
+    def get_reflection_by_id(reflection_id: str, user_id: str) -> Dict[str, Any]:
         """
-        Get a single reflection by ID
+        Get a single reflection by ID (user can only access their own reflections)
         
         Args:
             reflection_id: Reflection document ID
+            user_id: User identifier (username or email)
         
         Returns:
             Reflection data
@@ -115,6 +116,11 @@ class DailyReflectionsService:
                 raise ValueError(f"Reflection with ID {reflection_id} not found")
             
             reflection = doc.to_dict()
+            
+            # Security check: Verify the reflection belongs to the user
+            if reflection.get('created_by') != user_id:
+                raise PermissionError(f"Access denied. This reflection belongs to another user.")
+            
             reflection['id'] = doc.id
             
             # Convert timestamps
@@ -125,7 +131,7 @@ class DailyReflectionsService:
             
             return reflection
             
-        except ValueError:
+        except (ValueError, PermissionError):
             raise
         except Exception as e:
             print(f"Error fetching reflection: {e}")
