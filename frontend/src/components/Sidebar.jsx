@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
+import ChangePasswordModal from './ChangePasswordModal';
 import featureFlagService from '../services/featureFlagService';
 
 const Sidebar = () => {
