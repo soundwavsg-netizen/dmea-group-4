@@ -48,9 +48,6 @@ const ChangePasswordModal = ({ isOpen, onClose, username }) => {
 
       setSuccess(true);
       
-      // Store password override in localStorage for immediate effect
-      localStorage.setItem(`pwd_override_${session.username || session.email}`, newPassword);
-      
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
