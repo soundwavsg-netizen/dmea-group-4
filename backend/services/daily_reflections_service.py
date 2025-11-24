@@ -161,7 +161,7 @@ class DailyReflectionsService:
             # Security check: Verify the reflection belongs to the user
             reflection_data = doc.to_dict()
             if reflection_data.get('created_by') != user_id:
-                raise PermissionError(f"Access denied. You can only update your own reflections.")
+                raise PermissionError("Access denied. You can only update your own reflections.")
             
             # Prepare update data
             update_data = {
@@ -225,7 +225,7 @@ class DailyReflectionsService:
             # Security check: Verify the reflection belongs to the user
             reflection_data = doc.to_dict()
             if reflection_data.get('created_by') != user_id:
-                raise PermissionError(f"Access denied. You can only delete your own reflections.")
+                raise PermissionError("Access denied. You can only delete your own reflections.")
             
             # Delete document
             doc_ref.delete()
