@@ -157,7 +157,7 @@ const ResetPasswordModal = ({ isOpen, onClose }) => {
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 required
-                minLength={6}
+                minLength={5}
                 className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A62639] focus:border-transparent"
                 data-testid="reset-new-password-input"
               />
@@ -169,7 +169,7 @@ const ResetPasswordModal = ({ isOpen, onClose }) => {
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
-            <p className="text-xs text-[#6C5F5F] mt-1">Minimum 6 characters</p>
+            <p className="text-xs text-[#6C5F5F] mt-1">Minimum 5 characters</p>
           </div>
 
           {/* Confirm Password */}
