@@ -216,8 +216,18 @@ const DailyReflections = () => {
                     sortedReflections.map((reflection) => (
                       <tr key={reflection.id} className="hover:bg-[#FAF7F5] transition-colors">
                         <td className="px-6 py-4">
-                          <div className="text-sm font-medium text-[#333333]">
-                            {reflection.topic}
+                          <div className="flex items-center gap-3">
+                            <button
+                              onClick={() => handleViewClick(reflection)}
+                              className="flex-shrink-0 p-1.5 bg-[#E0AFA0]/20 text-[#A62639] rounded-lg hover:bg-[#E0AFA0]/40 transition-colors"
+                              title="View details"
+                              data-testid={`view-reflection-${reflection.id}`}
+                            >
+                              <Eye className="w-4 h-4" />
+                            </button>
+                            <div className="text-sm font-medium text-[#333333]">
+                              {reflection.topic}
+                            </div>
                           </div>
                         </td>
                         <td className="px-6 py-4 text-sm text-[#6C5F5F]">
@@ -233,7 +243,7 @@ const DailyReflections = () => {
                               className="px-3 py-1.5 bg-[#E0AFA0]/20 text-[#A62639] rounded-lg text-sm font-medium hover:bg-[#E0AFA0]/30 transition-colors"
                               data-testid={`edit-reflection-${reflection.id}`}
                             >
-                              View / Edit
+                              Edit
                             </button>
                             <button
                               onClick={() => handleDeleteClick(reflection)}
