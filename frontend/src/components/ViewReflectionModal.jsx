@@ -15,7 +15,7 @@ const ViewReflectionModal = ({ isOpen, onClose, reflection }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div className="fixed inset-0 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" style={{ zIndex: 100 }}>
       <div className="bg-[#FAF7F5] rounded-xl shadow-2xl w-full max-w-6xl max-h-[95vh] overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-r from-[#A62639] to-[#8a1f2d] px-8 py-6 flex items-center justify-between">
