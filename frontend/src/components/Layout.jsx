@@ -28,7 +28,7 @@ const Layout = ({ children }) => {
       <Sidebar />
       
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col lg:ml-64 w-full max-w-full overflow-hidden">
+      <div className="flex-1 flex flex-col w-full max-w-full overflow-hidden">
         {/* Module Sub-Navigation (if applicable) */}
         {showBuyerPersonaNav && <BuyerPersonaNav />}
         {showPresentationsNav && <PresentationsNav />}
