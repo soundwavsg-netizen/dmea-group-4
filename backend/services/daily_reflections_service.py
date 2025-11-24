@@ -196,7 +196,7 @@ class DailyReflectionsService:
             
             return result
             
-        except ValueError:
+        except (ValueError, PermissionError):
             raise
         except Exception as e:
             print(f"Error updating reflection: {e}")
