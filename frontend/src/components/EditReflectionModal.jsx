@@ -47,8 +47,7 @@ const EditReflectionModal = ({ isOpen, onClose, reflection, onSuccess }) => {
     try {
       await axios.put(`${backendUrl}/api/daily-reflections/${reflection.id}`, formData, {
         headers: {
-          'X-User-Role': session.role,
-          'X-User-Permissions': session.permissions?.daily_reflections ? 'daily_reflections' : ''
+          'X-User-Name': session.username || session.email
         }
       });
 
