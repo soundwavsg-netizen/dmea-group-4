@@ -13,6 +13,7 @@ const DailyReflections = () => {
   const [error, setError] = useState(null);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [viewModalOpen, setViewModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedReflection, setSelectedReflection] = useState(null);
   const [sortField, setSortField] = useState('created_at');
