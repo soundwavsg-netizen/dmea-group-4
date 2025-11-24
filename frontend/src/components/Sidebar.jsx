@@ -7,6 +7,7 @@ import featureFlagService from '../services/featureFlagService';
 const Sidebar = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [changePasswordOpen, setChangePasswordOpen] = useState(false);
   const session = authService.getSession();
   const role = session?.role;
   const isSuperAdmin = authService.isSuperAdmin();
