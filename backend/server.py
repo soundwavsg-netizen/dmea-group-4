@@ -288,8 +288,40 @@ def change_password(
     if len(new_password) < 6:
         raise HTTPException(status_code=400, detail="New password must be at least 6 characters")
     
+    # Hardcoded credentials (same as frontend authService.js)
+    HARDCODED_ACCOUNTS = {
+        "superadmin": "SUPERPASS",
+        "admin": "ADMINPASS",
+        "user1": "USERPASS",
+        "user2": "USERPASS",
+        "anthony": "anthony",
+        "chris": "chris",
+        "drgu": "drgu",
+        "jessica": "jessica",
+        "juliana": "juliana",
+        "munifah": "munifah",
+        "shannon": "shannon",
+        "tasha": "tasha"
+    }
+    
     try:
-        # Find user
+        # Check if it's a hardcoded account
+        if x_user_name in HARDCODED_ACCOUNTS:
+            # Verify current password against hardcoded value
+            if HARDCODED_ACCOUNTS[x_user_name] != current_password:
+                raise HTTPException(status_code=401, detail="Current password is incorrect")
+            
+            # Store password override in Firestore
+            password_override_ref = db.collection('password_overrides').document(x_user_name)
+            password_override_ref.set({
+                'username': x_user_name,
+                'new_password': new_password,
+                'changed_at': firestore.SERVER_TIMESTAMP
+            })
+            
+            return {"message": "Password changed successfully. Please use new password on next login."}
+        
+        # For Firestore users (like admin2)
         users_ref = db.collection('users')
         query = users_ref.where('username', '==', x_user_name).limit(1).stream()
         user_doc = None
@@ -301,7 +333,7 @@ def change_password(
             break
         
         if not user_doc:
-            raise HTTPException(status_code=404, detail="User not found")
+            raise HTTPException(status_code=404, detail="User not found in database")
         
         # Verify current password
         if user_doc.get('password') != current_password:
