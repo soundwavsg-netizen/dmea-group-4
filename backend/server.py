@@ -261,6 +261,64 @@ def delete_daily_reflection(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# ==================== Change Password Endpoint ====================
+
+@app.post("/api/change-password")
+def change_password(
+    request: dict,
+    x_user_name: Optional[str] = Header(None)
+):
+    """Change user password (blocked for demo accounts: user1, user2, admin, admin2)"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="User identification required")
+    
+    # List of locked accounts
+    LOCKED_ACCOUNTS = ['user1', 'user2', 'admin', 'admin2']
+    
+    if x_user_name in LOCKED_ACCOUNTS:
+        raise HTTPException(status_code=403, detail=f"Password change not allowed for demo account: {x_user_name}")
+    
+    current_password = request.get('current_password')
+    new_password = request.get('new_password')
+    
+    if not current_password or not new_password:
+        raise HTTPException(status_code=400, detail="Current password and new password are required")
+    
+    if len(new_password) < 6:
+        raise HTTPException(status_code=400, detail="New password must be at least 6 characters")
+    
+    try:
+        # Find user
+        users_ref = db.collection('users')
+        query = users_ref.where('username', '==', x_user_name).limit(1).stream()
+        user_doc = None
+        user_id = None
+        
+        for doc in query:
+            user_doc = doc.to_dict()
+            user_id = doc.id
+            break
+        
+        if not user_doc:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Verify current password
+        if user_doc.get('password') != current_password:
+            raise HTTPException(status_code=401, detail="Current password is incorrect")
+        
+        # Update password
+        db.collection('users').document(user_id).update({
+            'password': new_password
+        })
+        
+        return {"message": "Password changed successfully"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error changing password: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 # ==================== Main ====================
 
 if __name__ == "__main__":
