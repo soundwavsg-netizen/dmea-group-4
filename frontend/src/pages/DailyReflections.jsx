@@ -69,8 +69,7 @@ const DailyReflections = () => {
     try {
       await axios.delete(`${backendUrl}/api/daily-reflections/${selectedReflection.id}`, {
         headers: {
-          'X-User-Role': session.role,
-          'X-User-Permissions': session.permissions?.daily_reflections ? 'daily_reflections' : ''
+          'X-User-Name': session.username || session.email
         }
       });
       
