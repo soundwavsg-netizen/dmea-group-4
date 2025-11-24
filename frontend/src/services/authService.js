@@ -26,16 +26,18 @@ class AuthService {
       throw new Error('Invalid username or password');
     }
     
-    // Check password - accept either original or changed password
-    // We'll validate with backend if needed, but for now check the default first
-    const isDefaultPassword = user.password === password;
-    
-    // For now, accept the default password
-    // If password was changed, the password_overrides collection in backend will handle it
-    // But since we're doing frontend-only auth, we need to check localStorage for override
+    // Check if password has been changed (override exists in localStorage)
     const passwordOverride = localStorage.getItem(`pwd_override_${username}`);
     
-    const isValidPassword = isDefaultPassword || (passwordOverride && passwordOverride === password);
+    let isValidPassword = false;
+    
+    if (passwordOverride) {
+      // If password override exists, ONLY accept the new password (reject old password)
+      isValidPassword = (passwordOverride === password);
+    } else {
+      // No override exists, use default password
+      isValidPassword = (user.password === password);
+    }
     
     if (!isValidPassword) {
       throw new Error('Invalid username or password');
