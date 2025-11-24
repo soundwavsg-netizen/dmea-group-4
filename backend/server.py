@@ -279,6 +279,7 @@ def login(request: LoginRequest):
     HARDCODED_ACCOUNTS = {
         "superadmin": {"password": "SUPERPASS", "role": "superadmin"},
         "admin": {"password": "ADMINPASS", "role": "admin"},
+        "admin2": {"password": "ADMINPASS2", "role": "admin"},
         "user1": {"password": "USERPASS", "role": "user"},
         "user2": {"password": "USERPASS", "role": "user"},
         "anthony": {"password": "anthony", "role": "user"},
