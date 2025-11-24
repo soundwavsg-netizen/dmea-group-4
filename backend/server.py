@@ -358,8 +358,8 @@ def change_password(
     if not current_password or not new_password:
         raise HTTPException(status_code=400, detail="Current password and new password are required")
     
-    if len(new_password) < 6:
-        raise HTTPException(status_code=400, detail="New password must be at least 6 characters")
+    if len(new_password) < 5:
+        raise HTTPException(status_code=400, detail="New password must be at least 5 characters")
     
     # Hardcoded credentials (same as frontend authService.js)
     HARDCODED_ACCOUNTS = {
