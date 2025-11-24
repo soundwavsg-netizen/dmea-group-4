@@ -280,6 +280,15 @@ const DailyReflections = () => {
         onSuccess={fetchReflections}
       />
 
+      <ViewReflectionModal
+        isOpen={viewModalOpen}
+        onClose={() => {
+          setViewModalOpen(false);
+          setSelectedReflection(null);
+        }}
+        reflection={selectedReflection}
+      />
+
       <EditReflectionModal
         isOpen={editModalOpen}
         onClose={() => {
