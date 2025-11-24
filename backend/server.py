@@ -444,8 +444,8 @@ def admin_reset_password(
     if not target_username or not new_password:
         raise HTTPException(status_code=400, detail="Username and new password are required")
     
-    if len(new_password) < 6:
-        raise HTTPException(status_code=400, detail="New password must be at least 6 characters")
+    if len(new_password) < 5:
+        raise HTTPException(status_code=400, detail="New password must be at least 5 characters")
     
     # List of valid accounts
     VALID_ACCOUNTS = [
