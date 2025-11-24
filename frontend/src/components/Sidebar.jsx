@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
 import ChangePasswordModal from './ChangePasswordModal';
+import ResetPasswordModal from './ResetPasswordModal';
 import featureFlagService from '../services/featureFlagService';
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
+  const [resetPasswordOpen, setResetPasswordOpen] = useState(false);
   const session = authService.getSession();
   const role = session?.role;
   const isSuperAdmin = authService.isSuperAdmin();
