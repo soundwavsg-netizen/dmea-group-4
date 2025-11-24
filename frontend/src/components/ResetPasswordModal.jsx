@@ -18,19 +18,19 @@ const ResetPasswordModal = ({ isOpen, onClose }) => {
 
   // List of all users that can have passwords reset
   const USERS = [
-    { value: 'superadmin', label: 'Superadmin' },
-    { value: 'admin', label: 'Admin' },
-    { value: 'admin2', label: 'Admin2' },
-    { value: 'user1', label: 'User1' },
-    { value: 'user2', label: 'User2' },
-    { value: 'anthony', label: 'Anthony' },
-    { value: 'chris', label: 'Chris' },
-    { value: 'drgu', label: 'Dr. Gu' },
-    { value: 'jessica', label: 'Jessica' },
-    { value: 'juliana', label: 'Juliana' },
-    { value: 'munifah', label: 'Munifah' },
-    { value: 'shannon', label: 'Shannon' },
-    { value: 'tasha', label: 'Tasha' }
+    { value: 'superadmin', label: 'superadmin' },
+    { value: 'admin', label: 'admin' },
+    { value: 'admin2', label: 'admin2' },
+    { value: 'user1', label: 'user1' },
+    { value: 'user2', label: 'user2' },
+    { value: 'anthony', label: 'anthony' },
+    { value: 'chris', label: 'chris' },
+    { value: 'drgu', label: 'drgu' },
+    { value: 'jessica', label: 'jessica' },
+    { value: 'juliana', label: 'juliana' },
+    { value: 'munifah', label: 'munifah' },
+    { value: 'shannon', label: 'shannon' },
+    { value: 'tasha', label: 'tasha' }
   ];
 
   const handleSubmit = async (e) => {
