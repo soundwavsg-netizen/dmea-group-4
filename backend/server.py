@@ -426,6 +426,56 @@ def change_password(
         print(f"Error changing password: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+# ==================== Superadmin Reset Password Endpoint ====================
+
+@app.post("/api/admin/reset-password")
+def admin_reset_password(
+    request: dict,
+    x_user_role: Optional[str] = Header(None)
+):
+    """Superadmin endpoint to reset any user's password"""
+    # Check if user is superadmin
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can reset passwords")
+    
+    target_username = request.get('username')
+    new_password = request.get('new_password')
+    
+    if not target_username or not new_password:
+        raise HTTPException(status_code=400, detail="Username and new password are required")
+    
+    if len(new_password) < 6:
+        raise HTTPException(status_code=400, detail="New password must be at least 6 characters")
+    
+    # List of valid accounts
+    VALID_ACCOUNTS = [
+        "superadmin", "admin", "admin2", "user1", "user2",
+        "anthony", "chris", "drgu", "jessica", "juliana", 
+        "munifah", "shannon", "tasha"
+    ]
+    
+    if target_username not in VALID_ACCOUNTS:
+        raise HTTPException(status_code=404, detail=f"User '{target_username}' not found")
+    
+    try:
+        # Store password override in Firestore (or update if exists)
+        password_override_ref = db.collection('password_overrides').document(target_username)
+        password_override_ref.set({
+            'username': target_username,
+            'new_password': new_password,
+            'changed_at': firestore.SERVER_TIMESTAMP,
+            'reset_by': 'superadmin'
+        })
+        
+        return {
+            "message": f"Password reset successfully for user: {target_username}",
+            "username": target_username
+        }
+        
+    except Exception as e:
+        print(f"Error resetting password: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 # ==================== Main ====================
 
 if __name__ == "__main__":
