@@ -39,7 +39,8 @@ class AuthService {
       const data = await response.json();
       
       if (!response.ok) {
-        throw new Error(data.detail || 'Invalid username or password');
+        // Always show user-friendly message for auth failures
+        throw new Error('Invalid username or password');
       }
       
       // Create session token
@@ -57,7 +58,8 @@ class AuthService {
       return session;
       
     } catch (error) {
-      throw new Error(error.message || 'Invalid username or password');
+      // Always show user-friendly error message, never technical errors
+      throw new Error('Invalid username or password');
     }
   }
   
