@@ -77,12 +77,24 @@ const PresentationsHome = () => {
       <div className="container mx-auto max-w-6xl px-4">
         {/* Header */}
         <div className="mb-12">
-          <h1 className="text-5xl font-bold text-[#A62639] mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Presentations
-          </h1>
-          <p className="text-xl text-[#6C5F5F] max-w-3xl">
-            Comprehensive presentation decks explaining our user research and persona generation methodology
-          </p>
+          <div className="flex items-start justify-between">
+            <div>
+              <h1 className="text-5xl font-bold text-[#A62639] mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
+                Presentations
+              </h1>
+              <p className="text-xl text-[#6C5F5F] max-w-3xl">
+                Comprehensive presentation decks explaining our user research and persona generation methodology
+              </p>
+            </div>
+            <button
+              onClick={() => setAddModalOpen(true)}
+              className="flex items-center gap-2 px-6 py-3 bg-[#A62639] text-white rounded-lg font-semibold hover:bg-[#8a1f2d] transition-colors shadow-lg"
+              data-testid="add-presentation-btn"
+            >
+              <Plus size={20} />
+              Add Presentation
+            </button>
+          </div>
         </div>
 
         {/* Presentations Grid */}
