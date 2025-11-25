@@ -373,7 +373,16 @@ const Personas = () => {
                     <p className="text-xs font-bold text-[#A62639] mb-1">
                       Purchase Intent: <span className="uppercase">{persona.intent_category}</span>
                     </p>
-                    <p className="text-sm text-[#6C5F5F]">{persona.buying_trigger}</p>
+                    {editingPersona === persona.id ? (
+                      <textarea
+                        value={editedData.buying_trigger}
+                        onChange={(e) => handleFieldChange('buying_trigger', e.target.value)}
+                        rows={2}
+                        className="w-full text-sm text-[#6C5F5F] p-2 border-2 border-[#A62639] rounded-lg focus:outline-none resize-none"
+                      />
+                    ) : (
+                      <p className="text-sm text-[#6C5F5F]">{persona.buying_trigger}</p>
+                    )}
                   </div>
                   <div>
                     <p className="text-xs font-bold text-[#A62639] mb-1">
