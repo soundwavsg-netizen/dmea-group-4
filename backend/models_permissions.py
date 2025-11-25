@@ -55,12 +55,12 @@ DEFAULT_PERMISSIONS = {
         }
     ),
     "daily_reflections": ModulePermission(
-        enabled=False,
+        enabled=True,  # ✅ Enabled by default for all users
         tabs={},
         actions={
-            "add": False,
-            "edit": False,
-            "delete": False
+            "add": True,      # ✅ Can add their own reflections
+            "edit": True,     # ✅ Can edit their own reflections
+            "delete": True    # ✅ Can delete their own reflections
         }
     ),
     "presentations": ModulePermission(
