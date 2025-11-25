@@ -181,7 +181,7 @@ const ManageInsights = () => {
         ) : (
           <div className="bg-white rounded-xl border border-[#E0AFA0]/50 shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[1200px]">
+              <table className="w-full min-w-[1600px]">
                 <thead className="bg-[#E0AFA0]/20 border-b border-[#E0AFA0]/30">
                   <tr>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Document ID</th>
