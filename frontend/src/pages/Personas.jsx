@@ -31,7 +31,13 @@ const Personas = () => {
           'X-User-Role': session.role
         }
       });
-      setPersonas(response.data);
+      
+      // Sort personas by best_persona_score (highest first)
+      const sortedPersonas = response.data.sort((a, b) => 
+        (b.best_persona_score || 0) - (a.best_persona_score || 0)
+      );
+      
+      setPersonas(sortedPersonas);
     } catch (err) {
       setError(err.response?.data?.detail || 'Failed to load personas');
     } finally {
