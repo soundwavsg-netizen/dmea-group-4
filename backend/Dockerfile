@@ -13,8 +13,9 @@ RUN apt-get update && apt-get install -y \
 # Copy application code first
 COPY . .
 
-# Install Python dependencies
-RUN pip install --no-cache-dir \
+# Install Python dependencies - EXPLICIT INSTALL FOR CLOUD RUN
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir \
     fastapi==0.110.1 \
     uvicorn[standard]==0.25.0 \
     firebase-admin==7.1.0 \
@@ -24,6 +25,9 @@ RUN pip install --no-cache-dir \
     starlette==0.37.2 \
     typing-extensions==4.15.0 \
     annotated-types==0.7.0 \
+    anyio==4.11.0 \
+    idna==3.11 \
+    sniffio==1.3.1 \
     openai==1.99.9 \
     scikit-learn==1.7.2 \
     numpy==2.3.5 \
