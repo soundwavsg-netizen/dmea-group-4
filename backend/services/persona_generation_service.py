@@ -413,9 +413,14 @@ def generate_personas_from_insights(n_clusters: int = 3) -> Dict[str, Any]:
                 -x['wts_pain_avg']  # Higher pain fourth
             ))
             
-            # Mark the first one as star persona
-            personas_data[0]['data']['is_star_persona'] = True
-            print(f"Star Persona: {personas_data[0]['data']['name']} (TCSS: {personas_data[0]['tcss']:.2f})")
+            # Always mark the highest TCSS persona as star (even if only 1 persona)
+            if personas_data:
+                personas_data[0]['data']['is_star_persona'] = True
+                print(f"⭐ Star Persona: {personas_data[0]['data']['name']} (TCSS: {personas_data[0]['tcss']:.2f})")
+                
+                # Ensure all other personas are NOT marked as star
+                for i in range(1, len(personas_data)):
+                    personas_data[i]['data']['is_star_persona'] = False
         
         # Save all personas to Firestore
         for persona_info in personas_data:
