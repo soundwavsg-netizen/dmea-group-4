@@ -816,9 +816,30 @@ def set_persona_threshold(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# ==================== Health Check ====================
+
+@app.get("/")
+def root():
+    """Root endpoint - health check"""
+    return {"status": "healthy", "service": "MUFE Persona System", "version": "1.0"}
+
+
+@app.get("/health")
+def health_check():
+    """Health check endpoint for deployment"""
+    return {"status": "healthy", "timestamp": datetime.now(timezone.utc).isoformat()}
+
+
 # ==================== Main ====================
 
 if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", 8001))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    print(f"Starting server on 0.0.0.0:{port}")
+    uvicorn.run(
+        app, 
+        host="0.0.0.0", 
+        port=port,
+        timeout_keep_alive=30,
+        access_log=True
+    )
