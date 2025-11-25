@@ -770,6 +770,52 @@ def get_my_permissions(x_user_name: Optional[str] = Header(None), x_user_role: O
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# ==================== Persona Threshold Settings ====================
+
+@app.get("/api/admin/persona-threshold")
+def get_persona_threshold(x_user_role: Optional[str] = Header(None)):
+    """Get current persona threshold setting - Superadmin only"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can access persona settings")
+    
+    try:
+        from services import clustering_service
+        threshold = clustering_service.get_persona_threshold()
+        return {"minimum_tcss": threshold}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.put("/api/admin/persona-threshold")
+def set_persona_threshold(
+    threshold_data: dict,
+    x_user_role: Optional[str] = Header(None)
+):
+    """Set persona threshold setting - Superadmin only"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can modify persona settings")
+    
+    try:
+        threshold = float(threshold_data.get('minimum_tcss', 2.0))
+        
+        # Validate range
+        if threshold < 0.0 or threshold > 6.0:
+            raise HTTPException(status_code=400, detail="Threshold must be between 0.0 and 6.0")
+        
+        from services import clustering_service
+        success = clustering_service.set_persona_threshold(threshold)
+        
+        if success:
+            return {"message": f"Persona threshold updated to {threshold}", "minimum_tcss": threshold}
+        else:
+            raise HTTPException(status_code=500, detail="Failed to update threshold")
+            
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid threshold value")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # ==================== Main ====================
 
 if __name__ == "__main__":
