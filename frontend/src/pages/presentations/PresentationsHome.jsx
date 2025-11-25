@@ -209,6 +209,7 @@ const PresentationsHome = () => {
               </Link>
             );
           })}
+          </div>
         </div>
 
         {/* Info Section */}
