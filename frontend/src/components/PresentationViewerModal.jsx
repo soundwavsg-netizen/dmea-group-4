@@ -28,7 +28,9 @@ const PresentationViewerModal = ({ isOpen, onClose, presentation }) => {
     }
 
     // For uploaded files, determine viewer based on file extension
-    const extension = fileUrl.split('.').pop().toLowerCase();
+    // Extract extension before query parameters (for Firebase Storage URLs)
+    const urlWithoutParams = fileUrl.split('?')[0];
+    const extension = urlWithoutParams.split('.').pop().toLowerCase();
 
     // PowerPoint files - Use Office Online Viewer
     if (extension === 'ppt' || extension === 'pptx') {
