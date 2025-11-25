@@ -52,8 +52,10 @@ const Sidebar = () => {
       modules.push({ label: 'Buyer Persona', path: '/report', icon: '👥' });
     }
     
-    // Daily Reflections - visible to ALL authenticated users (personal/private)
-    modules.push({ label: 'Daily Reflections', path: '/daily-reflections', icon: '📓' });
+    // Daily Reflections - check permissions
+    if (permissionsService.canAccessModule('daily_reflections')) {
+      modules.push({ label: 'Daily Reflections', path: '/daily-reflections', icon: '📝' });
+    }
     
     if (isAdmin || isSuperAdmin) {
       // Presentations - Admin and SuperAdmin only
