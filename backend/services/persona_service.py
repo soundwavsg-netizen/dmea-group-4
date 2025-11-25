@@ -27,10 +27,15 @@ class PersonaService:
     def get_llm_client(self):
         """Lazy init LLM client"""
         if self.llm_client is None:
-            self.llm_client = OpenAI(
-                api_key=settings.EMERGENT_LLM_KEY,
-                base_url=settings.LLM_BASE_URL
-            )
+            openai_client = self._get_openai_client()
+            if openai_client:
+                self.llm_client = openai_client.__class__(
+                    api_key=settings.EMERGENT_LLM_KEY,
+                    base_url=settings.LLM_BASE_URL
+                )
+            else:
+                print("Warning: Cannot initialize LLM client, OpenAI not available")
+                self.llm_client = None
         return self.llm_client
     
     def generate_persona_from_cluster(self, cluster: Dict[str, Any], cluster_num: int) -> Dict[str, Any]:
