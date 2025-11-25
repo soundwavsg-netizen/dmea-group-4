@@ -10,6 +10,8 @@ const ManageInsights = () => {
   const [insightToDelete, setInsightToDelete] = useState(null);
   const [sortField, setSortField] = useState('created_at');
   const [sortDirection, setSortDirection] = useState('desc');
+  const [detailModalOpen, setDetailModalOpen] = useState(false);
+  const [selectedInsight, setSelectedInsight] = useState(null);
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
   const session = authService.getSession();
