@@ -163,7 +163,7 @@ const PresentationsHome = () => {
                     <span>View {presentation.file_type === 'video' ? 'Video' : 'Presentation'}</span>
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </div>
-                </a>
+                </button>
               </div>
             );
           })}
