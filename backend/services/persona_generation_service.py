@@ -261,6 +261,7 @@ def generate_personas_from_insights(n_clusters: int = 3) -> Dict[str, Any]:
         # Step 5-8: Generate personas for each cluster
         personas_created = []
         existing_names = []
+        personas_data = []  # For star persona selection
         
         # Clear old personas
         old_personas = db.collection('personas').stream()
