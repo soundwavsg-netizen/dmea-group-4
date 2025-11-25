@@ -16,7 +16,7 @@ if not firebase_admin._apps:
             cred = credentials.Certificate(cred_dict)
             # Initialize with storage bucket
             firebase_admin.initialize_app(cred, {
-                'storageBucket': 'dmea-group-4.appspot.com'
+                'storageBucket': 'dmea-group-4.firebasestorage.app'
             })
             print("✓ Firebase initialized from FIREBASE_ADMIN_SDK environment variable")
         except json.JSONDecodeError as e:
@@ -30,7 +30,7 @@ if not firebase_admin._apps:
             cred = credentials.Certificate(cred_path)
             # Initialize with storage bucket
             firebase_admin.initialize_app(cred, {
-                'storageBucket': 'dmea-group-4.appspot.com'
+                'storageBucket': 'dmea-group-4.firebasestorage.app'
             })
             print(f"✓ Firebase initialized from file: {cred_path}")
         else:
