@@ -323,6 +323,27 @@ def generate_personas_from_insights(n_clusters: int = 3) -> Dict[str, Any]:
                 if data['category'] in ['dominant', 'strong']
             ]
             
+            # SAFETY CHECK: Ensure at least 1 motivation and 1 pain
+            if not dominant_motivations and wts_data['motivation_wts']:
+                # Fallback: Get motivation with highest frequency
+                all_motivations = sorted(
+                    wts_data['motivation_wts'].items(),
+                    key=lambda x: x[1]['frequency'],
+                    reverse=True
+                )
+                if all_motivations:
+                    dominant_motivations = [all_motivations[0][0]]
+            
+            if not dominant_pains and wts_data['pain_wts']:
+                # Fallback: Get pain with highest frequency
+                all_pains = sorted(
+                    wts_data['pain_wts'].items(),
+                    key=lambda x: x[1]['frequency'],
+                    reverse=True
+                )
+                if all_pains:
+                    dominant_pains = [all_pains[0][0]]
+            
             buying_trigger = generate_buying_trigger(
                 wts_data['motivation_wts'],
                 wts_data['intent_category']
