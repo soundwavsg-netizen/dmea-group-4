@@ -29,6 +29,7 @@ const Report = () => {
       const session = authService.getSession();
       const response = await axios.get(`${API}/report`, {
         headers: {
+          'X-User-Name': session.username,
           'X-User-Role': session.role
         }
       });
