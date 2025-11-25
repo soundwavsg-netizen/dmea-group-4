@@ -73,13 +73,15 @@ const Report = () => {
           <div className="text-center max-w-md">
             <h2 className="text-2xl font-bold text-[#1F1A1A] mb-4">No Insights Yet</h2>
             <p className="text-[#6C5F5F] mb-6">Start by adding your first user research insight.</p>
-            <button
-              onClick={() => navigate('/add-insight')}
-              className="px-6 py-3 bg-[#A62639] text-white rounded-full hover:bg-[#8E1F31]"
-              data-testid="add-insight-btn"
-            >
-              Add Insight
-            </button>
+            {(isSuperAdmin || permissionsService.canPerformAction('buyer_persona', 'add_insight')) && (
+              <button
+                onClick={() => navigate('/add-insight')}
+                className="px-6 py-3 bg-[#A62639] text-white rounded-full hover:bg-[#8E1F31]"
+                data-testid="add-insight-btn"
+              >
+                Add Insight
+              </button>
+            )}
           </div>
         </div>
     );
