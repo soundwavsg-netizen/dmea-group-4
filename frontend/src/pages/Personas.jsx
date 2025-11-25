@@ -206,7 +206,7 @@ const Personas = () => {
               )}
               <div className="p-6 md:p-8">
                 {/* Header with Edit Button */}
-                <div className="flex justify-between items-start mb-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
                   <div className="flex flex-col sm:flex-row items-start gap-6 flex-1">
                     <img 
                       src={persona.persona_animated_image_url} 
