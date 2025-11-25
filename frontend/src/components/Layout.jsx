@@ -16,11 +16,11 @@ const Layout = ({ children }) => {
   // Determine if we're in Presentations module
   const isInPresentations = location.pathname.startsWith('/presentations');
   
-  // Show Buyer Persona sub-nav for admin/superadmin or if user is on allowed pages
-  const showBuyerPersonaNav = isInBuyerPersona && (isAdminOrAbove || location.pathname === '/' || location.pathname === '/add-insight');
+  // Show Buyer Persona sub-nav whenever in buyer persona module (permissions will filter tabs)
+  const showBuyerPersonaNav = isInBuyerPersona;
   
-  // Show Presentations sub-nav only for admin/superadmin
-  const showPresentationsNav = isInPresentations && isAdminOrAbove;
+  // Show Presentations sub-nav whenever in presentations module (permissions will filter tabs)
+  const showPresentationsNav = isInPresentations;
 
   return (
     <div className="flex h-screen overflow-hidden w-full max-w-full">
