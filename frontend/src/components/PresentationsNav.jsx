@@ -78,28 +78,39 @@ const PresentationsNav = () => {
               display: none;
             }
           `}</style>
-          <NavLink
-            to="/presentations"
-            className={({ isActive }) => activeLinkStyle(isActive)}
-            data-testid="presentations-nav-home"
-            end
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/presentations/friendly-brief"
-            className={({ isActive }) => activeLinkStyle(isActive)}
-            data-testid="presentations-nav-friendly"
-          >
-            Friendly Brief
-          </NavLink>
-          <NavLink
-            to="/presentations/clustering-technical"
-            className={({ isActive }) => activeLinkStyle(isActive)}
-            data-testid="presentations-nav-technical"
-          >
-            Technical Slides
-          </NavLink>
+          {/* Home tab - check permission */}
+          {(isSuperAdmin || permissionsService.canAccessTab('presentations', 'home')) && (
+            <NavLink
+              to="/presentations"
+              className={({ isActive }) => activeLinkStyle(isActive)}
+              data-testid="presentations-nav-home"
+              end
+            >
+              Home
+            </NavLink>
+          )}
+          
+          {/* Friendly Brief tab - check permission */}
+          {(isSuperAdmin || permissionsService.canAccessTab('presentations', 'friendly_brief')) && (
+            <NavLink
+              to="/presentations/friendly-brief"
+              className={({ isActive }) => activeLinkStyle(isActive)}
+              data-testid="presentations-nav-friendly"
+            >
+              Friendly Brief
+            </NavLink>
+          )}
+          
+          {/* Technical Slides tab - check permission */}
+          {(isSuperAdmin || permissionsService.canAccessTab('presentations', 'clustering_technical')) && (
+            <NavLink
+              to="/presentations/clustering-technical"
+              className={({ isActive }) => activeLinkStyle(isActive)}
+              data-testid="presentations-nav-technical"
+            >
+              Technical Slides
+            </NavLink>
+          )}
           
           {/* Dynamic Custom Presentation Tabs */}
           {customPresentations.map((presentation) => (
