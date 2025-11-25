@@ -37,8 +37,15 @@ const Sidebar = () => {
   const getModules = () => {
     const modules = [];
     
-    // Dashboard - visible to all
-    modules.push({ label: 'Dashboard', path: '/', icon: '🏠' });
+    // Only show modules if permissions are loaded
+    if (!permissionsLoaded) {
+      return modules; // Return empty until permissions load
+    }
+    
+    // Dashboard - check permissions
+    if (permissionsService.canAccessModule('dashboard')) {
+      modules.push({ label: 'Dashboard', path: '/', icon: '🏠' });
+    }
     
     // Buyer Persona - visible to all authenticated users
     modules.push({ label: 'Buyer Persona', path: '/report', icon: '👥' });
