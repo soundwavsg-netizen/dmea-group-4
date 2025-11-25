@@ -110,12 +110,6 @@ const PresentationViewerModal = ({ isOpen, onClose, presentation }) => {
           )}
         </div>
 
-        {/* Footer Note */}
-        <div className="px-6 py-3 bg-gray-50 border-t border-gray-200 flex-shrink-0">
-          <p className="text-xs text-[#6C5F5F] text-center">
-            If the presentation doesn't load, click "Open Externally" to view in a new tab
-          </p>
-        </div>
       </div>
     </div>
   );
