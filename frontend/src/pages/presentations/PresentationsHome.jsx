@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FileText, GitBranch, ArrowRight } from 'lucide-react';
+import { FileText, GitBranch, ArrowRight, Plus, Video, Trash2 } from 'lucide-react';
+import axios from 'axios';
+import authService from '../../services/authService';
+import AddPresentationModal from '../../components/AddPresentationModal';
 
 const PresentationsHome = () => {
+  const [customPresentations, setCustomPresentations] = useState([]);
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+  const session = authService.getSession();
+  const isSuperAdmin = authService.isSuperAdmin();
+
   const presentations = [
     {
       id: 1,
