@@ -12,6 +12,12 @@ from models import (
     ReportResponse,
     GeneratePersonasResponse
 )
+from models_permissions import (
+    UserPermissionsResponse, 
+    UpdatePermissionsRequest, 
+    UserListItem,
+    ModulePermission
+)
 from models_daily_reflections import (
     DailyReflectionCreate,
     DailyReflectionUpdate,
