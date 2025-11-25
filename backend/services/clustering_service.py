@@ -7,7 +7,6 @@ from sklearn.cluster import KMeans
 from typing import List, Dict, Any, Tuple
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
-from firebase_client import db
 
 # Platform Multipliers (System A)
 PLATFORM_MULTIPLIERS = {
