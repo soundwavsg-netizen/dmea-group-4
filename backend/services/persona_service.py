@@ -1,6 +1,5 @@
 from firebase_client import db
 from firebase_admin import firestore
-from openai import OpenAI
 from config import settings
 from collections import defaultdict
 from typing import List, Dict, Any
@@ -12,6 +11,18 @@ class PersonaService:
     
     def __init__(self):
         self.llm_client = None
+        self._openai_client = None
+    
+    def _get_openai_client(self):
+        """Lazy load OpenAI client to avoid startup failures"""
+        if self._openai_client is None:
+            try:
+                from openai import OpenAI
+                self._openai_client = OpenAI()
+            except ImportError:
+                print("Warning: OpenAI not available, persona generation may fail")
+                self._openai_client = None
+        return self._openai_client
     
     def get_llm_client(self):
         """Lazy init LLM client"""
