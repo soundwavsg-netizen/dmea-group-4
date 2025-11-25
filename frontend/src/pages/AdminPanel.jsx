@@ -206,13 +206,13 @@ const AdminPanel = () => {
         </div>
 
         {error && (
-          <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
-            {error}
+          <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg font-semibold text-lg">
+            ⚠️ Error: {error}
           </div>
         )}
         {successMessage && (
-          <div className="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
-            {successMessage}
+          <div className="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg font-semibold text-lg">
+            ✅ Success: {successMessage}
           </div>
         )}
 
