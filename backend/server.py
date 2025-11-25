@@ -139,35 +139,23 @@ def get_report(x_user_role: Optional[str] = Header(None)):
 
 @app.post("/api/personas/generate", response_model=GeneratePersonasResponse)
 def generate_personas(x_user_role: Optional[str] = Header(None)):
-    """Generate personas from insights using clustering and LLM - Admin/SuperAdmin only"""
+    """Generate personas from insights using K-Means clustering - Admin/SuperAdmin only"""
     check_admin_access(x_user_role)
     try:
-        # Step 1: Create clusters
-        clusters = ClusteringService.create_clusters()
+        from services.persona_generation_service import generate_personas_from_insights
         
-        if not clusters:
-            return GeneratePersonasResponse(
-                success=False,
-                message="Not enough data to generate personas. Need more insights with varied demographics.",
-                personas_count=0
-            )
-        
-        # Step 2: Generate personas from clusters
-        personas = []
-        for i, cluster in enumerate(clusters, 1):
-            persona = persona_service.generate_persona_from_cluster(cluster, i)
-            personas.append(persona)
-        
-        # Step 3: Save personas (overwrite previous)
-        PersonaService.save_personas(personas)
+        # Run complete persona generation workflow
+        result = generate_personas_from_insights(n_clusters=3)
         
         return GeneratePersonasResponse(
-            success=True,
-            message=f"Successfully generated {len(personas)} personas",
-            personas_count=len(personas)
+            success=result['success'],
+            message=result['message'],
+            personas_count=result['personas_created']
         )
         
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/personas", response_model=List[PersonaResponse])
