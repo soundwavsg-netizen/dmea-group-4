@@ -39,6 +39,67 @@ const Personas = () => {
     }
   };
 
+  const handleEdit = (persona) => {
+    setEditingPersona(persona.id);
+    setEditedData({
+      name: persona.name,
+      summary_description: persona.summary_description,
+      buying_trigger: persona.buying_trigger,
+      dominant_motivations: persona.dominant_motivations.join(', '),
+      dominant_pain_points: persona.dominant_pain_points.join(', '),
+      behaviour_patterns: persona.behaviour_patterns.join(', '),
+      channel_preference: persona.channel_preference.join(', '),
+      top_products: persona.top_products.join(', '),
+      representative_quotes: persona.representative_quotes.join(' | ')
+    });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingPersona(null);
+    setEditedData({});
+  };
+
+  const handleSave = async (personaId) => {
+    try {
+      setSaving(true);
+      
+      // Convert comma-separated strings back to arrays
+      const updates = {
+        name: editedData.name,
+        summary_description: editedData.summary_description,
+        buying_trigger: editedData.buying_trigger,
+        dominant_motivations: editedData.dominant_motivations.split(',').map(s => s.trim()).filter(s => s),
+        dominant_pain_points: editedData.dominant_pain_points.split(',').map(s => s.trim()).filter(s => s),
+        behaviour_patterns: editedData.behaviour_patterns.split(',').map(s => s.trim()).filter(s => s),
+        channel_preference: editedData.channel_preference.split(',').map(s => s.trim()).filter(s => s),
+        top_products: editedData.top_products.split(',').map(s => s.trim()).filter(s => s),
+        representative_quotes: editedData.representative_quotes.split('|').map(s => s.trim()).filter(s => s)
+      };
+
+      await axios.put(`${API}/personas/${personaId}`, updates, {
+        headers: {
+          'X-User-Role': session.role
+        }
+      });
+
+      // Refresh personas
+      await fetchPersonas();
+      setEditingPersona(null);
+      setEditedData({});
+    } catch (err) {
+      alert('Failed to save: ' + (err.response?.data?.detail || err.message));
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleFieldChange = (field, value) => {
+    setEditedData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen w-full bg-[#F8F6F5] flex items-center justify-center">
