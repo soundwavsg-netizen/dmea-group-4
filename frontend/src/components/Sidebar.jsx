@@ -47,8 +47,10 @@ const Sidebar = () => {
       modules.push({ label: 'Dashboard', path: '/', icon: '🏠' });
     }
     
-    // Buyer Persona - visible to all authenticated users
-    modules.push({ label: 'Buyer Persona', path: '/report', icon: '👥' });
+    // Buyer Persona - check permissions
+    if (permissionsService.canAccessModule('buyer_persona')) {
+      modules.push({ label: 'Buyer Persona', path: '/report', icon: '👥' });
+    }
     
     // Daily Reflections - visible to ALL authenticated users (personal/private)
     modules.push({ label: 'Daily Reflections', path: '/daily-reflections', icon: '📓' });
