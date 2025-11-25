@@ -192,22 +192,22 @@ const Personas = () => {
         {/* Personas Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           {personas.map((persona, index) => {
-            const isBestPersona = index === 0; // First persona after sorting is the best
+            const isStarPersona = persona.is_star_persona; // Star persona from backend
             return (
               <div
                 key={persona.id}
                 className={`flex flex-col items-stretch justify-start rounded-xl shadow-lg bg-white/80 backdrop-blur-sm overflow-hidden transition-all hover:shadow-2xl ${
-                  isBestPersona 
-                    ? 'border-[#FFB6C1] shadow-[0_0_25px_rgba(255,182,193,0.6)] ring-2 ring-[#FFB6C1]/40' 
+                  isStarPersona 
+                    ? 'border-[#DDA0DD] shadow-[0_0_20px_rgba(221,160,221,0.5)] ring-2 ring-[#DDA0DD]/30' 
                     : 'border border-[#E0AFA0]'
                 }`}
-                data-testid={isBestPersona ? 'best-persona' : `persona-card-${index}`}
+                data-testid={isStarPersona ? 'star-persona' : `persona-card-${index}`}
               >
-              {/* Best Persona Badge */}
-              {isBestPersona && (
-                <div className="bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] px-4 py-2 text-center">
-                  <p className="text-white text-xs font-bold tracking-wide drop-shadow-md">
-                    ⭐ BEST PERSONA - Largest User Group
+              {/* Star Persona Badge */}
+              {isStarPersona && (
+                <div className="bg-gradient-to-r from-[#DDA0DD] to-[#E6E6FA] px-4 py-2 text-center">
+                  <p className="text-[#4B0082] text-xs font-bold tracking-wide drop-shadow-sm">
+                    ⭐ STAR PERSONA - Highest TCSS Score ({(persona.tcss || 0).toFixed(2)})
                   </p>
                 </div>
               )}
