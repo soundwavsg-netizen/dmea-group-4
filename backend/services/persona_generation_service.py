@@ -308,10 +308,14 @@ def generate_personas_from_insights(n_clusters: int = 3) -> Dict[str, Any]:
             persona_profile = clustering.paint_persona_profile(cluster_insights)
             
             # Step 8: Generate persona fields
-            persona_name = generate_persona_name(existing_names)
+            persona_name = generate_persona_name(persona_profile, wts_data['motivation_wts'])
             existing_names.append(persona_name)
             
-            persona_image = generate_persona_image(cluster_idx)
+            # Generate image based on demographics
+            persona_image = generate_persona_image(
+                persona_profile.get('demographic_profile', {}),
+                cluster_idx
+            )
             
             # Get dominant motivations and pains for persona
             dominant_motivations = [
