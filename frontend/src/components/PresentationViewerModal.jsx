@@ -50,7 +50,9 @@ const PresentationViewerModal = ({ isOpen, onClose, presentation }) => {
   };
 
   const isVideoFile = () => {
-    const extension = presentation.file_url.split('.').pop().toLowerCase();
+    // Extract extension before query parameters
+    const urlWithoutParams = presentation.file_url.split('?')[0];
+    const extension = urlWithoutParams.split('.').pop().toLowerCase();
     return ['mp4', 'webm', 'mov', 'avi'].includes(extension);
   };
 
