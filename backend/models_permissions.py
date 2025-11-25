@@ -97,6 +97,7 @@ ADMIN_PERMISSIONS = {
             "add_insight": True,
             "edit_insight": True,
             "delete_insight": True,
+            "view_personas": True,
             "generate_persona": True,
             "edit_persona": False  # Only superadmin can edit
         }
