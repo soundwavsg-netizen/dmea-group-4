@@ -5,8 +5,11 @@ import authService from '../services/authService';
 
 const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
   const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
   const [fileType, setFileType] = useState('slides'); // 'slides' or 'video'
+  const [uploadMethod, setUploadMethod] = useState('url'); // 'url' or 'file'
   const [fileUrl, setFileUrl] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
