@@ -1,11 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 const InfoTooltip = ({ content, title }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [position, setPosition] = useState({ top: 0, left: 0 });
+  const buttonRef = useRef(null);
+  const tooltipRef = useRef(null);
+
+  useEffect(() => {
+    if (isOpen && buttonRef.current && tooltipRef.current) {
+      const buttonRect = buttonRef.current.getBoundingClientRect();
+      const tooltipRect = tooltipRef.current.getBoundingClientRect();
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+
+      let top = buttonRect.bottom + 8; // 8px below button
+      let left = buttonRect.left;
+
+      // Check if tooltip goes off right edge
+      if (left + tooltipRect.width > viewportWidth - 16) {
+        left = viewportWidth - tooltipRect.width - 16;
+      }
+
+      // Check if tooltip goes off left edge
+      if (left < 16) {
+        left = 16;
+      }
+
+      // Check if tooltip goes off bottom
+      if (top + tooltipRect.height > viewportHeight - 16) {
+        top = buttonRect.top - tooltipRect.height - 8; // Show above button
+      }
+
+      // Check if tooltip goes off top
+      if (top < 16) {
+        top = 16;
+      }
+
+      setPosition({ top, left });
+    }
+  }, [isOpen]);
 
   return (
     <div className="relative inline-block ml-2">
       <button
+        ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
@@ -19,16 +57,16 @@ const InfoTooltip = ({ content, title }) => {
       
       {isOpen && (
         <div 
-          className="fixed z-50 bg-white rounded-lg shadow-xl border border-[#E0AFA0]/30 p-4"
+          ref={tooltipRef}
+          className="fixed z-50 bg-white rounded-lg shadow-xl border border-[#E0AFA0]/30 p-4 max-w-md"
           style={{
-            left: '1rem',
-            right: '1rem',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            maxHeight: '80vh',
-            overflowY: 'auto',
-            overflowX: 'hidden'
+            top: `${position.top}px`,
+            left: `${position.left}px`,
+            maxHeight: '400px',
+            overflowY: 'auto'
           }}
+          onMouseEnter={() => setIsOpen(true)}
+          onMouseLeave={() => setIsOpen(false)}
         >
           <div className="text-sm text-[#1F1A1A] whitespace-pre-wrap break-words">
             {content}
