@@ -17,6 +17,7 @@ const Report = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [reportData, setReportData] = useState(null);
+  const isSuperAdmin = authService.isSuperAdmin();
 
   useEffect(() => {
     fetchReport();
