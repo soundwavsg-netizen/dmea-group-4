@@ -431,8 +431,11 @@ def change_password(
 
 class PresentationCreate(BaseModel):
     name: str
-    file_url: str
+    description: str
+    file_url: Optional[str] = None
     file_type: str  # 'slides' or 'video'
+    file_data: Optional[str] = None  # Base64 encoded file
+    filename: Optional[str] = None
 
 @app.get("/api/presentations")
 def get_presentations(
@@ -451,15 +454,22 @@ def create_presentation(
     presentation: PresentationCreate,
     x_user_name: Optional[str] = Header(None)
 ):
-    """Create a new custom presentation"""
+    """Create a new custom presentation with file upload or URL"""
     if not x_user_name:
         raise HTTPException(status_code=401, detail="User not authenticated")
+    
+    # Validate that either file_data or file_url is provided
+    if not presentation.file_data and not presentation.file_url:
+        raise HTTPException(status_code=400, detail="Either file upload or URL is required")
     
     try:
         new_presentation = presentations_service.create_presentation(
             name=presentation.name,
+            description=presentation.description,
             file_url=presentation.file_url,
             file_type=presentation.file_type,
+            file_data=presentation.file_data,
+            filename=presentation.filename,
             created_by=x_user_name
         )
         return new_presentation
