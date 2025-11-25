@@ -146,7 +146,7 @@ def reset_user_permissions(username: str) -> bool:
         True if successful
     """
     try:
-        doc_ref = db.collection('permissions').document(username)
+        doc_ref = db.collection('user_permissions').document(username)
         doc_ref.delete()
         return True
     except Exception as e:
