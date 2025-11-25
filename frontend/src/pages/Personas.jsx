@@ -205,70 +205,69 @@ const Personas = () => {
                 </div>
               )}
               <div className="p-6 md:p-8">
-                {/* Header with Edit Button */}
-                <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
-                  <div className="flex flex-col sm:flex-row items-start gap-6 flex-1">
-                    <img 
-                      src={persona.persona_animated_image_url} 
-                      alt={persona.name}
-                      className="w-24 h-24 rounded-full flex-shrink-0"
-                    />
-                    <div className="flex flex-col gap-2 pt-2 flex-1">
-                      {editingPersona === persona.id ? (
-                        <input
-                          type="text"
-                          value={editedData.name}
-                          onChange={(e) => handleFieldChange('name', e.target.value)}
-                          className="text-3xl font-bold text-[#1F1A1A] border-b-2 border-[#A62639] focus:outline-none bg-transparent"
-                        />
-                      ) : (
-                        <h2 className="text-3xl font-bold text-[#1F1A1A]">{persona.name}</h2>
-                      )}
-                      {editingPersona === persona.id ? (
-                        <textarea
-                          value={editedData.representative_quotes}
-                          onChange={(e) => handleFieldChange('representative_quotes', e.target.value)}
-                          placeholder="Pipe-separated quotes: Quote 1 | Quote 2"
-                          rows={2}
-                          className="text-base italic text-[#6C5F5F] p-2 border-2 border-[#A62639] rounded-lg focus:outline-none resize-none"
-                        />
-                      ) : (
-                        persona.representative_quotes && persona.representative_quotes.length > 0 && (
-                          <p className="text-base italic text-[#6C5F5F]">"{persona.representative_quotes[0]}"</p>
-                        )
-                      )}
-                    </div>
-                  </div>
-                  
-                  {isSuperAdmin && (
-                    <div className="flex gap-2 flex-shrink-0">
-                      {editingPersona === persona.id ? (
-                        <>
-                          <button
-                            onClick={() => handleSave(persona.id)}
-                            disabled={saving}
-                            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 text-sm whitespace-nowrap"
-                          >
-                            {saving ? 'Saving...' : 'Save'}
-                          </button>
-                          <button
-                            onClick={handleCancelEdit}
-                            disabled={saving}
-                            className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50 text-sm whitespace-nowrap"
-                          >
-                            Cancel
-                          </button>
-                        </>
-                      ) : (
+                {/* Edit Buttons - Always at top right */}
+                {isSuperAdmin && (
+                  <div className="flex justify-end gap-2 mb-4">
+                    {editingPersona === persona.id ? (
+                      <>
                         <button
-                          onClick={() => handleEdit(persona)}
-                          className="px-4 py-2 bg-[#A62639] text-white rounded-lg hover:bg-[#8a1f2d] transition-colors text-sm whitespace-nowrap"
+                          onClick={() => handleSave(persona.id)}
+                          disabled={saving}
+                          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 text-sm font-medium"
                         >
-                          Edit
+                          {saving ? 'Saving...' : 'Save'}
                         </button>
-                      )}
-                    </div>
-                  )}
+                        <button
+                          onClick={handleCancelEdit}
+                          disabled={saving}
+                          className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50 text-sm font-medium"
+                        >
+                          Cancel
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => handleEdit(persona)}
+                        className="px-4 py-2 bg-[#A62639] text-white rounded-lg hover:bg-[#8a1f2d] transition-colors text-sm font-medium"
+                      >
+                        Edit
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                {/* Header */}
+                <div className="flex flex-col sm:flex-row items-start gap-6 mb-6">
+                  <img 
+                    src={persona.persona_animated_image_url} 
+                    alt={persona.name}
+                    className="w-24 h-24 rounded-full flex-shrink-0"
+                  />
+                  <div className="flex flex-col gap-2 pt-2 flex-1">
+                    {editingPersona === persona.id ? (
+                      <input
+                        type="text"
+                        value={editedData.name}
+                        onChange={(e) => handleFieldChange('name', e.target.value)}
+                        className="text-3xl font-bold text-[#1F1A1A] border-b-2 border-[#A62639] focus:outline-none bg-transparent"
+                      />
+                    ) : (
+                      <h2 className="text-3xl font-bold text-[#1F1A1A]">{persona.name}</h2>
+                    )}
+                    {editingPersona === persona.id ? (
+                      <textarea
+                        value={editedData.representative_quotes}
+                        onChange={(e) => handleFieldChange('representative_quotes', e.target.value)}
+                        placeholder="Pipe-separated quotes: Quote 1 | Quote 2"
+                        rows={2}
+                        className="text-base italic text-[#6C5F5F] p-2 border-2 border-[#A62639] rounded-lg focus:outline-none resize-none"
+                      />
+                    ) : (
+                      persona.representative_quotes && persona.representative_quotes.length > 0 && (
+                        <p className="text-base italic text-[#6C5F5F]">"{persona.representative_quotes[0]}"</p>
+                      )
+                    )}
+                  </div>
                 </div>
 
                 {/* Summary Description */}
