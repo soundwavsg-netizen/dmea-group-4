@@ -1,10 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import authService from '../services/authService';
+import permissionsService from '../services/permissionsService';
 
 const BuyerPersonaNav = () => {
-  const isUser = authService.isUser();
-  const isAdminOrAbove = authService.isAdminOrAbove();
+  const isSuperAdmin = authService.isSuperAdmin();
   
   const activeLinkStyle = (isActive) => 
     `px-4 py-3 md:py-2 font-semibold text-sm md:text-base transition-all whitespace-nowrap ${
@@ -36,52 +36,70 @@ const BuyerPersonaNav = () => {
               display: none;
             }
           `}</style>
-          <NavLink
-            to="/"
-            className={({ isActive }) => activeLinkStyle(isActive)}
-            data-testid="persona-nav-home"
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/add-insight"
-            className={({ isActive }) => activeLinkStyle(isActive)}
-            data-testid="persona-nav-add-insight"
-          >
-            Add Insight
-          </NavLink>
-          {/* Only show Report, Persona Generator, and Personas to admin and superadmin */}
-          {isAdminOrAbove && (
-            <>
-              <NavLink
-                to="/report"
-                className={({ isActive }) => activeLinkStyle(isActive)}
-                data-testid="persona-nav-report"
-              >
-                Report
-              </NavLink>
-              <NavLink
-                to="/persona-generator"
-                className={({ isActive }) => activeLinkStyle(isActive)}
-                data-testid="persona-nav-generator"
-              >
-                Persona Generator
-              </NavLink>
-              <NavLink
-                to="/personas"
-                className={({ isActive }) => activeLinkStyle(isActive)}
-                data-testid="persona-nav-personas"
-              >
-                Personas
-              </NavLink>
-              <NavLink
-                to="/manage-insights"
-                className={({ isActive }) => activeLinkStyle(isActive)}
-                data-testid="persona-nav-manage"
-              >
-                Manage Insights
-              </NavLink>
-            </>
+          {/* Home tab - check permission */}
+          {(isSuperAdmin || permissionsService.canAccessTab('buyer_persona', 'home')) && (
+            <NavLink
+              to="/"
+              className={({ isActive }) => activeLinkStyle(isActive)}
+              data-testid="persona-nav-home"
+            >
+              Home
+            </NavLink>
+          )}
+          
+          {/* Add Insight tab - check permission */}
+          {(isSuperAdmin || permissionsService.canAccessTab('buyer_persona', 'add_insight')) && (
+            <NavLink
+              to="/add-insight"
+              className={({ isActive }) => activeLinkStyle(isActive)}
+              data-testid="persona-nav-add-insight"
+            >
+              Add Insight
+            </NavLink>
+          )}
+          
+          {/* Report tab - check permission */}
+          {(isSuperAdmin || permissionsService.canAccessTab('buyer_persona', 'report')) && (
+            <NavLink
+              to="/report"
+              className={({ isActive }) => activeLinkStyle(isActive)}
+              data-testid="persona-nav-report"
+            >
+              Report
+            </NavLink>
+          )}
+          
+          {/* Persona Generator tab - check permission */}
+          {(isSuperAdmin || permissionsService.canAccessTab('buyer_persona', 'persona_generator')) && (
+            <NavLink
+              to="/persona-generator"
+              className={({ isActive }) => activeLinkStyle(isActive)}
+              data-testid="persona-nav-generator"
+            >
+              Persona Generator
+            </NavLink>
+          )}
+          
+          {/* Personas tab - check permission */}
+          {(isSuperAdmin || permissionsService.canAccessTab('buyer_persona', 'personas')) && (
+            <NavLink
+              to="/personas"
+              className={({ isActive }) => activeLinkStyle(isActive)}
+              data-testid="persona-nav-personas"
+            >
+              Personas
+            </NavLink>
+          )}
+          
+          {/* Manage Insights tab - check permission */}
+          {(isSuperAdmin || permissionsService.canAccessTab('buyer_persona', 'manage_insights')) && (
+            <NavLink
+              to="/manage-insights"
+              className={({ isActive }) => activeLinkStyle(isActive)}
+              data-testid="persona-nav-manage"
+            >
+              Manage Insights
+            </NavLink>
           )}
         </div>
       </div>
