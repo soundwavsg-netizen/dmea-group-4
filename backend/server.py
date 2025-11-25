@@ -226,9 +226,17 @@ def generate_personas(x_user_role: Optional[str] = Header(None)):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/personas", response_model=List[PersonaResponse])
-def get_all_personas(x_user_role: Optional[str] = Header(None)):
-    """Get all generated personas - Admin/SuperAdmin only"""
-    check_admin_access(x_user_role)
+def get_all_personas(
+    x_user_name: Optional[str] = Header(None),
+    x_user_role: Optional[str] = Header(None)
+):
+    """Get all generated personas - Check view_personas permission"""
+    check_permission_access(
+        x_user_name=x_user_name,
+        x_user_role=x_user_role,
+        required_module='buyer_persona',
+        required_action='view_personas'
+    )
     try:
         personas = []
         docs = db.collection('personas').stream()
