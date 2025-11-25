@@ -320,7 +320,6 @@ const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
                   type="file"
                   onChange={handleFileChange}
                   accept={fileType === 'slides' ? '.pdf,.ppt,.pptx' : '.mp4,.mov,.avi,.webm'}
-                  required={uploadMethod === 'file'}
                   className="hidden"
                   id="file-upload"
                 />
