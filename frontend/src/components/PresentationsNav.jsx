@@ -12,8 +12,28 @@ const PresentationsNav = () => {
   const isSuperAdmin = authService.isSuperAdmin();
 
   useEffect(() => {
+    const loadPermissions = async () => {
+      if (session?.username && session?.role) {
+        await permissionsService.fetchPermissions(session.username, session.role);
+        setPermissionsLoaded(true);
+      }
+    };
+    loadPermissions();
     fetchCustomPresentations();
-  }, []);
+  }, [session?.username, session?.role]);
+  
+  // Don't render tabs until permissions are loaded
+  if (!permissionsLoaded && !isSuperAdmin) {
+    return (
+      <div className="bg-white border-b border-[#E0AFA0]/30 sticky top-0" style={{ zIndex: 1000 }}>
+        <div className="w-full px-3 md:px-6 lg:px-8 pl-14 lg:pl-6">
+          <div className="flex items-center gap-4 md:gap-6 py-3">
+            <span className="text-[#6C5F5F] text-sm">Loading...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const fetchCustomPresentations = async () => {
     try {
