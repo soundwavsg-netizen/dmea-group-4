@@ -1,0 +1,165 @@
+"""
+Permission Models for Admin Panel
+Defines user permissions for modules, tabs, and actions
+"""
+from pydantic import BaseModel
+from typing import Dict, List, Optional
+
+class ModulePermission(BaseModel):
+    """Permissions for a single module"""
+    enabled: bool = False
+    tabs: Dict[str, bool] = {}  # Tab name -> enabled
+    actions: Dict[str, bool] = {}  # Action name -> enabled
+
+class UserPermissions(BaseModel):
+    """Complete permission set for a user"""
+    username: str
+    role: str
+    modules: Dict[str, ModulePermission] = {}
+    
+class UserPermissionsResponse(BaseModel):
+    """Response model for user permissions"""
+    username: str
+    role: str
+    modules: Dict[str, ModulePermission]
+
+class UpdatePermissionsRequest(BaseModel):
+    """Request to update user permissions"""
+    username: str
+    modules: Dict[str, ModulePermission]
+
+class UserListItem(BaseModel):
+    """User item in admin panel list"""
+    username: str
+    role: str
+    has_custom_permissions: bool
+    modules_enabled: List[str]
+
+# Default permissions for new users
+DEFAULT_PERMISSIONS = {
+    "dashboard": ModulePermission(enabled=True, tabs={}, actions={}),
+    "buyer_persona": ModulePermission(
+        enabled=True, 
+        tabs={
+            "add_insight": True,
+            "manage_insights": False,
+            "persona_generator": False,
+            "personas": False
+        },
+        actions={
+            "add_insight": True,
+            "edit_insight": False,
+            "delete_insight": False,
+            "generate_persona": False,
+            "edit_persona": False
+        }
+    ),
+    "daily_reflections": ModulePermission(
+        enabled=False,
+        tabs={},
+        actions={
+            "add": False,
+            "edit": False,
+            "delete": False
+        }
+    ),
+    "presentations": ModulePermission(
+        enabled=False,
+        tabs={
+            "home": False,
+            "friendly_brief": False,
+            "clustering_technical": False
+        },
+        actions={
+            "add": False,
+            "delete": False
+        }
+    ),
+    "reports": ModulePermission(enabled=False, tabs={}, actions={})
+}
+
+# Admin default permissions (full access)
+ADMIN_PERMISSIONS = {
+    "dashboard": ModulePermission(enabled=True, tabs={}, actions={}),
+    "buyer_persona": ModulePermission(
+        enabled=True, 
+        tabs={
+            "add_insight": True,
+            "manage_insights": True,
+            "persona_generator": True,
+            "personas": True
+        },
+        actions={
+            "add_insight": True,
+            "edit_insight": True,
+            "delete_insight": True,
+            "generate_persona": True,
+            "edit_persona": False  # Only superadmin can edit
+        }
+    ),
+    "daily_reflections": ModulePermission(
+        enabled=True,
+        tabs={},
+        actions={
+            "add": True,
+            "edit": True,
+            "delete": True
+        }
+    ),
+    "presentations": ModulePermission(
+        enabled=True,
+        tabs={
+            "home": True,
+            "friendly_brief": True,
+            "clustering_technical": True
+        },
+        actions={
+            "add": True,
+            "delete": True
+        }
+    ),
+    "reports": ModulePermission(enabled=True, tabs={}, actions={})
+}
+
+# Superadmin has full access to everything
+SUPERADMIN_PERMISSIONS = {
+    "dashboard": ModulePermission(enabled=True, tabs={}, actions={}),
+    "buyer_persona": ModulePermission(
+        enabled=True, 
+        tabs={
+            "add_insight": True,
+            "manage_insights": True,
+            "persona_generator": True,
+            "personas": True
+        },
+        actions={
+            "add_insight": True,
+            "edit_insight": True,
+            "delete_insight": True,
+            "generate_persona": True,
+            "edit_persona": True
+        }
+    ),
+    "daily_reflections": ModulePermission(
+        enabled=True,
+        tabs={},
+        actions={
+            "add": True,
+            "edit": True,
+            "delete": True
+        }
+    ),
+    "presentations": ModulePermission(
+        enabled=True,
+        tabs={
+            "home": True,
+            "friendly_brief": True,
+            "clustering_technical": True
+        },
+        actions={
+            "add": True,
+            "delete": True
+        }
+    ),
+    "reports": ModulePermission(enabled=True, tabs={}, actions={})
+}
