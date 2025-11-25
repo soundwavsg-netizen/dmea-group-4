@@ -648,7 +648,11 @@ def update_user_permissions_api(
             "admin": "admin",
             "admin2": "admin",
             "user1": "user",
-            "user2": "user"
+            "user2": "user",
+            "anthony": "user",
+            "chris": "user",
+            "jessica": "user",
+            "tasha": "user"
         }
         role = user_roles.get(username, "user")
         
