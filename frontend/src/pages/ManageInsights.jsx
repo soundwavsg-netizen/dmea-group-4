@@ -262,13 +262,15 @@ const ManageInsights = () => {
                           >
                             Info
                           </button>
-                          <button
-                            onClick={() => handleDeleteClick(insight)}
-                            className="px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition-colors"
-                            data-testid={`delete-insight-${insight.id}`}
-                          >
-                            Delete
-                          </button>
+                          {(isSuperAdmin || permissionsService.canPerformAction('buyer_persona', 'delete_insight')) && (
+                            <button
+                              onClick={() => handleDeleteClick(insight)}
+                              className="px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition-colors"
+                              data-testid={`delete-insight-${insight.id}`}
+                            >
+                              Delete
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>
