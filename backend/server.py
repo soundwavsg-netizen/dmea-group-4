@@ -163,7 +163,13 @@ def get_all_personas(x_user_role: Optional[str] = Header(None)):
     """Get all generated personas - Admin/SuperAdmin only"""
     check_admin_access(x_user_role)
     try:
-        return PersonaService.get_all_personas()
+        personas = []
+        docs = db.collection('personas').stream()
+        for doc in docs:
+            data = doc.to_dict()
+            data['id'] = doc.id
+            personas.append(data)
+        return personas
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
