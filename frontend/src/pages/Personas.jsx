@@ -240,9 +240,18 @@ const Personas = () => {
                 </div>
 
                 {/* Summary Description */}
-                <p className="text-base leading-relaxed text-[#1F1A1A] mb-6">
-                  {persona.summary_description}
-                </p>
+                {editingPersona === persona.id ? (
+                  <textarea
+                    value={editedData.summary_description}
+                    onChange={(e) => handleFieldChange('summary_description', e.target.value)}
+                    rows={3}
+                    className="w-full text-base leading-relaxed text-[#1F1A1A] mb-6 p-3 border-2 border-[#A62639] rounded-lg focus:outline-none resize-none"
+                  />
+                ) : (
+                  <p className="text-base leading-relaxed text-[#1F1A1A] mb-6">
+                    {persona.summary_description}
+                  </p>
+                )}
 
                 {/* Demographics */}
                 <div className="mb-6 p-4 bg-[#F8F6F5] rounded-lg">
