@@ -4,10 +4,13 @@ import { FileText, GitBranch, ArrowRight, Plus, Video, Trash2 } from 'lucide-rea
 import axios from 'axios';
 import authService from '../../services/authService';
 import AddPresentationModal from '../../components/AddPresentationModal';
+import PresentationViewerModal from '../../components/PresentationViewerModal';
 
 const PresentationsHome = () => {
   const [customPresentations, setCustomPresentations] = useState([]);
   const [addModalOpen, setAddModalOpen] = useState(false);
+  const [viewerModalOpen, setViewerModalOpen] = useState(false);
+  const [selectedPresentation, setSelectedPresentation] = useState(null);
   const [loading, setLoading] = useState(true);
   const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
   const session = authService.getSession();
