@@ -122,36 +122,28 @@ def generate_persona_name(persona_profile: Dict[str, Any], motivation_wts: Dict[
 
 def generate_persona_image(demographic_profile: Dict[str, str], index: int) -> str:
     """
-    Get persona image URL based on gender and age group
+    Get persona image URL based on age group (female-focused for MUFE beauty)
     
     Args:
         demographic_profile: Contains age_group and gender
         index: Fallback index for variety
     
     Returns:
-        Avatar URL matching demographics
+        Avatar URL matching demographics (female beauty images)
     """
-    gender = demographic_profile.get('gender', '').lower()
     age_group = demographic_profile.get('age_group', '').lower()
     
     # Determine age category
     is_young = ('18-25' in age_group or 'under 25' in age_group or 
-                '18' in age_group or '20' in age_group)
+                '18' in age_group or '20' in age_group or '21' in age_group or '22' in age_group)
     
-    # Determine gender category
-    is_male = 'male' in gender and 'female' not in gender
-    is_female = 'female' in gender
-    
-    # Select appropriate image set
-    if is_female and is_young:
+    # Select appropriate female beauty image set (95% of users are female)
+    if is_young:
         image_set = PERSONA_IMAGES['female_young']
-    elif is_female:
+    elif age_group and age_group != 'unknown':
         image_set = PERSONA_IMAGES['female_adult']
-    elif is_male and is_young:
-        image_set = PERSONA_IMAGES['male_young']
-    elif is_male:
-        image_set = PERSONA_IMAGES['male_adult']
     else:
+        # Default to neutral if no age info
         image_set = PERSONA_IMAGES['neutral']
     
     # Return image from appropriate set
