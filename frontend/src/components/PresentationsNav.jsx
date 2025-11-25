@@ -1,7 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import axios from 'axios';
+import authService from '../services/authService';
 
 const PresentationsNav = () => {
+  const [customPresentations, setCustomPresentations] = useState([]);
+  const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+  const session = authService.getSession();
+
+  useEffect(() => {
+    fetchCustomPresentations();
+  }, []);
+
+  const fetchCustomPresentations = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/presentations`, {
+        headers: {
+          'X-User-Name': session?.username || session?.email
+        }
+      });
+      setCustomPresentations(response.data.presentations || []);
+    } catch (error) {
+      console.error('Error fetching custom presentations:', error);
+    }
+  };
+
   const activeLinkStyle = (isActive) => 
     `px-4 py-3 md:py-2 font-semibold text-sm md:text-base transition-all whitespace-nowrap ${
       isActive
