@@ -209,7 +209,7 @@
   },
   
   "testing_environment": {
-    "frontend_url": "https://reflect-journal-2.preview.emergentagent.com",
+    "frontend_url": "https://viewer-ui-update.preview.emergentagent.com",
     "test_date": "2024-11-23",
     "browser": "Chromium (Playwright)",
     "viewports_tested": [
