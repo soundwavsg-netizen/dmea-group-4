@@ -154,6 +154,7 @@ const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
       setUploadMethod('url');
       setError('');
       setSuccess(false);
+      setUploadProgress('');
       onClose();
     }
   };
