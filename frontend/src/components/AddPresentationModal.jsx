@@ -11,6 +11,7 @@ const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
   const [fileUrl, setFileUrl] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
