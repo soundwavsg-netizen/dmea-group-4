@@ -41,7 +41,9 @@ DEFAULT_PERMISSIONS = {
     "buyer_persona": ModulePermission(
         enabled=True, 
         tabs={
+            "home": True,
             "add_insight": True,
+            "report": False,
             "manage_insights": False,
             "persona_generator": False,
             "personas": False
@@ -74,8 +76,7 @@ DEFAULT_PERMISSIONS = {
             "add": False,
             "delete": False
         }
-    ),
-    "reports": ModulePermission(enabled=False, tabs={}, actions={})
+    )
 }
 
 # Admin default permissions (full access)
