@@ -243,6 +243,89 @@ def compute_cluster_summary(insights: List[Dict[str, Any]], cluster_id: str) -> 
     }
 
 
+def compute_tcss(wts_data: Dict[str, Any]) -> float:
+    """
+    Compute TCSS (Total Cluster Signal Strength) using corrected formula with averages.
+    
+    TCSS = (WTS_Motivation_Avg * 0.35) + (WTS_Pain_Avg * 0.35) + (WTS_Intent * 0.15) + (WTS_Influence * 0.15)
+    
+    Args:
+        wts_data: Contains motivation_wts, pain_wts, avg_purchase_intent, avg_influencer_effect
+    
+    Returns:
+        TCSS score (0-6 range)
+    """
+    # 1.1 Calculate WTS_Motivation_Avg
+    motivation_wts_sum = sum(data['wts'] for data in wts_data['motivation_wts'].values())
+    motivation_count = len(wts_data['motivation_wts']) if wts_data['motivation_wts'] else 0
+    wts_motivation_avg = motivation_wts_sum / motivation_count if motivation_count > 0 else 0.0
+    
+    # 1.2 Calculate WTS_Pain_Avg  
+    pain_wts_sum = sum(data['wts'] for data in wts_data['pain_wts'].values())
+    pain_count = len(wts_data['pain_wts']) if wts_data['pain_wts'] else 0
+    wts_pain_avg = pain_wts_sum / pain_count if pain_count > 0 else 0.0
+    
+    # 1.3 WTS_Intent (already averaged)
+    wts_intent = wts_data.get('avg_purchase_intent', 0.0)
+    
+    # 1.4 WTS_Influence (already averaged)
+    wts_influence = wts_data.get('avg_influencer_effect', 0.0)
+    
+    # 1.5 Final TCSS Formula
+    tcss = (wts_motivation_avg * 0.35) + (wts_pain_avg * 0.35) + (wts_intent * 0.15) + (wts_influence * 0.15)
+    
+    return float(tcss)
+
+
+def get_persona_threshold() -> float:
+    """
+    Get minimum TCSS threshold for persona creation from Firestore settings.
+    Default: 2.0
+    
+    Returns:
+        Minimum TCSS threshold
+    """
+    try:
+        doc = db.collection('settings').document('persona_threshold').get()
+        if doc.exists:
+            return float(doc.to_dict().get('minimum_tcss', 2.0))
+        else:
+            # Create default setting
+            db.collection('settings').document('persona_threshold').set({
+                'minimum_tcss': 2.0,
+                'created_at': datetime.now(timezone.utc),
+                'updated_at': datetime.now(timezone.utc)
+            })
+            return 2.0
+    except Exception as e:
+        print(f"Error getting persona threshold: {e}")
+        return 2.0
+
+
+def set_persona_threshold(threshold: float) -> bool:
+    """
+    Set minimum TCSS threshold for persona creation.
+    
+    Args:
+        threshold: New minimum TCSS (0.0-6.0)
+    
+    Returns:
+        Success status
+    """
+    try:
+        # Validate range
+        threshold = max(0.0, min(6.0, float(threshold)))
+        
+        db.collection('settings').document('persona_threshold').set({
+            'minimum_tcss': threshold,
+            'updated_at': datetime.now(timezone.utc)
+        }, merge=True)
+        return True
+    except Exception as e:
+        print(f"Error setting persona threshold: {e}")
+        return False
+
+
 def compute_wts_classification(cluster_summary: Dict[str, Any], insights: List[Dict[str, Any]]) -> Dict[str, Any]:
     """
     Compute WTS (Weighted Trait Score) classification for persona interpretation
