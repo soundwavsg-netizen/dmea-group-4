@@ -14,7 +14,10 @@ if not firebase_admin._apps:
         try:
             cred_dict = json.loads(firebase_admin_sdk)
             cred = credentials.Certificate(cred_dict)
-            firebase_admin.initialize_app(cred)
+            # Initialize with storage bucket
+            firebase_admin.initialize_app(cred, {
+                'storageBucket': 'dmea-group-4.appspot.com'
+            })
             print("✓ Firebase initialized from FIREBASE_ADMIN_SDK environment variable")
         except json.JSONDecodeError as e:
             print(f"✗ Error parsing FIREBASE_ADMIN_SDK: {e}")
@@ -25,7 +28,10 @@ if not firebase_admin._apps:
         if os.path.exists(cred_path):
             os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = cred_path
             cred = credentials.Certificate(cred_path)
-            firebase_admin.initialize_app(cred)
+            # Initialize with storage bucket
+            firebase_admin.initialize_app(cred, {
+                'storageBucket': 'dmea-group-4.appspot.com'
+            })
             print(f"✓ Firebase initialized from file: {cred_path}")
         else:
             raise FileNotFoundError(
