@@ -80,7 +80,8 @@ const Personas = () => {
         behaviour_patterns: editedData.behaviour_patterns.split(',').map(s => s.trim()).filter(s => s),
         channel_preference: editedData.channel_preference.split(',').map(s => s.trim()).filter(s => s),
         top_products: editedData.top_products.split(',').map(s => s.trim()).filter(s => s),
-        representative_quotes: editedData.representative_quotes.split('|').map(s => s.trim()).filter(s => s)
+        representative_quotes: editedData.representative_quotes.split('|').map(s => s.trim()).filter(s => s),
+        persona_animated_image_url: editedData.persona_animated_image_url
       };
 
       await axios.put(`${API}/personas/${personaId}`, updates, {
