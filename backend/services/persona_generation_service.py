@@ -8,31 +8,34 @@ from firebase_client import db
 import services.clustering_service as clustering
 import random
 
-# Gender and age-specific persona images
+# Beauty-themed persona images (high-quality, MUFE editorial style)
+# Using Unsplash-style beauty and skincare portraits
 PERSONA_IMAGES = {
     'female_young': [
-        "https://api.dicebear.com/7.x/avataaars/svg?seed=FemaleYouth1&gender=female&backgroundColor=ffdfbf",
-        "https://api.dicebear.com/7.x/avataaars/svg?seed=FemaleYouth2&gender=female&backgroundColor=ffd5dc",
-        "https://api.dicebear.com/7.x/avataaars/svg?seed=FemaleYouth3&gender=female&backgroundColor=b6e3f4",
+        "https://images.unsplash.com/photo-1616683693094-0b56d3b5c8a2?w=400&h=400&fit=crop&q=80",  # Young woman with glam makeup
+        "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&h=400&fit=crop&q=80",  # Fresh beauty look
+        "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=400&h=400&fit=crop&q=80",  # Natural beauty skincare
+        "https://images.unsplash.com/photo-1616683693094-0b56d3b5c8a2?w=400&h=400&fit=crop&q=80",  # Colorful makeup look
     ],
     'female_adult': [
-        "https://api.dicebear.com/7.x/avataaars/svg?seed=FemaleAdult1&gender=female&backgroundColor=c0aede",
-        "https://api.dicebear.com/7.x/avataaars/svg?seed=FemaleAdult2&gender=female&backgroundColor=d1d4f9",
-        "https://api.dicebear.com/7.x/avataaars/svg?seed=FemaleAdult3&gender=female&backgroundColor=ffdfbf",
+        "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop&q=80",  # Professional beauty
+        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&q=80",  # Sophisticated skincare
+        "https://images.unsplash.com/photo-1590086782957-93c06ef21604?w=400&h=400&fit=crop&q=80",  # Mature glam look
+        "https://images.unsplash.com/photo-1618835962148-cf177563c6c0?w=400&h=400&fit=crop&q=80",  # Editorial beauty
     ],
     'male_young': [
-        "https://api.dicebear.com/7.x/avataaars/svg?seed=MaleYouth1&gender=male&backgroundColor=b6e3f4",
-        "https://api.dicebear.com/7.x/avataaars/svg?seed=MaleYouth2&gender=male&backgroundColor=c0aede",
-        "https://api.dicebear.com/7.x/avataaars/svg?seed=MaleYouth3&gender=male&backgroundColor=d1d4f9",
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&q=80",  # Young man grooming
+        "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&q=80",  # Fresh male skincare
+        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&q=80",  # Clean aesthetic
     ],
     'male_adult': [
-        "https://api.dicebear.com/7.x/avataaars/svg?seed=MaleAdult1&gender=male&backgroundColor=ffdfbf",
-        "https://api.dicebear.com/7.x/avataaars/svg?seed=MaleAdult2&gender=male&backgroundColor=ffd5dc",
-        "https://api.dicebear.com/7.x/avataaars/svg?seed=MaleAdult3&gender=male&backgroundColor=c0aede",
+        "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&q=80",  # Professional male
+        "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&h=400&fit=crop&q=80",  # Mature grooming
+        "https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&h=400&fit=crop&q=80",  # Editorial male beauty
     ],
     'neutral': [
-        "https://api.dicebear.com/7.x/avataaars/svg?seed=Neutral1&backgroundColor=e0e0e0",
-        "https://api.dicebear.com/7.x/avataaars/svg?seed=Neutral2&backgroundColor=e0e0e0",
+        "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop&q=80",  # Abstract beauty
+        "https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=400&h=400&fit=crop&q=80",  # Minimal aesthetic
     ]
 }
 
