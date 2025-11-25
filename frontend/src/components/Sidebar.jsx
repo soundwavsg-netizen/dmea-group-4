@@ -60,31 +60,31 @@ const Sidebar = () => {
     // Presentations - check permissions
     if (permissionsService.canAccessModule('presentations')) {
       modules.push({ label: 'Presentations', path: '/presentations', icon: '📊' });
-      
-      // SEO & Content
-      if (isSuperAdmin || flags.seo_content) {
-        modules.push({ label: 'SEO & Content', path: '/seo', icon: '🔍' });
-      }
-      
-      // Social Media
-      if (isSuperAdmin || flags.social_media) {
-        modules.push({ label: 'Social Media', path: '/social/library', icon: '📱' });
-      }
-      
-      // Analytics
-      if (isSuperAdmin || flags.analytics) {
-        modules.push({ label: 'Analytics', path: '/analytics/traffic', icon: '📊' });
-      }
-      
-      // Presentation
-      if (isSuperAdmin || flags.presentation) {
-        modules.push({ label: 'Presentation', path: '/presentation/drafts', icon: '🎤' });
-      }
-      
-      // Final Capstone
-      if (isSuperAdmin || flags.final_capstone) {
-        modules.push({ label: 'Final Capstone', path: '/final/report', icon: '🎓' });
-      }
+    }
+    
+    // SEO & Content - feature flag check
+    if (isSuperAdmin || flags.seo_content) {
+      modules.push({ label: 'SEO & Content', path: '/seo', icon: '🔍' });
+    }
+    
+    // Social Media - feature flag check
+    if (isSuperAdmin || flags.social_media) {
+      modules.push({ label: 'Social Media', path: '/social/library', icon: '📱' });
+    }
+    
+    // Analytics - feature flag check
+    if (isSuperAdmin || flags.analytics) {
+      modules.push({ label: 'Analytics', path: '/analytics/traffic', icon: '📊' });
+    }
+    
+    // Presentation - feature flag check
+    if (isSuperAdmin || flags.presentation) {
+      modules.push({ label: 'Presentation', path: '/presentation/drafts', icon: '🎤' });
+    }
+    
+    // Final Capstone - feature flag check
+    if (isSuperAdmin || flags.final_capstone) {
+      modules.push({ label: 'Final Capstone', path: '/final/report', icon: '🎓' });
     }
     
     // Admin Panel - Superadmin only (no permission check needed)
