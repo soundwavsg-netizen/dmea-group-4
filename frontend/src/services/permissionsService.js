@@ -18,6 +18,7 @@ class PermissionsService {
       // Store the entire response data including role
       this.permissions = response.data.modules;
       this.role = response.data.role;
+      console.log('[PermissionsService] Loaded permissions for', username, ':', this.permissions);
       return this.permissions;
     } catch (error) {
       console.error('Failed to fetch permissions:', error);
