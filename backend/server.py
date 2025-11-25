@@ -835,6 +835,7 @@ def root():
 @app.get("/health")
 def health_check():
     """Health check endpoint for deployment"""
+    from datetime import datetime, timezone
     return {"status": "healthy", "timestamp": datetime.now(timezone.utc).isoformat()}
 
 
