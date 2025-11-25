@@ -427,6 +427,80 @@ def change_password(
         print(f"Error changing password: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+# ==================== Custom Presentations Endpoints ====================
+
+class PresentationCreate(BaseModel):
+    name: str
+    file_url: str
+    file_type: str  # 'slides' or 'video'
+
+@app.get("/api/presentations")
+def get_presentations(
+    x_user_name: Optional[str] = Header(None)
+):
+    """Get all custom presentations"""
+    try:
+        presentations = presentations_service.get_all_presentations()
+        return {"presentations": presentations}
+    except Exception as e:
+        print(f"Error fetching presentations: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/presentations")
+def create_presentation(
+    presentation: PresentationCreate,
+    x_user_name: Optional[str] = Header(None)
+):
+    """Create a new custom presentation"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="User not authenticated")
+    
+    try:
+        new_presentation = presentations_service.create_presentation(
+            name=presentation.name,
+            file_url=presentation.file_url,
+            file_type=presentation.file_type,
+            created_by=x_user_name
+        )
+        return new_presentation
+    except Exception as e:
+        print(f"Error creating presentation: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/api/presentations/{presentation_id}")
+def delete_presentation(
+    presentation_id: str,
+    x_user_role: Optional[str] = Header(None)
+):
+    """Delete a presentation (superadmin only)"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can delete presentations")
+    
+    try:
+        success = presentations_service.delete_presentation(presentation_id)
+        if not success:
+            raise HTTPException(status_code=404, detail="Presentation not found")
+        return {"message": "Presentation deleted successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error deleting presentation: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/presentations/{presentation_id}")
+def get_presentation(presentation_id: str):
+    """Get a single presentation by ID"""
+    try:
+        presentation = presentations_service.get_presentation_by_id(presentation_id)
+        if not presentation:
+            raise HTTPException(status_code=404, detail="Presentation not found")
+        return presentation
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error fetching presentation: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 # ==================== Superadmin Reset Password Endpoint ====================
 
 @app.post("/api/admin/reset-password")
