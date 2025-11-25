@@ -180,44 +180,6 @@ const Sidebar = () => {
             ))}
           </div>
         </nav>
-
-        {/* Footer */}
-        <div className="flex-shrink-0 p-4 border-t border-[#E0AFA0]/30">
-          <div className="mb-3 px-2">
-            <p className="text-xs text-[#6C5F5F]">Logged in as</p>
-            <p className="text-sm font-semibold text-[#1F1A1A]">{session?.username}</p>
-            <p className="text-xs text-[#A62639]">{role}</p>
-          </div>
-          
-          {/* Change Password Button */}
-          <button
-            onClick={() => setChangePasswordOpen(true)}
-            className="w-full px-4 py-2 mb-2 bg-white border border-[#E0AFA0] text-[#A62639] rounded-lg text-sm font-semibold hover:bg-[#FAF7F5] transition-colors"
-            data-testid="change-password-btn"
-          >
-            Change Password
-          </button>
-          
-          {/* Reset Password Button (Superadmin only) */}
-          {isSuperAdmin && (
-            <button
-              onClick={() => setResetPasswordOpen(true)}
-              className="w-full px-4 py-2 mb-2 bg-[#A62639] text-white rounded-lg text-sm font-semibold hover:bg-[#8a1f2d] transition-colors"
-              data-testid="reset-password-btn"
-            >
-              Reset User Password
-            </button>
-          )}
-          
-          {/* Logout Button */}
-          <button
-            onClick={handleLogout}
-            className="w-full px-4 py-2 bg-[#E0AFA0] text-[#1F1A1A] rounded-lg text-sm font-semibold hover:bg-[#D19F90] transition-colors"
-            data-testid="sidebar-logout-btn"
-          >
-            Logout
-          </button>
-        </div>
       </div>
       
       {/* Change Password Modal */}
