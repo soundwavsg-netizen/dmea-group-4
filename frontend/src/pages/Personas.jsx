@@ -29,6 +29,7 @@ const Personas = () => {
       const session = authService.getSession();
       const response = await axios.get(`${API}/personas`, {
         headers: {
+          'X-User-Name': session.username,
           'X-User-Role': session.role
         }
       });
