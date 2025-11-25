@@ -142,11 +142,9 @@ const PresentationsHome = () => {
                 </div>
 
                 {/* Content */}
-                <a
-                  href={presentation.file_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block p-8"
+                <button
+                  onClick={() => handleViewPresentation(presentation)}
+                  className="block p-8 w-full text-left"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <h3 className="text-2xl font-bold text-[#333333] group-hover:text-[#A62639] transition-colors" style={{ fontFamily: 'Playfair Display, serif' }}>
