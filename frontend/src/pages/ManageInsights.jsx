@@ -225,26 +225,33 @@ const ManageInsights = () => {
                       <td className="px-4 py-3 text-xs text-[#1F1A1A] font-medium">{insight.created_by || 'N/A'}</td>
                       <td className="px-4 py-3 text-xs text-[#1F1A1A]">{insight.platform}</td>
                       <td className="px-4 py-3 text-xs text-[#1F1A1A]">{insight.research_method}</td>
-                      <td className="px-4 py-3 text-xs text-[#6C5F5F]">
-                        <div>{insight.age_group}</div>
-                        <div>{insight.gender}</div>
-                        <div>{insight.skin_type}</div>
+                      <td className="px-4 py-3 text-xs text-[#6C5F5F]">{formatDemographics(insight)}</td>
+                      <td className="px-4 py-3 text-xs text-[#6C5F5F] italic" title={insight.quote}>
+                        {truncateText(insight.quote, 40)}
                       </td>
+                      <td className="px-4 py-3 text-xs text-[#6C5F5F]">{truncateText(insight.notes, 40)}</td>
                       <td className="px-4 py-3 text-xs text-[#6C5F5F]">{formatArray(insight.products)}</td>
-                      <td className="px-4 py-3 text-xs text-[#6C5F5F]">{formatMotivationsOrPains(insight.motivations)}</td>
-                      <td className="px-4 py-3 text-xs text-[#6C5F5F]">{formatMotivationsOrPains(insight.pains)}</td>
                       <td className="px-4 py-3 text-xs text-[#6C5F5F]">{formatArray(insight.behaviours)}</td>
                       <td className="px-4 py-3 text-xs text-[#6C5F5F]">{formatArray(insight.channels)}</td>
                       <td className="px-4 py-3 text-xs text-[#A62639] font-semibold">{insight.purchase_intent}</td>
                       <td className="px-4 py-3 text-xs text-[#A62639] font-semibold">{insight.influencer_effect}</td>
                       <td className="px-4 py-3">
-                        <button
-                          onClick={() => handleDeleteClick(insight)}
-                          className="px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition-colors"
-                          data-testid={`delete-insight-${insight.id}`}
-                        >
-                          Delete
-                        </button>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleViewDetail(insight)}
+                            className="px-3 py-1 bg-[#A62639] text-white text-xs rounded hover:bg-[#8a1f2d] transition-colors"
+                            data-testid={`view-insight-${insight.id}`}
+                          >
+                            View
+                          </button>
+                          <button
+                            onClick={() => handleDeleteClick(insight)}
+                            className="px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition-colors"
+                            data-testid={`delete-insight-${insight.id}`}
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
