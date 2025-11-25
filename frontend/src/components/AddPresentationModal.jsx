@@ -17,6 +17,30 @@ const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
   const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
   const session = authService.getSession();
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      const validTypes = fileType === 'slides' 
+        ? ['application/pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation']
+        : ['video/mp4', 'video/quicktime', 'video/x-msvideo', 'video/webm'];
+      
+      if (!validTypes.includes(file.type)) {
+        setError(`Please select a valid ${fileType === 'slides' ? 'presentation' : 'video'} file`);
+        return;
+      }
+
+      // Check file size (max 50MB)
+      if (file.size > 50 * 1024 * 1024) {
+        setError('File size must be less than 50MB');
+        return;
+      }
+
+      setSelectedFile(file);
+      setError('');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -28,28 +52,57 @@ const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
       return;
     }
 
-    if (!fileUrl.trim()) {
-      setError('Please enter a file URL');
+    if (!description.trim()) {
+      setError('Please enter a description');
       return;
     }
 
-    // Basic URL validation
-    try {
-      new URL(fileUrl);
-    } catch {
-      setError('Please enter a valid URL');
-      return;
+    if (uploadMethod === 'url') {
+      if (!fileUrl.trim()) {
+        setError('Please enter a file URL');
+        return;
+      }
+
+      // Basic URL validation
+      try {
+        new URL(fileUrl);
+      } catch {
+        setError('Please enter a valid URL');
+        return;
+      }
+    } else {
+      if (!selectedFile) {
+        setError('Please select a file to upload');
+        return;
+      }
     }
 
     setLoading(true);
 
     try {
+      let fileData = null;
+      let filename = null;
+
+      // Convert file to base64 if uploading
+      if (uploadMethod === 'file' && selectedFile) {
+        const reader = new FileReader();
+        fileData = await new Promise((resolve, reject) => {
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(selectedFile);
+        });
+        filename = selectedFile.name;
+      }
+
       await axios.post(
         `${backendUrl}/api/presentations`,
         {
           name: name.trim(),
-          file_url: fileUrl.trim(),
-          file_type: fileType
+          description: description.trim(),
+          file_url: uploadMethod === 'url' ? fileUrl.trim() : null,
+          file_type: fileType,
+          file_data: fileData,
+          filename: filename
         },
         {
           headers: {
@@ -60,8 +113,11 @@ const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
 
       setSuccess(true);
       setName('');
+      setDescription('');
       setFileUrl('');
+      setSelectedFile(null);
       setFileType('slides');
+      setUploadMethod('url');
 
       // Call onSuccess callback and close after short delay
       setTimeout(() => {
