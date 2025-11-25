@@ -23,19 +23,18 @@ const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Validate file type
-      const validTypes = fileType === 'slides' 
-        ? ['application/pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation']
-        : ['video/mp4', 'video/quicktime', 'video/x-msvideo', 'video/webm'];
+      // Validate file type by extension (more reliable than MIME type)
+      const fileName = file.name.toLowerCase();
+      const isValidSlide = fileName.endsWith('.pdf') || fileName.endsWith('.ppt') || fileName.endsWith('.pptx');
+      const isValidVideo = fileName.endsWith('.mp4') || fileName.endsWith('.mov') || fileName.endsWith('.avi') || fileName.endsWith('.webm');
       
-      if (!validTypes.includes(file.type)) {
-        setError(`Please select a valid ${fileType === 'slides' ? 'presentation' : 'video'} file`);
+      if (fileType === 'slides' && !isValidSlide) {
+        setError('Please select a valid presentation file (PDF, PPT, PPTX)');
         return;
       }
-
-      // Check file size (max 50MB)
-      if (file.size > 50 * 1024 * 1024) {
-        setError('File size must be less than 50MB');
+      
+      if (fileType === 'video' && !isValidVideo) {
+        setError('Please select a valid video file (MP4, MOV, AVI, WEBM)');
         return;
       }
 
