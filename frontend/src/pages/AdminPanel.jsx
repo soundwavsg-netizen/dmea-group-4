@@ -118,17 +118,24 @@ const AdminPanel = () => {
     if (!window.confirm(`Reset permissions to default for ${username}?`)) return;
     
     try {
-      await axios.delete(`${API}/api/admin/permissions/${username}`, {
+      console.log(`Resetting permissions for ${username}...`);
+      const response = await axios.delete(`${API}/api/admin/permissions/${username}`, {
         headers: { 'X-User-Role': session.role }
       });
+      console.log('Reset response:', response.data);
       setSuccessMessage(`Permissions reset for ${username}`);
+      setError(''); // Clear any previous errors
       setTimeout(() => setSuccessMessage(''), 3000);
       await fetchUsers();
       if (selectedUser === username) {
         await fetchUserPermissions(username);
       }
     } catch (err) {
-      setError('Failed to reset permissions');
+      console.error('Reset error:', err);
+      const errorMsg = err.response?.data?.detail || 'Failed to reset permissions';
+      setError(errorMsg);
+      setSuccessMessage(''); // Clear success message
+      setTimeout(() => setError(''), 5000);
     }
   };
 
