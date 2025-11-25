@@ -83,6 +83,9 @@ class PersonaResponse(BaseModel):
     # Metadata
     created_at: str
     insight_count: int
+    best_persona_score: float
+    avg_purchase_intent: float
+    avg_motivation_score: float
     is_editable: bool
 
 class MotivationScore(BaseModel):
