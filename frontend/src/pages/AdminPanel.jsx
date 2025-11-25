@@ -174,6 +174,41 @@ const AdminPanel = () => {
     }
   };
 
+  const fetchPersonaThreshold = async () => {
+    try {
+      setLoadingThreshold(true);
+      const response = await axios.get(`${API}/api/admin/persona-threshold`, {
+        headers: { 'X-User-Role': session?.role }
+      });
+      setPersonaThreshold(response.data.minimum_tcss);
+    } catch (err) {
+      console.error('Error fetching persona threshold:', err);
+      setError('Failed to load persona threshold');
+    } finally {
+      setLoadingThreshold(false);
+    }
+  };
+
+  const handleThresholdUpdate = async () => {
+    try {
+      setSaving(true);
+      const response = await axios.put(`${API}/api/admin/persona-threshold`, {
+        minimum_tcss: personaThreshold
+      }, {
+        headers: { 'X-User-Role': session?.role }
+      });
+      
+      setSuccessMessage(`Persona threshold updated to ${personaThreshold}`);
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (err) {
+      console.error('Error updating persona threshold:', err);
+      setError('Failed to update persona threshold');
+      setTimeout(() => setError(''), 5000);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const getModuleLabel = (moduleName) => {
     const labels = {
       dashboard: 'Dashboard',
