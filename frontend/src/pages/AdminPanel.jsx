@@ -13,6 +13,8 @@ const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState('users');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [personaThreshold, setPersonaThreshold] = useState(2.0);
+  const [loadingThreshold, setLoadingThreshold] = useState(false);
 
   const session = authService.getSession();
 
