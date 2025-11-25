@@ -30,72 +30,72 @@ const Sidebar = () => {
   }, [session?.username, session?.role]);
 
   const handleLogout = () => {
+    permissionsService.clearPermissions(); // Clear permissions on logout
     authService.logout();
     navigate('/login');
   };
 
-  const getModules = () => {
-    const modules = [];
+  // Compute modules list based on permissions (reactive)
+  const modules = React.useMemo(() => {
+    const modulesList = [];
     
     // Only show modules if permissions are loaded
     if (!permissionsLoaded) {
-      return modules; // Return empty until permissions load
+      return modulesList; // Return empty until permissions load
     }
     
     // Dashboard - check permissions
     if (permissionsService.canAccessModule('dashboard')) {
-      modules.push({ label: 'Dashboard', path: '/', icon: '🏠' });
+      modulesList.push({ label: 'Dashboard', path: '/', icon: '🏠' });
     }
     
     // Buyer Persona - check permissions
     if (permissionsService.canAccessModule('buyer_persona')) {
-      modules.push({ label: 'Buyer Persona', path: '/report', icon: '👥' });
+      modulesList.push({ label: 'Buyer Persona', path: '/report', icon: '👥' });
     }
     
     // Daily Reflections - check permissions
     if (permissionsService.canAccessModule('daily_reflections')) {
-      modules.push({ label: 'Daily Reflections', path: '/daily-reflections', icon: '📝' });
+      modulesList.push({ label: 'Daily Reflections', path: '/daily-reflections', icon: '📝' });
     }
     
     // Presentations - check permissions
     if (permissionsService.canAccessModule('presentations')) {
-      modules.push({ label: 'Presentations', path: '/presentations', icon: '📊' });
+      modulesList.push({ label: 'Presentations', path: '/presentations', icon: '📊' });
     }
     
     // SEO & Content - feature flag check
     if (isSuperAdmin || flags.seo_content) {
-      modules.push({ label: 'SEO & Content', path: '/seo', icon: '🔍' });
+      modulesList.push({ label: 'SEO & Content', path: '/seo', icon: '🔍' });
     }
     
     // Social Media - feature flag check
     if (isSuperAdmin || flags.social_media) {
-      modules.push({ label: 'Social Media', path: '/social/library', icon: '📱' });
+      modulesList.push({ label: 'Social Media', path: '/social/library', icon: '📱' });
     }
     
     // Analytics - feature flag check
     if (isSuperAdmin || flags.analytics) {
-      modules.push({ label: 'Analytics', path: '/analytics/traffic', icon: '📊' });
+      modulesList.push({ label: 'Analytics', path: '/analytics/traffic', icon: '📊' });
     }
     
     // Presentation - feature flag check
     if (isSuperAdmin || flags.presentation) {
-      modules.push({ label: 'Presentation', path: '/presentation/drafts', icon: '🎤' });
+      modulesList.push({ label: 'Presentation', path: '/presentation/drafts', icon: '🎤' });
     }
     
     // Final Capstone - feature flag check
     if (isSuperAdmin || flags.final_capstone) {
-      modules.push({ label: 'Final Capstone', path: '/final/report', icon: '🎓' });
+      modulesList.push({ label: 'Final Capstone', path: '/final/report', icon: '🎓' });
     }
     
     // Admin Panel - Superadmin only (no permission check needed)
     if (isSuperAdmin) {
-      modules.push({ label: 'Admin Panel', path: '/admin', icon: '⚙️' });
+      modulesList.push({ label: 'Admin Panel', path: '/admin', icon: '⚙️' });
     }
     
-    return modules;
-  };
-
-  const modules = getModules();
+    return modulesList;
+  }, [permissionsLoaded, isSuperAdmin, flags]);
 
   return (
     <>
