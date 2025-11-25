@@ -77,6 +77,21 @@ const PresentationsNav = () => {
           >
             Technical Slides
           </NavLink>
+          
+          {/* Dynamic Custom Presentation Tabs */}
+          {customPresentations.map((presentation) => (
+            <a
+              key={presentation.id}
+              href={presentation.file_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-3 md:py-2 font-semibold text-sm md:text-base transition-all whitespace-nowrap text-[#4A3F35] hover:text-[#A62639]"
+              data-testid={`presentations-nav-custom-${presentation.id}`}
+            >
+              {presentation.name}
+            </a>
+          ))}
+          
           <span className="px-4 py-3 md:py-2 text-sm md:text-base text-[#6C5F5F]/50 italic">
             Future Presentations...
           </span>
