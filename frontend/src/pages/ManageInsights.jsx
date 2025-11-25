@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import authService from '../services/authService';
+import permissionsService from '../services/permissionsService';
 
 const ManageInsights = () => {
   const [insights, setInsights] = useState([]);
