@@ -20,6 +20,7 @@ const AdminPanel = () => {
 
   useEffect(() => {
     fetchUsers();
+    fetchPersonaThreshold();
   }, []);
 
   const fetchUsers = async () => {
