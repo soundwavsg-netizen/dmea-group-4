@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import authService from '../services/authService';
+import permissionsService from '../services/permissionsService';
 
 const PresentationsNav = () => {
   const [customPresentations, setCustomPresentations] = useState([]);
+  const [permissionsLoaded, setPermissionsLoaded] = useState(false);
   const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
   const session = authService.getSession();
+  const isSuperAdmin = authService.isSuperAdmin();
 
   useEffect(() => {
     fetchCustomPresentations();
