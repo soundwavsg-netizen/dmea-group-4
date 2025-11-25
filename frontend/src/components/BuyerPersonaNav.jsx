@@ -1,10 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import authService from '../services/authService';
 import permissionsService from '../services/permissionsService';
 
 const BuyerPersonaNav = () => {
+  const [permissionsLoaded, setPermissionsLoaded] = useState(false);
   const isSuperAdmin = authService.isSuperAdmin();
+  const session = authService.getSession();
+  
+  // Load permissions on mount
+  useEffect(() => {
+    const loadPermissions = async () => {
+      if (session?.username && session?.role) {
+        await permissionsService.fetchPermissions(session.username, session.role);
+        setPermissionsLoaded(true);
+      }
+    };
+    loadPermissions();
+  }, [session?.username, session?.role]);
+  
+  // Don't render tabs until permissions are loaded (prevents flicker)
+  if (!permissionsLoaded && !isSuperAdmin) {
+    return (
+      <div className="bg-white border-b border-[#E0AFA0]/30 sticky top-0" style={{ zIndex: 1000 }}>
+        <div className="w-full px-3 md:px-6 lg:px-8 pl-14 lg:pl-6">
+          <div className="flex items-center gap-4 md:gap-6 py-3">
+            <span className="text-[#6C5F5F] text-sm">Loading...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
   
   const activeLinkStyle = (isActive) => 
     `px-4 py-3 md:py-2 font-semibold text-sm md:text-base transition-all whitespace-nowrap ${
