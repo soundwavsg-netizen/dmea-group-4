@@ -203,6 +203,24 @@ const AdminPanel = () => {
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-[#1F1A1A]">Admin Panel</h1>
           <p className="text-[#6C5F5F] mt-2">Manage user permissions and access control</p>
+          
+          {/* Debug Info */}
+          <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-sm text-blue-800">
+              <strong>Session Status:</strong> {session ? `✅ Logged in as ${session.username} (${session.role})` : '❌ No session found'}
+            </p>
+            <button
+              onClick={() => {
+                console.log('Current session:', authService.getSession());
+                console.log('LocalStorage:', localStorage.getItem('mufe_auth_session'));
+                setError('Check browser console for session debug info');
+                setTimeout(() => setError(''), 3000);
+              }}
+              className="mt-2 px-3 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600"
+            >
+              Debug Session
+            </button>
+          </div>
         </div>
 
         {error && (
