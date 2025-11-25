@@ -97,73 +97,70 @@ const PresentationsHome = () => {
           </div>
         </div>
 
-        {/* Custom User Presentations */}
-        {customPresentations.length > 0 && (
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold text-[#333333] mb-6" style={{ fontFamily: 'Playfair Display, serif' }}>
-              Custom Presentations
-            </h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              {customPresentations.map((presentation) => (
-                <div
-                  key={presentation.id}
-                  className="group bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
-                >
-                  {/* Color Header */}
-                  <div className="h-32 bg-gradient-to-br from-[#E0AFA0] to-[#d4a090] flex items-center justify-center relative overflow-hidden">
-                    <div className="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')]"></div>
-                    {presentation.file_type === 'video' ? (
-                      <Video className="w-20 h-20 text-white z-10" strokeWidth={1.5} />
-                    ) : (
-                      <FileText className="w-20 h-20 text-white z-10" strokeWidth={1.5} />
-                    )}
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-8">
-                    <div className="flex items-start justify-between mb-4">
-                      <h3 className="text-2xl font-bold text-[#333333] group-hover:text-[#A62639] transition-colors" style={{ fontFamily: 'Playfair Display, serif' }}>
-                        {presentation.name}
-                      </h3>
-                      <span className="flex-shrink-0 px-3 py-1 bg-[#E0AFA0]/20 text-[#A62639] text-sm font-semibold rounded-full">
-                        {presentation.file_type}
-                      </span>
-                    </div>
-
-                    <p className="text-[#6C5F5F] text-sm mb-2">
-                      Created by: <strong>{presentation.created_by}</strong>
-                    </p>
-                    <p className="text-[#6C5F5F] text-xs mb-6">
-                      {new Date(presentation.created_at).toLocaleDateString()}
-                    </p>
-
-                    <div className="flex items-center justify-between">
-                      <a
-                        href={presentation.file_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center text-[#A62639] font-semibold hover:gap-3 transition-all"
-                      >
-                        <span>View {presentation.file_type === 'video' ? 'Video' : 'Slides'}</span>
-                        <ArrowRight className="w-5 h-5 hover:translate-x-1 transition-transform" />
-                      </a>
-                      
-                      {isSuperAdmin && (
-                        <button
-                          onClick={() => handleDelete(presentation.id)}
-                          className="text-red-600 hover:text-red-700 transition-colors p-2 hover:bg-red-50 rounded-lg"
-                          data-testid={`delete-presentation-${presentation.id}`}
-                        >
-                          <Trash2 size={18} />
-                        </button>
-                      )}
-                    </div>
-                  </div>
+        {/* All Presentations Grid - Custom + Default */}
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          {/* Custom User Presentations */}
+          {customPresentations.map((presentation, index) => {
+            const Icon = presentation.file_type === 'video' ? Video : FileText;
+            const colors = [
+              'from-[#A62639] to-[#8a1f2d]',
+              'from-[#E0AFA0] to-[#d4a090]',
+              'from-[#6C5F5F] to-[#5a4f4f]',
+              'from-[#8B4513] to-[#6e3610]'
+            ];
+            const color = colors[index % colors.length];
+            
+            return (
+              <div
+                key={presentation.id}
+                className="group bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 relative"
+              >
+                {/* Color Header */}
+                <div className={`h-32 bg-gradient-to-br ${color} flex items-center justify-center relative overflow-hidden`}>
+                  <div className="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')]"></div>
+                  <Icon className="w-20 h-20 text-white z-10" strokeWidth={1.5} />
+                  
+                  {/* Delete button for superadmin */}
+                  {isSuperAdmin && (
+                    <button
+                      onClick={() => handleDelete(presentation.id)}
+                      className="absolute top-3 right-3 text-white hover:text-red-200 transition-colors p-2 hover:bg-white/20 rounded-lg z-20"
+                      data-testid={`delete-presentation-${presentation.id}`}
+                      title="Delete presentation"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  )}
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
+
+                {/* Content */}
+                <a
+                  href={presentation.file_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block p-8"
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <h3 className="text-2xl font-bold text-[#333333] group-hover:text-[#A62639] transition-colors" style={{ fontFamily: 'Playfair Display, serif' }}>
+                      {presentation.name}
+                    </h3>
+                    <span className="flex-shrink-0 px-3 py-1 bg-[#E0AFA0]/20 text-[#A62639] text-xs font-semibold rounded-full">
+                      Custom
+                    </span>
+                  </div>
+
+                  <p className="text-[#6C5F5F] leading-relaxed mb-6">
+                    {presentation.description}
+                  </p>
+
+                  <div className="flex items-center text-[#A62639] font-semibold group-hover:gap-3 transition-all">
+                    <span>View {presentation.file_type === 'video' ? 'Video' : 'Presentation'}</span>
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </a>
+              </div>
+            );
+          })}
 
         {/* Default Presentations Grid */}
         <div>
