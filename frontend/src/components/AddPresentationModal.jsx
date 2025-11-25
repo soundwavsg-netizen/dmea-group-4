@@ -195,6 +195,14 @@ const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
             </div>
           )}
 
+          {/* Upload Progress */}
+          {uploadProgress && (
+            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-blue-700 text-sm flex items-center gap-2">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-700"></div>
+              <span>{uploadProgress}</span>
+            </div>
+          )}
+
           {/* Presentation Name */}
           <div>
             <label className="block text-sm font-semibold text-[#333333] mb-2">
