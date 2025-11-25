@@ -355,6 +355,19 @@ def generate_personas_from_insights(n_clusters: int = 3) -> Dict[str, Any]:
             
             summary_description = generate_summary_description(persona_profile, wts_data)
             
+            # Calculate "best persona" score for ranking
+            # Priority: 1) insight count, 2) avg purchase intent, 3) avg motivation score
+            avg_motivation_score = (
+                sum(data['avg_score'] for data in wts_data['motivation_wts'].values()) / 
+                len(wts_data['motivation_wts'])
+            ) if wts_data['motivation_wts'] else 0
+            
+            best_persona_score = (
+                len(cluster_insights) * 10000 +  # Insight count (highest priority)
+                wts_data['avg_purchase_intent'] * 100 +  # Purchase intent (second)
+                avg_motivation_score  # Avg motivation (third)
+            )
+            
             # Create persona document
             persona_data = {
                 'name': persona_name,
@@ -385,6 +398,9 @@ def generate_personas_from_insights(n_clusters: int = 3) -> Dict[str, Any]:
                 # Metadata
                 'created_at': datetime.now(timezone.utc).isoformat(),
                 'insight_count': len(cluster_insights),
+                'best_persona_score': float(best_persona_score),
+                'avg_purchase_intent': float(wts_data['avg_purchase_intent']),
+                'avg_motivation_score': float(avg_motivation_score),
                 
                 # Editable flag
                 'is_editable': True
