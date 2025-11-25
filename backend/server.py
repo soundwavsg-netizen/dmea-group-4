@@ -58,6 +58,61 @@ def check_admin_access(x_user_role: Optional[str] = None):
         raise HTTPException(status_code=403, detail="Access denied. Admin privileges required.")
     return x_user_role
 
+def check_permission_access(
+    x_user_name: Optional[str] = None, 
+    x_user_role: Optional[str] = None,
+    required_module: Optional[str] = None,
+    required_tab: Optional[str] = None,
+    required_action: Optional[str] = None
+):
+    """Check if user has permission based on new permission system"""
+    from services.permissions_service import PermissionsService
+    
+    # Superadmin always has access
+    if x_user_role == 'superadmin':
+        return True
+    
+    # Admin has access unless explicitly denied (backward compatibility)
+    if x_user_role == 'admin':
+        return True
+    
+    # For regular users, check permissions
+    if not x_user_name or not x_user_role:
+        raise HTTPException(status_code=403, detail="Access denied. Authentication required.")
+    
+    try:
+        # Get user permissions
+        permissions_data = PermissionsService.get_permissions(x_user_name)
+        if not permissions_data:
+            raise HTTPException(status_code=403, detail="No permissions found for user.")
+        
+        modules = permissions_data.get('modules', {})
+        
+        # Check module access
+        if required_module:
+            module_perms = modules.get(required_module)
+            if not module_perms or not module_perms.get('enabled'):
+                raise HTTPException(status_code=403, detail=f"Access denied to {required_module} module.")
+            
+            # Check tab access
+            if required_tab:
+                tabs = module_perms.get('tabs', {})
+                if required_tab in tabs and not tabs[required_tab]:
+                    raise HTTPException(status_code=403, detail=f"Access denied to {required_tab} tab.")
+            
+            # Check action access
+            if required_action:
+                actions = module_perms.get('actions', {})
+                if required_action in actions and not actions[required_action]:
+                    raise HTTPException(status_code=403, detail=f"Access denied to perform {required_action}.")
+        
+        return True
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error checking permissions: {e}")
+        raise HTTPException(status_code=500, detail="Error checking permissions.")
+
 def check_daily_reflections_access(x_user_name: Optional[str] = None):
     """Check if user has access to Daily Reflections module - All authenticated users have access"""
     # Daily Reflections is available to ALL authenticated users
