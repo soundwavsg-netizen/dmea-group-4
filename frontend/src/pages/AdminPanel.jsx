@@ -203,7 +203,8 @@ const AdminPanel = () => {
 
         {activeTab === 'users' && (
           <div className="bg-white rounded-xl border border-[#E0AFA0]/50 shadow-sm overflow-hidden">
-            <table className="w-full">
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[800px]">
               <thead className="bg-[#FAF7F5]">
                 <tr>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Username</th>
