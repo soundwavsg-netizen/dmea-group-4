@@ -46,7 +46,12 @@ def create_presentation(name, description, file_url, file_type, file_data, filen
         if file_data and filename:
             try:
                 # Get storage bucket with explicit name
-                bucket = storage.bucket('dmea-group-4.firebasestorage.app')
+                # Try different bucket naming formats
+                try:
+                    bucket = storage.bucket()
+                except:
+                    # Try with appspot domain
+                    bucket = storage.bucket('dmea-group-4.appspot.com')
                 
                 # Create unique filename
                 file_extension = filename.split('.')[-1] if '.' in filename else ''
