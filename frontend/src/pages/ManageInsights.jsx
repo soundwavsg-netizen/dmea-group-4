@@ -83,6 +83,21 @@ const ManageInsights = () => {
     return items.map(item => `${item.name} (${item.strength})`).join(', ');
   };
 
+  const truncateText = (text, maxLength = 50) => {
+    if (!text) return 'N/A';
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+  };
+
+  const formatDemographics = (insight) => {
+    return `${insight.age_group || 'N/A'} / ${insight.gender || 'N/A'} / ${insight.skin_type || 'N/A'}`;
+  };
+
+  const handleViewDetail = (insight) => {
+    setSelectedInsight(insight);
+    setDetailModalOpen(true);
+  };
+
   const handleSort = (field) => {
     if (sortField === field) {
       // Toggle direction
