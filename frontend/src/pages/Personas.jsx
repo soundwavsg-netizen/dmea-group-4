@@ -56,7 +56,8 @@ const Personas = () => {
       behaviour_patterns: persona.behaviour_patterns.join(', '),
       channel_preference: persona.channel_preference.join(', '),
       top_products: persona.top_products.join(', '),
-      representative_quotes: persona.representative_quotes.join(' | ')
+      representative_quotes: persona.representative_quotes.join(' | '),
+      persona_animated_image_url: persona.persona_animated_image_url
     });
   };
 
