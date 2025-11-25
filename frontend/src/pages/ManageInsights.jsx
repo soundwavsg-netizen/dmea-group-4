@@ -258,7 +258,7 @@ const ManageInsights = () => {
                             className="px-3 py-1 bg-[#A62639] text-white text-xs rounded hover:bg-[#8a1f2d] transition-colors"
                             data-testid={`view-insight-${insight.id}`}
                           >
-                            View
+                            Info
                           </button>
                           <button
                             onClick={() => handleDeleteClick(insight)}
