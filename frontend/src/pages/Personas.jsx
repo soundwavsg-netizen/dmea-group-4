@@ -280,49 +280,89 @@ const Personas = () => {
                 <div className="pt-6 grid grid-cols-1 gap-5">
                   <div className="flex items-start gap-4">
                     <span className="text-[#E0AFA0] text-2xl">✨</span>
-                    <div>
-                      <p className="text-sm font-bold text-[#1F1A1A]">Dominant Motivations</p>
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {persona.dominant_motivations && persona.dominant_motivations.slice(0, 5).map((motivation, i) => (
-                          <span key={i} className="px-3 py-1 bg-[#A62639]/10 text-[#A62639] rounded-full text-xs font-medium">
-                            {motivation}
-                          </span>
-                        ))}
-                      </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-bold text-[#1F1A1A] mb-2">Dominant Motivations</p>
+                      {editingPersona === persona.id ? (
+                        <input
+                          type="text"
+                          value={editedData.dominant_motivations}
+                          onChange={(e) => handleFieldChange('dominant_motivations', e.target.value)}
+                          placeholder="Comma-separated motivations"
+                          className="w-full text-sm p-2 border-2 border-[#A62639] rounded-lg focus:outline-none"
+                        />
+                      ) : (
+                        <div className="flex flex-wrap gap-2">
+                          {persona.dominant_motivations && persona.dominant_motivations.slice(0, 5).map((motivation, i) => (
+                            <span key={i} className="px-3 py-1 bg-[#A62639]/10 text-[#A62639] rounded-full text-xs font-medium">
+                              {motivation}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   <div className="flex items-start gap-4">
                     <span className="text-[#E0AFA0] text-2xl">😟</span>
-                    <div>
-                      <p className="text-sm font-bold text-[#1F1A1A]">Pain Points</p>
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {persona.dominant_pain_points && persona.dominant_pain_points.slice(0, 5).map((pain, i) => (
-                          <span key={i} className="px-3 py-1 bg-[#E0AFA0]/20 text-[#6C5F5F] rounded-full text-xs font-medium">
-                            {pain}
-                          </span>
-                        ))}
-                      </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-bold text-[#1F1A1A] mb-2">Pain Points</p>
+                      {editingPersona === persona.id ? (
+                        <input
+                          type="text"
+                          value={editedData.dominant_pain_points}
+                          onChange={(e) => handleFieldChange('dominant_pain_points', e.target.value)}
+                          placeholder="Comma-separated pain points"
+                          className="w-full text-sm p-2 border-2 border-[#A62639] rounded-lg focus:outline-none"
+                        />
+                      ) : (
+                        <div className="flex flex-wrap gap-2">
+                          {persona.dominant_pain_points && persona.dominant_pain_points.slice(0, 5).map((pain, i) => (
+                            <span key={i} className="px-3 py-1 bg-[#E0AFA0]/20 text-[#6C5F5F] rounded-full text-xs font-medium">
+                              {pain}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   <div className="flex items-start gap-4">
                     <span className="text-[#E0AFA0] text-2xl">🛍️</span>
-                    <div>
-                      <p className="text-sm font-bold text-[#1F1A1A]">Behaviours</p>
-                      <p className="text-sm text-[#6C5F5F] mt-1">
-                        {persona.behaviour_patterns && persona.behaviour_patterns.length > 0 ? persona.behaviour_patterns.join(', ') : 'None identified'}
-                      </p>
+                    <div className="flex-1">
+                      <p className="text-sm font-bold text-[#1F1A1A] mb-2">Behaviours</p>
+                      {editingPersona === persona.id ? (
+                        <input
+                          type="text"
+                          value={editedData.behaviour_patterns}
+                          onChange={(e) => handleFieldChange('behaviour_patterns', e.target.value)}
+                          placeholder="Comma-separated behaviours"
+                          className="w-full text-sm p-2 border-2 border-[#A62639] rounded-lg focus:outline-none"
+                        />
+                      ) : (
+                        <p className="text-sm text-[#6C5F5F]">
+                          {persona.behaviour_patterns && persona.behaviour_patterns.length > 0 ? persona.behaviour_patterns.join(', ') : 'None identified'}
+                        </p>
+                      )}
                     </div>
                   </div>
 
                   <div className="flex items-start gap-4">
                     <span className="text-[#E0AFA0] text-2xl">📱</span>
-                    <div>
-                      <p className="text-sm font-bold text-[#1F1A1A]">Preferred Channels</p>
-                      <p className="text-sm text-[#6C5F5F] mt-1">
-                        {persona.channel_preference && persona.channel_preference.length > 0 ? persona.channel_preference.join(', ') : 'None identified'}
-                      </p>
+                    <div className="flex-1">
+                      <p className="text-sm font-bold text-[#1F1A1A] mb-2">Preferred Channels</p>
+                      {editingPersona === persona.id ? (
+                        <input
+                          type="text"
+                          value={editedData.channel_preference}
+                          onChange={(e) => handleFieldChange('channel_preference', e.target.value)}
+                          placeholder="Comma-separated channels"
+                          className="w-full text-sm p-2 border-2 border-[#A62639] rounded-lg focus:outline-none"
+                        />
+                      ) : (
+                        <p className="text-sm text-[#6C5F5F]">
+                          {persona.channel_preference && persona.channel_preference.length > 0 ? persona.channel_preference.join(', ') : 'None identified'}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
