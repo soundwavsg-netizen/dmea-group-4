@@ -56,13 +56,17 @@ class PermissionsService {
     }
     
     if (!this.canAccessModule(moduleName)) {
+      console.log(`[PermissionsService] Tab ${moduleName}.${tabName}: Module not accessible`);
       return false;
     }
     const module = this.permissions[moduleName];
-    if (!module.tabs || !module.tabs[tabName]) {
+    if (!module.tabs || module.tabs[tabName] === undefined) {
+      console.log(`[PermissionsService] Tab ${moduleName}.${tabName}: No restriction (allowing)`);
       return true; // If no tab restrictions, allow access
     }
-    return module.tabs[tabName] === true;
+    const hasAccess = module.tabs[tabName] === true;
+    console.log(`[PermissionsService] Tab ${moduleName}.${tabName} access:`, hasAccess);
+    return hasAccess;
   }
 
   canPerformAction(moduleName, actionName) {
