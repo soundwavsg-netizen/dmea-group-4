@@ -11,6 +11,12 @@ const Personas = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [personas, setPersonas] = useState([]);
+  const [editingPersona, setEditingPersona] = useState(null);
+  const [editedData, setEditedData] = useState({});
+  const [saving, setSaving] = useState(false);
+  
+  const session = authService.getSession();
+  const isSuperAdmin = authService.isSuperAdmin();
 
   useEffect(() => {
     fetchPersonas();
