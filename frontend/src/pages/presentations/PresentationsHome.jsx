@@ -237,6 +237,13 @@ const PresentationsHome = () => {
           </div>
         </div>
       </div>
+
+      {/* Add Presentation Modal */}
+      <AddPresentationModal
+        isOpen={addModalOpen}
+        onClose={() => setAddModalOpen(false)}
+        onSuccess={fetchCustomPresentations}
+      />
     </div>
   );
 };
