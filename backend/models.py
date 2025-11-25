@@ -83,9 +83,16 @@ class PersonaResponse(BaseModel):
     # Metadata
     created_at: str
     insight_count: int
-    best_persona_score: Optional[float] = 0.0  # Optional for backward compatibility
-    avg_purchase_intent: Optional[float] = 0.0  # Optional for backward compatibility
-    avg_motivation_score: Optional[float] = 0.0  # Optional for backward compatibility
+    
+    # TCSS and star persona data (new)
+    tcss: Optional[float] = 0.0  # TCSS score for persona ranking
+    is_star_persona: Optional[bool] = False  # Whether this is the star persona
+    
+    # Legacy scoring (optional for backward compatibility)
+    best_persona_score: Optional[float] = 0.0  
+    avg_purchase_intent: Optional[float] = 0.0  
+    avg_motivation_score: Optional[float] = 0.0
+    avg_influencer_effect: Optional[float] = 0.0  # New field
     is_editable: bool
 
 class MotivationScore(BaseModel):
