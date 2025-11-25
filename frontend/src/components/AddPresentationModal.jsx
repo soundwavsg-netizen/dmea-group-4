@@ -111,10 +111,12 @@ const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
         {
           headers: {
             'X-User-Name': session.username || session.email
-          }
+          },
+          timeout: 120000  // 2 minutes timeout for large files
         }
       );
 
+      setUploadProgress('Success!');
       setSuccess(true);
       setName('');
       setDescription('');
