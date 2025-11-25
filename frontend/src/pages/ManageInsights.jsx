@@ -16,6 +16,7 @@ const ManageInsights = () => {
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
   const session = authService.getSession();
+  const isSuperAdmin = authService.isSuperAdmin();
 
   const fetchInsights = async () => {
     try {
