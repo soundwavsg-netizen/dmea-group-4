@@ -120,20 +120,24 @@ const Report = () => {
             <p className="text-[#6C5F5F] mt-2">Insights summary from {reportData.total_insights} research entries</p>
           </div>
           <div className="flex gap-3">
-            <button
-              onClick={() => navigate('/add-insight')}
-              className="px-4 py-2 bg-[#A62639] text-white rounded-full hover:bg-[#8E1F31] transition-colors"
-              data-testid="add-more-btn"
-            >
-              Add More
-            </button>
-            <button
-              onClick={() => navigate('/persona-generator')}
-              className="px-4 py-2 border-2 border-[#A62639] text-[#A62639] rounded-full hover:bg-[#A62639] hover:text-white transition-colors"
-              data-testid="generate-personas-btn"
-            >
-              Generate Personas
-            </button>
+            {(isSuperAdmin || permissionsService.canPerformAction('buyer_persona', 'add_insight')) && (
+              <button
+                onClick={() => navigate('/add-insight')}
+                className="px-4 py-2 bg-[#A62639] text-white rounded-full hover:bg-[#8E1F31] transition-colors"
+                data-testid="add-more-btn"
+              >
+                Add More
+              </button>
+            )}
+            {(isSuperAdmin || permissionsService.canPerformAction('buyer_persona', 'generate_persona')) && (
+              <button
+                onClick={() => navigate('/persona-generator')}
+                className="px-4 py-2 border-2 border-[#A62639] text-[#A62639] rounded-full hover:bg-[#A62639] hover:text-white transition-colors"
+                data-testid="generate-personas-btn"
+              >
+                Generate Personas
+              </button>
+            )}
           </div>
         </div>
 
