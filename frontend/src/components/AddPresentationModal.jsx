@@ -79,6 +79,7 @@ const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
     }
 
     setLoading(true);
+    setUploadProgress('');
 
     try {
       let fileData = null;
@@ -86,6 +87,7 @@ const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
 
       // Convert file to base64 if uploading
       if (uploadMethod === 'file' && selectedFile) {
+        setUploadProgress('Reading file...');
         const reader = new FileReader();
         fileData = await new Promise((resolve, reject) => {
           reader.onload = () => resolve(reader.result);
@@ -93,9 +95,10 @@ const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
           reader.readAsDataURL(selectedFile);
         });
         filename = selectedFile.name;
+        setUploadProgress('Uploading to server...');
       }
 
-      await axios.post(
+      const response = await axios.post(
         `${backendUrl}/api/presentations`,
         {
           name: name.trim(),
