@@ -93,6 +93,10 @@ def get_all_users_with_permissions():
         {"username": "admin2", "role": "admin"},
         {"username": "user1", "role": "user"},
         {"username": "user2", "role": "user"},
+        {"username": "anthony", "role": "user"},
+        {"username": "chris", "role": "user"},
+        {"username": "jessica", "role": "user"},
+        {"username": "tasha", "role": "user"},
     ]
     
     result = []
