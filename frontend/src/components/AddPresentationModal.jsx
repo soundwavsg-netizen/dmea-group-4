@@ -370,7 +370,7 @@ const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
                     {selectedFile ? selectedFile.name : 'Click to upload or drag and drop'}
                   </p>
                   <p className="text-xs text-[#6C5F5F]">
-                    {fileType === 'slides' ? 'PDF, PPT, PPTX (max 50MB)' : 'MP4, MOV, AVI, WEBM (max 50MB)'}
+                    {fileType === 'slides' ? 'PDF, PPT, PPTX' : 'MP4, MOV, AVI, WEBM'}
                   </p>
                 </label>
               </div>
