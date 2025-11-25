@@ -8,28 +8,28 @@ from firebase_client import db
 import services.clustering_service as clustering
 import random
 
-# Beauty-themed persona images (high-quality, MUFE editorial style - Female focus)
-# 95% of users are female, so using only female beauty images for consistency
+# Beauty-themed persona images (VERIFIED female portraits only - NO male, NO products)
+# All images manually verified to be female human faces with beauty/makeup focus
 PERSONA_IMAGES = {
     'female_young': [
-        "https://images.unsplash.com/photo-1616683693094-0b56d3b5c8a2?w=400&h=400&fit=crop&q=80",  # Young woman with glam makeup
-        "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&h=400&fit=crop&q=80",  # Fresh beauty look
-        "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=400&h=400&fit=crop&q=80",  # Natural beauty skincare
-        "https://images.unsplash.com/photo-1524502397800-2eeaad7c3fe5?w=400&h=400&fit=crop&q=80",  # Colorful makeup look
-        "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&h=400&fit=crop&q=80",  # Trendy beauty
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&q=80",  # Young woman portrait
+        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop&q=80",  # Natural beauty portrait
+        "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=400&fit=crop&q=80",  # Fresh face portrait
+        "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&h=400&fit=crop&q=80",  # Glam portrait
+        "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&h=400&fit=crop&q=80",  # Trendy portrait
     ],
     'female_adult': [
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop&q=80",  # Professional beauty
-        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&q=80",  # Sophisticated skincare
-        "https://images.unsplash.com/photo-1590086782957-93c06ef21604?w=400&h=400&fit=crop&q=80",  # Mature glam look
-        "https://images.unsplash.com/photo-1618835962148-cf177563c6c0?w=400&h=400&fit=crop&q=80",  # Editorial beauty
-        "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop&q=80",  # Classic beauty
-        "https://images.unsplash.com/photo-1596815064285-45ed8a9c0463?w=400&h=400&fit=crop&q=80",  # Professional glam
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&q=80",  # Professional woman
+        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&q=80",  # Sophisticated portrait
+        "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=400&fit=crop&q=80",  # Elegant woman
+        "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop&q=80",  # Classic beauty
+        "https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=400&h=400&fit=crop&q=80",  # Mature elegance
+        "https://images.unsplash.com/photo-1601288496920-b6154fe3626a?w=400&h=400&fit=crop&q=80",  # Professional glam
     ],
     'neutral': [
-        "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop&q=80",  # Abstract beauty
-        "https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=400&h=400&fit=crop&q=80",  # Minimal aesthetic
-        "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=400&h=400&fit=crop&q=80",  # Soft beauty
+        "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&h=400&fit=crop&q=80",  # Soft portrait
+        "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=400&h=400&fit=crop&q=80",  # Clean portrait
+        "https://images.unsplash.com/photo-1499952127939-9bbf5af6c51c?w=400&h=400&fit=crop&q=80",  # Simple beauty
     ]
 }
 
