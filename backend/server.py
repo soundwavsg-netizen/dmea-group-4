@@ -173,6 +173,38 @@ def get_all_personas(x_user_role: Optional[str] = Header(None)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.put("/api/personas/{persona_id}")
+def update_persona(
+    persona_id: str,
+    updates: Dict[str, Any],
+    x_user_role: Optional[str] = Header(None)
+):
+    """Update persona fields - SuperAdmin only"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can edit personas")
+    
+    try:
+        persona_ref = db.collection('personas').document(persona_id)
+        persona = persona_ref.get()
+        
+        if not persona.exists:
+            raise HTTPException(status_code=404, detail="Persona not found")
+        
+        # Update with timestamp
+        from datetime import datetime, timezone
+        updates['updated_at'] = datetime.now(timezone.utc).isoformat()
+        
+        persona_ref.update(updates)
+        
+        # Return updated persona
+        updated = persona_ref.get().to_dict()
+        updated['id'] = persona_id
+        return updated
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 # ==================== Daily Reflections Endpoints ====================
 
 @app.post("/api/daily-reflections", response_model=DailyReflectionResponse)
