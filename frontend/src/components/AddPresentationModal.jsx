@@ -130,11 +130,17 @@ const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
         onSuccess();
         onClose();
         setSuccess(false);
+        setUploadProgress('');
       }, 1500);
     } catch (err) {
-      setError(err.response?.data?.detail || 'Failed to add presentation');
+      if (err.code === 'ECONNABORTED') {
+        setError('Upload timeout - file may be too large. Try a smaller file or use URL method.');
+      } else {
+        setError(err.response?.data?.detail || 'Failed to add presentation');
+      }
     } finally {
       setLoading(false);
+      setUploadProgress('');
     }
   };
 
