@@ -32,13 +32,8 @@ const PresentationViewerModal = ({ isOpen, onClose, presentation }) => {
     const urlWithoutParams = fileUrl.split('?')[0];
     const extension = urlWithoutParams.split('.').pop().toLowerCase();
 
-    // PowerPoint files - Use Office Online Viewer
-    if (extension === 'ppt' || extension === 'pptx') {
-      return `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fileUrl)}`;
-    }
-
-    // PDF files - Use Google Docs Viewer
-    if (extension === 'pdf') {
+    // PDF and PowerPoint files - Use Google Docs Viewer (works better with Firebase Storage)
+    if (extension === 'pdf' || extension === 'ppt' || extension === 'pptx') {
       return `https://docs.google.com/viewer?url=${encodeURIComponent(fileUrl)}&embedded=true`;
     }
 
