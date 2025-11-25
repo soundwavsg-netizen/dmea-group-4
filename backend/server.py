@@ -621,7 +621,11 @@ def get_user_permissions_api(username: str, x_user_role: Optional[str] = Header(
             "anthony": "user",
             "chris": "user",
             "jessica": "user",
-            "tasha": "user"
+            "tasha": "user",
+            "drgu": "user",
+            "juliana": "user",
+            "shannon": "user",
+            "munifah": "user"
         }
         role = user_roles.get(username, "user")
         
