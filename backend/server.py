@@ -589,6 +589,102 @@ def admin_reset_password(
         print(f"Error resetting password: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+# ==================== Admin Panel - Permissions ====================
+
+@app.get("/api/admin/users", response_model=List[UserListItem])
+def get_all_users(x_user_role: Optional[str] = Header(None)):
+    """Get all users with their permission status - Superadmin only"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can access user management")
+    
+    try:
+        from services.permissions_service import get_all_users_with_permissions
+        return get_all_users_with_permissions()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/admin/permissions/{username}", response_model=UserPermissionsResponse)
+def get_user_permissions_api(username: str, x_user_role: Optional[str] = Header(None)):
+    """Get permissions for a specific user - Superadmin only"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can view user permissions")
+    
+    try:
+        from services.permissions_service import get_user_permissions
+        # Get user role from database or hardcoded list
+        user_roles = {
+            "superadmin": "superadmin",
+            "admin": "admin",
+            "admin2": "admin",
+            "user1": "user",
+            "user2": "user"
+        }
+        role = user_roles.get(username, "user")
+        
+        modules = get_user_permissions(username, role)
+        return UserPermissionsResponse(username=username, role=role, modules=modules)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.put("/api/admin/permissions/{username}")
+def update_user_permissions_api(
+    username: str,
+    request: UpdatePermissionsRequest,
+    x_user_role: Optional[str] = Header(None)
+):
+    """Update permissions for a specific user - Superadmin only"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can update user permissions")
+    
+    try:
+        from services.permissions_service import update_user_permissions
+        # Get user role
+        user_roles = {
+            "superadmin": "superadmin",
+            "admin": "admin",
+            "admin2": "admin",
+            "user1": "user",
+            "user2": "user"
+        }
+        role = user_roles.get(username, "user")
+        
+        success = update_user_permissions(username, role, request.modules)
+        if success:
+            return {"message": f"Permissions updated for {username}", "success": True}
+        else:
+            raise HTTPException(status_code=500, detail="Failed to update permissions")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/api/admin/permissions/{username}")
+def reset_user_permissions_api(username: str, x_user_role: Optional[str] = Header(None)):
+    """Reset user permissions to default - Superadmin only"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can reset user permissions")
+    
+    try:
+        from services.permissions_service import reset_user_permissions
+        success = reset_user_permissions(username)
+        if success:
+            return {"message": f"Permissions reset to default for {username}", "success": True}
+        else:
+            raise HTTPException(status_code=500, detail="Failed to reset permissions")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/permissions/me", response_model=UserPermissionsResponse)
+def get_my_permissions(x_user_name: Optional[str] = Header(None), x_user_role: Optional[str] = Header(None)):
+    """Get current user's permissions"""
+    if not x_user_name or not x_user_role:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    try:
+        from services.permissions_service import get_user_permissions
+        modules = get_user_permissions(x_user_name, x_user_role)
+        return UserPermissionsResponse(username=x_user_name, role=x_user_role, modules=modules)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 # ==================== Main ====================
 
 if __name__ == "__main__":
