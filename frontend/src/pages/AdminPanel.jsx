@@ -257,6 +257,7 @@ const AdminPanel = () => {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         )}
 
