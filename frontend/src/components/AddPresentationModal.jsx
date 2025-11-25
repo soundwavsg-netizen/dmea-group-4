@@ -84,37 +84,56 @@ const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
     setUploadProgress('');
 
     try {
-      let fileData = null;
-      let filename = null;
+      let uploadedFileUrl = fileUrl.trim();
 
-      // Convert file to base64 if uploading
+      // Upload file directly to Firebase Storage if using file method
       if (uploadMethod === 'file' && selectedFile) {
-        setUploadProgress('Reading file...');
-        const reader = new FileReader();
-        fileData = await new Promise((resolve, reject) => {
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = reject;
-          reader.readAsDataURL(selectedFile);
+        setUploadProgress('Uploading to Firebase Storage...');
+        
+        // Create storage reference
+        const timestamp = Date.now();
+        const storageRef = ref(storage, `presentations/${timestamp}_${selectedFile.name}`);
+        
+        // Upload file with progress tracking
+        const uploadTask = uploadBytesResumable(storageRef, selectedFile);
+        
+        // Wait for upload to complete
+        await new Promise((resolve, reject) => {
+          uploadTask.on(
+            'state_changed',
+            (snapshot) => {
+              // Calculate progress percentage
+              const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+              setUploadProgress(`Uploading: ${progress}%`);
+            },
+            (error) => {
+              console.error('Upload error:', error);
+              reject(error);
+            },
+            async () => {
+              // Upload completed, get download URL
+              uploadedFileUrl = await getDownloadURL(uploadTask.snapshot.ref);
+              resolve();
+            }
+          );
         });
-        filename = selectedFile.name;
-        setUploadProgress('Uploading to server...');
+        
+        setUploadProgress('Saving presentation...');
       }
 
+      // Send presentation data to backend (with Firebase Storage URL)
       const response = await axios.post(
         `${backendUrl}/api/presentations`,
         {
           name: name.trim(),
           description: description.trim(),
-          file_url: uploadMethod === 'url' ? fileUrl.trim() : null,
-          file_type: fileType,
-          file_data: fileData,
-          filename: filename
+          file_url: uploadedFileUrl,
+          file_type: fileType
         },
         {
           headers: {
             'X-User-Name': session.username || session.email
-          },
-          timeout: 120000  // 2 minutes timeout for large files
+          }
         }
       );
 
