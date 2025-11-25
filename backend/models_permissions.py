@@ -85,7 +85,9 @@ ADMIN_PERMISSIONS = {
     "buyer_persona": ModulePermission(
         enabled=True, 
         tabs={
+            "home": True,
             "add_insight": True,
+            "report": True,
             "manage_insights": True,
             "persona_generator": True,
             "personas": True
@@ -118,8 +120,7 @@ ADMIN_PERMISSIONS = {
             "add": True,
             "delete": True
         }
-    ),
-    "reports": ModulePermission(enabled=True, tabs={}, actions={})
+    )
 }
 
 # Superadmin has full access to everything
