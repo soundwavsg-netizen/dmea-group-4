@@ -52,23 +52,38 @@ class InsightResponse(BaseModel):
     created_at: str
 
 class PersonaDemographics(BaseModel):
-    age: str
+    age_group: str
+    gender: str
     skin_type: str
-    lifestyle: str
+    tone: str
 
 class PersonaResponse(BaseModel):
     id: str
     name: str
-    background: str
-    motivations: List[str]
-    pains: List[str]
-    behaviours: List[str]
-    channels: List[str]
-    demographics: PersonaDemographics
-    quotes: List[str]
-    intent_summary: str
-    influence_summary: str
+    persona_animated_image_url: str
+    cluster_id: str
+    
+    # WTS-based traits
+    dominant_motivations: List[str]
+    dominant_pain_points: List[str]
+    intent_category: str
+    influence_category: str
+    
+    # Frequency-based traits
+    behaviour_patterns: List[str]
+    channel_preference: List[str]
+    top_products: List[str]
+    demographic_profile: Dict[str, str]
+    representative_quotes: List[str]
+    
+    # Generated descriptions
+    buying_trigger: str
+    summary_description: str
+    
+    # Metadata
     created_at: str
+    insight_count: int
+    is_editable: bool
 
 class MotivationScore(BaseModel):
     name: str
