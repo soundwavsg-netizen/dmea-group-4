@@ -209,17 +209,52 @@ const AdminPanel = () => {
             <p className="text-sm text-blue-800">
               <strong>Session Status:</strong> {session ? `✅ Logged in as ${session.username} (${session.role})` : '❌ No session found'}
             </p>
-            <button
-              onClick={() => {
-                console.log('Current session:', authService.getSession());
-                console.log('LocalStorage:', localStorage.getItem('mufe_auth_session'));
-                setError('Check browser console for session debug info');
-                setTimeout(() => setError(''), 3000);
-              }}
-              className="mt-2 px-3 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600"
-            >
-              Debug Session
-            </button>
+            <p className="text-sm text-blue-600 mt-1">
+              <strong>Device:</strong> {navigator.userAgent.includes('Mobile') ? '📱 Mobile' : '💻 Desktop'} | 
+              <strong> Browser:</strong> {navigator.userAgent.includes('Chrome') ? 'Chrome' : navigator.userAgent.includes('Safari') ? 'Safari' : 'Other'}
+            </p>
+            <div className="flex gap-2 mt-2">
+              <button
+                onClick={() => {
+                  console.log('=== RESET BUTTON DEBUG ===');
+                  console.log('Current session:', authService.getSession());
+                  console.log('LocalStorage:', localStorage.getItem('mufe_auth_session'));
+                  console.log('User agent:', navigator.userAgent);
+                  console.log('Device type:', navigator.userAgent.includes('Mobile') ? 'Mobile' : 'Desktop');
+                  setError('Check browser console for session debug info');
+                  setTimeout(() => setError(''), 3000);
+                }}
+                className="px-3 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600"
+              >
+                Debug Session
+              </button>
+              <button
+                onClick={() => {
+                  const testReset = async () => {
+                    console.log('=== DIRECT RESET TEST ===');
+                    try {
+                      const session = authService.getSession();
+                      const response = await fetch('/api/admin/permissions/user1', {
+                        method: 'DELETE',
+                        headers: { 'X-User-Role': session?.role || 'superadmin' }
+                      });
+                      const result = await response.json();
+                      console.log('Direct API test result:', result);
+                      setSuccessMessage(`Direct API test: ${result.message || 'Success'}`);
+                      setTimeout(() => setSuccessMessage(''), 3000);
+                    } catch (err) {
+                      console.error('Direct API test failed:', err);
+                      setError(`Direct API test failed: ${err.message}`);
+                      setTimeout(() => setError(''), 3000);
+                    }
+                  };
+                  testReset();
+                }}
+                className="px-3 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600"
+              >
+                Test API Direct
+              </button>
+            </div>
           </div>
         </div>
 
