@@ -66,7 +66,7 @@ def check_permission_access(
     required_action: Optional[str] = None
 ):
     """Check if user has permission based on new permission system"""
-    from services.permissions_service import PermissionsService
+    from services import permissions_service
     
     # Superadmin always has access
     if x_user_role == 'superadmin':
@@ -82,28 +82,26 @@ def check_permission_access(
     
     try:
         # Get user permissions
-        permissions_data = PermissionsService.get_permissions(x_user_name)
-        if not permissions_data:
+        permissions_dict = permissions_service.get_user_permissions(x_user_name, x_user_role)
+        if not permissions_dict:
             raise HTTPException(status_code=403, detail="No permissions found for user.")
-        
-        modules = permissions_data.get('modules', {})
         
         # Check module access
         if required_module:
-            module_perms = modules.get(required_module)
-            if not module_perms or not module_perms.get('enabled'):
+            module_perms = permissions_dict.get(required_module)
+            if not module_perms or not module_perms.enabled:
                 raise HTTPException(status_code=403, detail=f"Access denied to {required_module} module.")
             
             # Check tab access
             if required_tab:
-                tabs = module_perms.get('tabs', {})
-                if required_tab in tabs and not tabs[required_tab]:
+                tabs = module_perms.tabs
+                if tabs and required_tab in tabs and not tabs[required_tab]:
                     raise HTTPException(status_code=403, detail=f"Access denied to {required_tab} tab.")
             
             # Check action access
             if required_action:
-                actions = module_perms.get('actions', {})
-                if required_action in actions and not actions[required_action]:
+                actions = module_perms.actions
+                if actions and required_action in actions and not actions[required_action]:
                     raise HTTPException(status_code=403, detail=f"Access denied to perform {required_action}.")
         
         return True
