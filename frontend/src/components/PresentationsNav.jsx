@@ -11,6 +11,19 @@ const PresentationsNav = () => {
   const session = authService.getSession();
   const isSuperAdmin = authService.isSuperAdmin();
 
+  const fetchCustomPresentations = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/presentations`, {
+        headers: {
+          'X-User-Name': session?.username || session?.email
+        }
+      });
+      setCustomPresentations(response.data.presentations || []);
+    } catch (error) {
+      console.error('Error fetching custom presentations:', error);
+    }
+  };
+
   useEffect(() => {
     const loadPermissions = async () => {
       if (session?.username && session?.role) {
