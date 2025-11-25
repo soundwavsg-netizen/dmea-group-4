@@ -290,8 +290,15 @@ def generate_personas_from_insights(n_clusters: int = 3) -> Dict[str, Any]:
             # Step 5: Compute cluster summary
             cluster_summary = clustering.compute_cluster_summary(cluster_insights, cluster_id)
             
-            # Step 6: Compute WTS classification
+            # Step 6: Compute WTS classification and TCSS
             wts_data = clustering.compute_wts_classification(cluster_summary, cluster_insights)
+            tcss = wts_data['tcss']
+            
+            # Check TCSS threshold - skip persona creation if below threshold
+            threshold = clustering.get_persona_threshold()
+            if tcss < threshold:
+                print(f"Cluster {cluster_id} TCSS ({tcss:.2f}) below threshold ({threshold:.2f}), skipping persona creation")
+                continue
             
             # Step 7: Paint persona profile (frequency-based)
             persona_profile = clustering.paint_persona_profile(cluster_insights)
@@ -344,19 +351,6 @@ def generate_personas_from_insights(n_clusters: int = 3) -> Dict[str, Any]:
             
             summary_description = generate_summary_description(persona_profile, wts_data)
             
-            # Calculate "best persona" score for ranking
-            # Priority: 1) insight count, 2) avg purchase intent, 3) avg motivation score
-            avg_motivation_score = (
-                sum(data['avg_score'] for data in wts_data['motivation_wts'].values()) / 
-                len(wts_data['motivation_wts'])
-            ) if wts_data['motivation_wts'] else 0
-            
-            best_persona_score = (
-                len(cluster_insights) * 10000 +  # Insight count (highest priority)
-                wts_data['avg_purchase_intent'] * 100 +  # Purchase intent (second)
-                avg_motivation_score  # Avg motivation (third)
-            )
-            
             # Create persona document
             persona_data = {
                 'name': persona_name,
@@ -384,20 +378,48 @@ def generate_personas_from_insights(n_clusters: int = 3) -> Dict[str, Any]:
                 'buying_trigger': buying_trigger,
                 'summary_description': summary_description,
                 
+                # TCSS and ranking data
+                'tcss': float(tcss),
+                'is_star_persona': False,  # Will be set later
+                
                 # Metadata
                 'created_at': datetime.now(timezone.utc).isoformat(),
                 'insight_count': len(cluster_insights),
-                'best_persona_score': float(best_persona_score),
                 'avg_purchase_intent': float(wts_data['avg_purchase_intent']),
-                'avg_motivation_score': float(avg_motivation_score),
+                'avg_influencer_effect': float(wts_data['avg_influencer_effect']),
                 
                 # Editable flag
                 'is_editable': True
             }
             
-            # Save persona to Firestore
-            persona_ref = db.collection('personas').document(cluster_id)
-            persona_ref.set(persona_data)
+            # Add to list for star persona selection
+            personas_data.append({
+                'cluster_id': cluster_id,
+                'data': persona_data,
+                'tcss': tcss,
+                'wts_intent': wts_data['avg_purchase_intent'],
+                'wts_motivation_avg': sum(data['wts'] for data in wts_data['motivation_wts'].values()) / len(wts_data['motivation_wts']) if wts_data['motivation_wts'] else 0,
+                'wts_pain_avg': sum(data['wts'] for data in wts_data['pain_wts'].values()) / len(wts_data['pain_wts']) if wts_data['pain_wts'] else 0
+            })
+        
+        # Determine Star Persona (highest TCSS with tie-breakers)
+        if personas_data:
+            # Sort by TCSS (desc), then by tie-breakers
+            personas_data.sort(key=lambda x: (
+                -x['tcss'],  # Higher TCSS first
+                -x['wts_intent'],  # Higher intent second  
+                -x['wts_motivation_avg'],  # Higher motivation third
+                -x['wts_pain_avg']  # Higher pain fourth
+            ))
+            
+            # Mark the first one as star persona
+            personas_data[0]['data']['is_star_persona'] = True
+            print(f"Star Persona: {personas_data[0]['data']['name']} (TCSS: {personas_data[0]['tcss']:.2f})")
+        
+        # Save all personas to Firestore
+        for persona_info in personas_data:
+            persona_ref = db.collection('personas').document(persona_info['cluster_id'])
+            persona_ref.set(persona_info['data'])
             personas_created.append(persona_name)
             
             # Save cluster summary
