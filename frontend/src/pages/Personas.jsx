@@ -191,7 +191,7 @@ const Personas = () => {
                 key={persona.id}
                 className={`flex flex-col items-stretch justify-start rounded-xl shadow-lg bg-white/80 backdrop-blur-sm overflow-hidden transition-all hover:shadow-2xl ${
                   isBestPersona 
-                    ? 'border-[#c0aede] shadow-[0_0_20px_rgba(192,174,222,0.4)] ring-2 ring-[#c0aede]/30' 
+                    ? 'border-[#FFB6C1] shadow-[0_0_25px_rgba(255,182,193,0.6)] ring-2 ring-[#FFB6C1]/40' 
                     : 'border border-[#E0AFA0]'
                 }`}
                 data-testid={isBestPersona ? 'best-persona' : `persona-card-${index}`}
