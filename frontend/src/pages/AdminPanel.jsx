@@ -499,6 +499,62 @@ const AdminPanel = () => {
             </div>
           </div>
         )}
+
+        {activeTab === 'persona-settings' && (
+          <div className="bg-white rounded-xl border border-[#E0AFA0]/50 shadow-sm p-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-[#1F1A1A] mb-2">Persona Settings</h2>
+              <p className="text-[#6C5F5F]">Configure global settings for buyer persona generation</p>
+            </div>
+
+            <div className="space-y-6">
+              <div className="border border-[#E0AFA0]/30 rounded-lg p-6">
+                <h3 className="text-xl font-bold text-[#1F1A1A] mb-4">TCSS Threshold</h3>
+                <p className="text-[#6C5F5F] mb-4">
+                  Set the minimum Total Customer Satisfaction Score required for persona generation
+                </p>
+                
+                <div className="flex items-center gap-4">
+                  <div className="flex-1 max-w-xs">
+                    <label className="block text-sm font-medium text-[#1F1A1A] mb-2">
+                      Minimum TCSS Score
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      max="10"
+                      step="0.1"
+                      value={personaThreshold}
+                      onChange={(e) => setPersonaThreshold(parseFloat(e.target.value))}
+                      className="w-full px-3 py-2 border border-[#E0AFA0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A62639] focus:border-transparent"
+                      disabled={loadingThreshold}
+                    />
+                    <p className="text-xs text-[#6C5F5F] mt-1">
+                      Range: 0.0 - 10.0 (Current: {personaThreshold})
+                    </p>
+                  </div>
+                  
+                  <button
+                    onClick={handleThresholdUpdate}
+                    disabled={saving || loadingThreshold}
+                    className="px-6 py-2 bg-[#A62639] text-white rounded-lg hover:bg-[#8a1f2d] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    {saving ? 'Updating...' : 'Update Threshold'}
+                  </button>
+                </div>
+                
+                <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <h4 className="text-sm font-semibold text-blue-800 mb-2">How it works:</h4>
+                  <ul className="text-sm text-blue-700 space-y-1">
+                    <li>• Users with TCSS below this threshold cannot generate personas</li>
+                    <li>• Higher thresholds ensure better quality persona generation</li>
+                    <li>• Recommended range: 2.0 - 4.0 for balanced access</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
