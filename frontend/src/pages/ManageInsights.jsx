@@ -212,6 +212,8 @@ const ManageInsights = () => {
                     <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Platform</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Research Method</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Demographics</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Motivations</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Pains</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Quote</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Notes</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Products</th>
