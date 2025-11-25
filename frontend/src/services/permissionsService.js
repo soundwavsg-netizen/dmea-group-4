@@ -41,9 +41,12 @@ class PermissionsService {
     }
     
     if (!this.permissions || !this.permissions[moduleName]) {
+      console.log(`[PermissionsService] No permissions found for module: ${moduleName}`);
       return false;
     }
-    return this.permissions[moduleName].enabled === true;
+    const hasAccess = this.permissions[moduleName].enabled === true;
+    console.log(`[PermissionsService] Module ${moduleName} access:`, hasAccess);
+    return hasAccess;
   }
 
   canAccessTab(moduleName, tabName) {
