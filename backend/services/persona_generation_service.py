@@ -8,35 +8,157 @@ from firebase_client import db
 import services.clustering_service as clustering
 import random
 
-# Persona name pools for generation
-PERSONA_NAMES = [
-    "Sarah", "Emma", "Olivia", "Ava", "Isabella", "Sophia", "Mia", "Charlotte",
-    "Amelia", "Harper", "Evelyn", "Abigail", "Emily", "Elizabeth", "Sofia", "Avery",
-    "Ella", "Scarlett", "Grace", "Chloe", "Victoria", "Riley", "Aria", "Lily",
-    "Aubrey", "Zoey", "Penelope", "Lillian", "Addison", "Layla", "Natalie", "Camila"
-]
+# Gender and age-specific persona images
+PERSONA_IMAGES = {
+    'female_young': [
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=FemaleYouth1&gender=female&backgroundColor=ffdfbf",
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=FemaleYouth2&gender=female&backgroundColor=ffd5dc",
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=FemaleYouth3&gender=female&backgroundColor=b6e3f4",
+    ],
+    'female_adult': [
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=FemaleAdult1&gender=female&backgroundColor=c0aede",
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=FemaleAdult2&gender=female&backgroundColor=d1d4f9",
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=FemaleAdult3&gender=female&backgroundColor=ffdfbf",
+    ],
+    'male_young': [
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=MaleYouth1&gender=male&backgroundColor=b6e3f4",
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=MaleYouth2&gender=male&backgroundColor=c0aede",
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=MaleYouth3&gender=male&backgroundColor=d1d4f9",
+    ],
+    'male_adult': [
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=MaleAdult1&gender=male&backgroundColor=ffdfbf",
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=MaleAdult2&gender=male&backgroundColor=ffd5dc",
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=MaleAdult3&gender=male&backgroundColor=c0aede",
+    ],
+    'neutral': [
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=Neutral1&backgroundColor=e0e0e0",
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=Neutral2&backgroundColor=e0e0e0",
+    ]
+}
 
-# Animated image URLs (placeholder - can be replaced with actual GIFs/SVGs)
-PERSONA_IMAGES = [
-    "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah&backgroundColor=ffdfbf",
-    "https://api.dicebear.com/7.x/avataaars/svg?seed=Emma&backgroundColor=c0aede",
-    "https://api.dicebear.com/7.x/avataaars/svg?seed=Olivia&backgroundColor=b6e3f4",
-    "https://api.dicebear.com/7.x/avataaars/svg?seed=Ava&backgroundColor=ffd5dc",
-    "https://api.dicebear.com/7.x/avataaars/svg?seed=Isabella&backgroundColor=d1d4f9",
-]
+
+def generate_persona_name(persona_profile: Dict[str, Any], motivation_wts: Dict[str, Any]) -> str:
+    """
+    Generate a descriptive role-based persona name (NOT a human name)
+    
+    Examples: "The Trend-Seeking Student", "The Pro Makeup Artist", "The Budget Beauty Explorer"
+    
+    Args:
+        persona_profile: Contains demographics, behaviours, channels
+        motivation_wts: Contains dominant motivations
+    
+    Returns:
+        A 2-5 word descriptive title
+    """
+    # Get key traits
+    age_group = persona_profile.get('demographic_profile', {}).get('age_group', '').lower()
+    behaviours = persona_profile.get('top_behaviours', [])
+    channels = persona_profile.get('top_channels', [])
+    
+    # Get dominant motivation
+    dominant_motivations = [name for name, data in motivation_wts.items() if data['category'] == 'dominant']
+    strong_motivations = [name for name, data in motivation_wts.items() if data['category'] == 'strong']
+    
+    top_motivation = (dominant_motivations[0] if dominant_motivations else 
+                     strong_motivations[0] if strong_motivations else 'Beauty')
+    
+    # Adjective mapping based on traits
+    adjectives = []
+    
+    # Age-based
+    if '18-25' in age_group or 'under 25' in age_group:
+        adjectives.extend(['Trend-Seeking', 'Student', 'Young', 'Emerging'])
+    elif '26-35' in age_group:
+        adjectives.extend(['Professional', 'Career-Focused', 'Established'])
+    elif '36-45' in age_group or '45+' in age_group:
+        adjectives.extend(['Experienced', 'Mature', 'Sophisticated'])
+    
+    # Behaviour-based
+    if behaviours:
+        behaviour_lower = ' '.join(behaviours).lower()
+        if 'research' in behaviour_lower or 'read' in behaviour_lower:
+            adjectives.append('Research-Driven')
+        if 'compare' in behaviour_lower or 'price' in behaviour_lower:
+            adjectives.append('Budget-Conscious')
+        if 'try' in behaviour_lower or 'experiment' in behaviour_lower:
+            adjectives.append('Experimental')
+        if 'share' in behaviour_lower or 'review' in behaviour_lower:
+            adjectives.append('Influential')
+    
+    # Channel-based
+    if channels:
+        channel_lower = ' '.join(channels).lower()
+        if 'tiktok' in channel_lower or 'instagram' in channel_lower:
+            adjectives.append('Social Media')
+        if 'youtube' in channel_lower:
+            adjectives.append('Content Creator')
+        if 'shopee' in channel_lower or 'lazada' in channel_lower:
+            adjectives.append('Online Shopper')
+    
+    # Motivation-based noun
+    noun_mapping = {
+        'quality': 'Quality Seeker',
+        'effectiveness': 'Results Hunter',
+        'affordability': 'Budget Explorer',
+        'convenience': 'Convenience Lover',
+        'innovation': 'Innovation Chaser',
+        'brand': 'Brand Loyalist',
+        'natural': 'Natural Beauty Advocate',
+        'trendy': 'Trendsetter',
+        'professional': 'Pro User',
+        'recommendation': 'Community Follower'
+    }
+    
+    noun = 'Beauty Enthusiast'
+    for key, value in noun_mapping.items():
+        if key.lower() in top_motivation.lower():
+            noun = value
+            break
+    
+    # Build name
+    if adjectives:
+        adjective = random.choice(adjectives[:3])  # Pick from top 3 traits
+        return f"The {adjective} {noun}"
+    else:
+        return f"The {noun}"
 
 
-def generate_persona_name(existing_names: List[str]) -> str:
-    """Generate a unique persona name"""
-    available = [name for name in PERSONA_NAMES if name not in existing_names]
-    if not available:
-        return f"Persona {len(existing_names) + 1}"
-    return random.choice(available)
-
-
-def generate_persona_image(index: int) -> str:
-    """Get persona image URL"""
-    return PERSONA_IMAGES[index % len(PERSONA_IMAGES)]
+def generate_persona_image(demographic_profile: Dict[str, str], index: int) -> str:
+    """
+    Get persona image URL based on gender and age group
+    
+    Args:
+        demographic_profile: Contains age_group and gender
+        index: Fallback index for variety
+    
+    Returns:
+        Avatar URL matching demographics
+    """
+    gender = demographic_profile.get('gender', '').lower()
+    age_group = demographic_profile.get('age_group', '').lower()
+    
+    # Determine age category
+    is_young = ('18-25' in age_group or 'under 25' in age_group or 
+                '18' in age_group or '20' in age_group)
+    
+    # Determine gender category
+    is_male = 'male' in gender and 'female' not in gender
+    is_female = 'female' in gender
+    
+    # Select appropriate image set
+    if is_female and is_young:
+        image_set = PERSONA_IMAGES['female_young']
+    elif is_female:
+        image_set = PERSONA_IMAGES['female_adult']
+    elif is_male and is_young:
+        image_set = PERSONA_IMAGES['male_young']
+    elif is_male:
+        image_set = PERSONA_IMAGES['male_adult']
+    else:
+        image_set = PERSONA_IMAGES['neutral']
+    
+    # Return image from appropriate set
+    return image_set[index % len(image_set)]
 
 
 def generate_buying_trigger(motivation_wts: Dict[str, Any], intent_category: str) -> str:
