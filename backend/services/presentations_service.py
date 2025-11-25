@@ -45,13 +45,8 @@ def create_presentation(name, description, file_url, file_type, file_data, filen
         # If file_data is provided, upload to Firebase Storage
         if file_data and filename:
             try:
-                # Get storage bucket with explicit name
-                # Try different bucket naming formats
-                try:
-                    bucket = storage.bucket()
-                except:
-                    # Try with appspot domain
-                    bucket = storage.bucket('dmea-group-4.appspot.com')
+                # Get storage bucket
+                bucket = storage.bucket()
                 
                 # Create unique filename
                 file_extension = filename.split('.')[-1] if '.' in filename else ''
