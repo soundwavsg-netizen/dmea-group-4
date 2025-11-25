@@ -118,20 +118,22 @@ const Personas = () => {
               <div className="p-6 md:p-8">
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row items-start gap-6 mb-6">
-                  <div className="w-24 h-24 bg-gradient-to-br from-[#A62639] to-[#E0AFA0] rounded-full flex-shrink-0 flex items-center justify-center text-white text-3xl font-bold">
-                    {persona.name.charAt(0)}
-                  </div>
+                  <img 
+                    src={persona.persona_animated_image_url} 
+                    alt={persona.name}
+                    className="w-24 h-24 rounded-full flex-shrink-0"
+                  />
                   <div className="flex flex-col gap-2 pt-2 flex-1">
                     <h2 className="text-3xl font-bold text-[#1F1A1A]">{persona.name}</h2>
-                    {persona.quotes && persona.quotes.length > 0 && (
-                      <p className="text-base italic text-[#6C5F5F]">"{persona.quotes[0]}"</p>
+                    {persona.representative_quotes && persona.representative_quotes.length > 0 && (
+                      <p className="text-base italic text-[#6C5F5F]">"{persona.representative_quotes[0]}"</p>
                     )}
                   </div>
                 </div>
 
-                {/* Background */}
+                {/* Summary Description */}
                 <p className="text-base leading-relaxed text-[#1F1A1A] mb-6">
-                  {persona.background}
+                  {persona.summary_description}
                 </p>
 
                 {/* Demographics */}
@@ -140,27 +142,31 @@ const Personas = () => {
                   <div className="grid grid-cols-2 gap-2 text-sm">
                     <div>
                       <span className="text-[#6C5F5F]">Age:</span>
-                      <span className="ml-2 text-[#1F1A1A] font-medium">{persona.demographics.age}</span>
+                      <span className="ml-2 text-[#1F1A1A] font-medium">{persona.demographic_profile?.age_group || 'Unknown'}</span>
+                    </div>
+                    <div>
+                      <span className="text-[#6C5F5F]">Gender:</span>
+                      <span className="ml-2 text-[#1F1A1A] font-medium">{persona.demographic_profile?.gender || 'Unknown'}</span>
                     </div>
                     <div>
                       <span className="text-[#6C5F5F]">Skin Type:</span>
-                      <span className="ml-2 text-[#1F1A1A] font-medium">{persona.demographics.skin_type}</span>
+                      <span className="ml-2 text-[#1F1A1A] font-medium">{persona.demographic_profile?.skin_type || 'Unknown'}</span>
                     </div>
-                    <div className="col-span-2">
-                      <span className="text-[#6C5F5F]">Lifestyle:</span>
-                      <span className="ml-2 text-[#1F1A1A] font-medium">{persona.demographics.lifestyle}</span>
+                    <div>
+                      <span className="text-[#6C5F5F]">Tone:</span>
+                      <span className="ml-2 text-[#1F1A1A] font-medium">{persona.demographic_profile?.tone || 'Unknown'}</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Tabs */}
+                {/* Main Content Grid */}
                 <div className="pt-6 grid grid-cols-1 gap-5">
                   <div className="flex items-start gap-4">
                     <span className="text-[#E0AFA0] text-2xl">✨</span>
                     <div>
-                      <p className="text-sm font-bold text-[#1F1A1A]">Motivations</p>
+                      <p className="text-sm font-bold text-[#1F1A1A]">Dominant Motivations</p>
                       <div className="flex flex-wrap gap-2 mt-2">
-                        {persona.motivations.slice(0, 5).map((motivation, i) => (
+                        {persona.dominant_motivations && persona.dominant_motivations.slice(0, 5).map((motivation, i) => (
                           <span key={i} className="px-3 py-1 bg-[#A62639]/10 text-[#A62639] rounded-full text-xs font-medium">
                             {motivation}
                           </span>
@@ -174,7 +180,7 @@ const Personas = () => {
                     <div>
                       <p className="text-sm font-bold text-[#1F1A1A]">Pain Points</p>
                       <div className="flex flex-wrap gap-2 mt-2">
-                        {persona.pains.slice(0, 5).map((pain, i) => (
+                        {persona.dominant_pain_points && persona.dominant_pain_points.slice(0, 5).map((pain, i) => (
                           <span key={i} className="px-3 py-1 bg-[#E0AFA0]/20 text-[#6C5F5F] rounded-full text-xs font-medium">
                             {pain}
                           </span>
@@ -184,31 +190,43 @@ const Personas = () => {
                   </div>
 
                   <div className="flex items-start gap-4">
+                    <span className="text-[#E0AFA0] text-2xl">🛍️</span>
+                    <div>
+                      <p className="text-sm font-bold text-[#1F1A1A]">Behaviours</p>
+                      <p className="text-sm text-[#6C5F5F] mt-1">
+                        {persona.behaviour_patterns && persona.behaviour_patterns.length > 0 ? persona.behaviour_patterns.join(', ') : 'None identified'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
                     <span className="text-[#E0AFA0] text-2xl">📱</span>
                     <div>
                       <p className="text-sm font-bold text-[#1F1A1A]">Preferred Channels</p>
-                      <p className="text-sm text-[#6C5F5F] mt-1">{persona.channels.join(', ')}</p>
+                      <p className="text-sm text-[#6C5F5F] mt-1">
+                        {persona.channel_preference && persona.channel_preference.length > 0 ? persona.channel_preference.join(', ') : 'None identified'}
+                      </p>
                     </div>
                   </div>
                 </div>
 
-                {/* Summaries */}
-                {(persona.intent_summary || persona.influence_summary) && (
-                  <div className="mt-6 pt-6 border-t border-[#E0AFA0]/30 space-y-3">
-                    {persona.intent_summary && (
-                      <div>
-                        <p className="text-xs font-bold text-[#A62639] mb-1">Purchase Behavior</p>
-                        <p className="text-sm text-[#6C5F5F]">{persona.intent_summary}</p>
-                      </div>
-                    )}
-                    {persona.influence_summary && (
-                      <div>
-                        <p className="text-xs font-bold text-[#A62639] mb-1">Social Media Influence</p>
-                        <p className="text-sm text-[#6C5F5F]">{persona.influence_summary}</p>
-                      </div>
-                    )}
+                {/* Buying Behavior */}
+                <div className="mt-6 pt-6 border-t border-[#E0AFA0]/30 space-y-3">
+                  <div>
+                    <p className="text-xs font-bold text-[#A62639] mb-1">
+                      Purchase Intent: <span className="uppercase">{persona.intent_category}</span>
+                    </p>
+                    <p className="text-sm text-[#6C5F5F]">{persona.buying_trigger}</p>
                   </div>
-                )}
+                  <div>
+                    <p className="text-xs font-bold text-[#A62639] mb-1">
+                      Social Media Influence: <span className="uppercase">{persona.influence_category}</span>
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-[#A62639] mb-1">Based on {persona.insight_count} insights</p>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
