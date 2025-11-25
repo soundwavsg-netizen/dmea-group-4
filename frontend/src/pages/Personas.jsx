@@ -206,8 +206,8 @@ const Personas = () => {
                 </div>
               )}
               <div className="p-6 md:p-8">
-                {/* Edit Buttons - Always at top right */}
-                {isSuperAdmin && (
+                {/* Edit Buttons - Show only if user has permission */}
+                {(isSuperAdmin || permissionsService.canPerformAction('buyer_persona', 'edit_persona')) && (
                   <div className="flex justify-end gap-2 mb-4">
                     {editingPersona === persona.id ? (
                       <>
@@ -215,6 +215,7 @@ const Personas = () => {
                           onClick={() => handleSave(persona.id)}
                           disabled={saving}
                           className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 text-sm font-medium"
+                          data-testid="save-persona-btn"
                         >
                           {saving ? 'Saving...' : 'Save'}
                         </button>
@@ -222,6 +223,7 @@ const Personas = () => {
                           onClick={handleCancelEdit}
                           disabled={saving}
                           className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50 text-sm font-medium"
+                          data-testid="cancel-edit-persona-btn"
                         >
                           Cancel
                         </button>
@@ -230,6 +232,7 @@ const Personas = () => {
                       <button
                         onClick={() => handleEdit(persona)}
                         className="px-4 py-2 bg-[#A62639] text-white rounded-lg hover:bg-[#8a1f2d] transition-colors text-sm font-medium"
+                        data-testid="edit-persona-btn"
                       >
                         Edit
                       </button>
