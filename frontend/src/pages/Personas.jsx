@@ -182,12 +182,26 @@ const Personas = () => {
 
         {/* Personas Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          {personas.map((persona, index) => (
-            <div
-              key={persona.id}
-              className="flex flex-col items-stretch justify-start rounded-xl shadow-lg bg-white/80 backdrop-blur-sm border border-[#E0AFA0] overflow-hidden transition-all hover:shadow-2xl"
-              data-testid={`persona-card-${index}`}
-            >
+          {personas.map((persona, index) => {
+            const isBestPersona = index === 0; // First persona after sorting is the best
+            return (
+              <div
+                key={persona.id}
+                className={`flex flex-col items-stretch justify-start rounded-xl shadow-lg bg-white/80 backdrop-blur-sm overflow-hidden transition-all hover:shadow-2xl ${
+                  isBestPersona 
+                    ? 'border-[#c0aede] shadow-[0_0_20px_rgba(192,174,222,0.4)] ring-2 ring-[#c0aede]/30' 
+                    : 'border border-[#E0AFA0]'
+                }`}
+                data-testid={isBestPersona ? 'best-persona' : `persona-card-${index}`}
+              >
+              {/* Best Persona Badge */}
+              {isBestPersona && (
+                <div className="bg-gradient-to-r from-[#c0aede] to-[#d1d4f9] px-4 py-2 text-center">
+                  <p className="text-white text-xs font-bold tracking-wide">
+                    ⭐ BEST PERSONA - Largest User Group
+                  </p>
+                </div>
+              )}
               <div className="p-6 md:p-8">
                 {/* Header with Edit Button */}
                 <div className="flex justify-between items-start mb-6">
