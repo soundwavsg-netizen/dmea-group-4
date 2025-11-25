@@ -95,14 +95,16 @@ const PresentationsHome = () => {
                 Comprehensive presentation decks explaining our user research and persona generation methodology
               </p>
             </div>
-            <button
-              onClick={() => setAddModalOpen(true)}
-              className="flex items-center gap-2 px-6 py-3 bg-[#A62639] text-white rounded-lg font-semibold hover:bg-[#8a1f2d] transition-colors shadow-lg"
-              data-testid="add-presentation-btn"
-            >
-              <Plus size={20} />
-              Add Presentation
-            </button>
+            {(isSuperAdmin || permissionsService.canPerformAction('presentations', 'add')) && (
+              <button
+                onClick={() => setAddModalOpen(true)}
+                className="flex items-center gap-2 px-6 py-3 bg-[#A62639] text-white rounded-lg font-semibold hover:bg-[#8a1f2d] transition-colors shadow-lg"
+                data-testid="add-presentation-btn"
+              >
+                <Plus size={20} />
+                Add Presentation
+              </button>
+            )}
           </div>
         </div>
 
