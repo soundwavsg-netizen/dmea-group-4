@@ -44,6 +44,16 @@ const Personas = () => {
         return (b.tcss || 0) - (a.tcss || 0);
       });
       
+      // Ensure at least one persona is marked as star (for backward compatibility)
+      if (sortedPersonas.length > 0) {
+        const hasStarPersona = sortedPersonas.some(persona => persona.is_star_persona);
+        if (!hasStarPersona) {
+          // Mark the first persona (highest TCSS or first available) as star
+          sortedPersonas[0].is_star_persona = true;
+          console.log(`Auto-marked ${sortedPersonas[0].name} as star persona (no existing star found)`);
+        }
+      }
+      
       setPersonas(sortedPersonas);
     } catch (err) {
       setError(err.response?.data?.detail || 'Failed to load personas');
