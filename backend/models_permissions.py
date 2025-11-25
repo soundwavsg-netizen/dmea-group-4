@@ -46,13 +46,13 @@ DEFAULT_PERMISSIONS = {
             "report": False,
             "manage_insights": False,
             "persona_generator": False,
-            "personas": True
+            "personas": False
         },
         actions={
             "add_insight": True,
             "edit_insight": False,
             "delete_insight": False,
-            "view_personas": True,
+            "view_personas": False,
             "generate_persona": False,
             "edit_persona": False
         }
