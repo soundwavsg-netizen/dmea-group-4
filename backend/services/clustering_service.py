@@ -411,7 +411,7 @@ def compute_wts_classification(cluster_summary: Dict[str, Any], insights: List[D
     else:
         influence_category = "dominant"
     
-    return {
+    wts_result = {
         'motivation_wts': motivation_wts,
         'pain_wts': pain_wts,
         'intent_category': intent_category,
@@ -419,6 +419,12 @@ def compute_wts_classification(cluster_summary: Dict[str, Any], insights: List[D
         'avg_purchase_intent': float(avg_intent),
         'avg_influencer_effect': float(avg_influence)
     }
+    
+    # Calculate TCSS
+    tcss = compute_tcss(wts_result)
+    wts_result['tcss'] = tcss
+    
+    return wts_result
 
 
 def paint_persona_profile(insights: List[Dict[str, Any]]) -> Dict[str, Any]:
