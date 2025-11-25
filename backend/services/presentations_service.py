@@ -45,8 +45,8 @@ def create_presentation(name, description, file_url, file_type, file_data, filen
         # If file_data is provided, upload to Firebase Storage
         if file_data and filename:
             try:
-                # Get storage bucket
-                bucket = storage.bucket()
+                # Get storage bucket with explicit name
+                bucket = storage.bucket('dmea-group-4.firebasestorage.app')
                 
                 # Create unique filename
                 file_extension = filename.split('.')[-1] if '.' in filename else ''
@@ -71,7 +71,8 @@ def create_presentation(name, description, file_url, file_type, file_data, filen
                 print(f"File uploaded successfully: {file_url}")
             except Exception as upload_error:
                 print(f"Error uploading file: {upload_error}")
-                raise Exception(f"Failed to upload file: {str(upload_error)}")
+                # If storage bucket doesn't exist or upload fails, provide helpful error
+                raise Exception(f"File upload is currently unavailable. Please use the 'Provide URL' option instead. Error: {str(upload_error)}")
         
         doc_ref = db.collection('custom_presentations').document(presentation_id)
         
