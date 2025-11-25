@@ -204,13 +204,13 @@ const ManageInsights = () => {
                     <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Platform</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Research Method</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Demographics</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Quote</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Notes</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Products</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Motivations</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Pain Points</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Behaviours</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Channels</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Purchase Intent</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Influencer Effect</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Intent</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Influence</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Actions</th>
                   </tr>
                 </thead>
