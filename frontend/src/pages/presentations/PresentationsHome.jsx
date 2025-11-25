@@ -75,6 +75,11 @@ const PresentationsHome = () => {
     }
   };
 
+  const handleViewPresentation = (presentation) => {
+    setSelectedPresentation(presentation);
+    setViewerModalOpen(true);
+  };
+
   return (
     <div className="min-h-screen bg-[#FAF7F5] py-8">
       <div className="container mx-auto max-w-6xl px-4">
