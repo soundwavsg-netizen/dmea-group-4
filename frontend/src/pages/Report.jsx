@@ -5,6 +5,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import InfoTooltip from '../components/InfoTooltip';
 import PlatformWeightTable from '../components/PlatformWeightTable';
 import authService from '../services/authService';
+import permissionsService from '../services/permissionsService';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
