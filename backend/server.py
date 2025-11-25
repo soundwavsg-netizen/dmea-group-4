@@ -21,7 +21,7 @@ from models_daily_reflections import (
 # Import services
 from services.insights_service import InsightsService
 from services.report_service import ReportService
-from services.clustering_service import ClusteringService
+# Clustering service is imported dynamically in endpoints
 from services.persona_service import PersonaService
 from services.daily_reflections_service import DailyReflectionsService
 from services import presentations_service
