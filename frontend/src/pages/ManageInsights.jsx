@@ -83,6 +83,14 @@ const ManageInsights = () => {
     return items.map(item => `${item.name} (${item.strength})`).join(', ');
   };
 
+  const formatTopMotivationsOrPains = (items, max = 2) => {
+    if (!items || items.length === 0) return 'None';
+    // Sort by strength descending and take top N
+    const sorted = [...items].sort((a, b) => b.strength - a.strength);
+    const top = sorted.slice(0, max);
+    return top.map(item => `${item.name} (${item.strength})`).join(', ');
+  };
+
   const truncateText = (text, maxLength = 50) => {
     if (!text) return 'N/A';
     if (text.length <= maxLength) return text;
