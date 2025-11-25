@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { X, Upload, FileText, Video } from 'lucide-react';
 import axios from 'axios';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { storage } from '../services/firebaseConfig';
 import authService from '../services/authService';
 
 const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
