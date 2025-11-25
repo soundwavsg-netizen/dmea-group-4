@@ -48,19 +48,6 @@ const PresentationsNav = () => {
     );
   }
 
-  const fetchCustomPresentations = async () => {
-    try {
-      const response = await axios.get(`${backendUrl}/api/presentations`, {
-        headers: {
-          'X-User-Name': session?.username || session?.email
-        }
-      });
-      setCustomPresentations(response.data.presentations || []);
-    } catch (error) {
-      console.error('Error fetching custom presentations:', error);
-    }
-  };
-
   const activeLinkStyle = (isActive) => 
     `px-4 py-3 md:py-2 font-semibold text-sm md:text-base transition-all whitespace-nowrap ${
       isActive
