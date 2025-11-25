@@ -290,6 +290,171 @@ const ManageInsights = () => {
             </div>
           </div>
         )}
+
+        {/* Detail View Modal */}
+        {detailModalOpen && selectedInsight && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" data-testid="detail-modal">
+            <div className="bg-white rounded-xl p-6 max-w-4xl w-full mx-4 shadow-2xl max-h-[90vh] overflow-y-auto">
+              <div className="flex justify-between items-start mb-6">
+                <h3 className="text-2xl font-bold text-[#1F1A1A]">Insight Details</h3>
+                <button
+                  onClick={() => setDetailModalOpen(false)}
+                  className="text-[#6C5F5F] hover:text-[#A62639] transition-colors"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Basic Info */}
+                <div>
+                  <h4 className="font-semibold text-[#A62639] mb-2">Basic Information</h4>
+                  <div className="space-y-2 text-sm">
+                    <div><span className="text-[#6C5F5F]">ID:</span> <span className="font-mono text-xs">{selectedInsight.id}</span></div>
+                    <div><span className="text-[#6C5F5F]">Created:</span> {formatDate(selectedInsight.created_at)}</div>
+                    <div><span className="text-[#6C5F5F]">Created By:</span> {selectedInsight.created_by || 'N/A'}</div>
+                    <div><span className="text-[#6C5F5F]">Platform:</span> {selectedInsight.platform}</div>
+                    <div><span className="text-[#6C5F5F]">Research Method:</span> {selectedInsight.research_method}</div>
+                  </div>
+                </div>
+
+                {/* Demographics */}
+                <div>
+                  <h4 className="font-semibold text-[#A62639] mb-2">Demographics</h4>
+                  <div className="space-y-2 text-sm">
+                    <div><span className="text-[#6C5F5F]">Age Group:</span> {selectedInsight.age_group}</div>
+                    <div><span className="text-[#6C5F5F]">Gender:</span> {selectedInsight.gender}</div>
+                    <div><span className="text-[#6C5F5F]">Skin Type:</span> {selectedInsight.skin_type}</div>
+                    <div><span className="text-[#6C5F5F]">Skin Tone:</span> {selectedInsight.skin_tone}</div>
+                    <div><span className="text-[#6C5F5F]">Lifestyle:</span> {selectedInsight.lifestyle}</div>
+                  </div>
+                </div>
+
+                {/* Quote */}
+                <div className="md:col-span-2">
+                  <h4 className="font-semibold text-[#A62639] mb-2">Quote</h4>
+                  <p className="text-sm italic text-[#6C5F5F] bg-[#F8F6F5] p-4 rounded-lg">
+                    "{selectedInsight.quote || 'No quote provided'}"
+                  </p>
+                </div>
+
+                {/* Researcher Notes */}
+                <div className="md:col-span-2">
+                  <h4 className="font-semibold text-[#A62639] mb-2">Researcher Notes</h4>
+                  <p className="text-sm text-[#6C5F5F] bg-[#F8F6F5] p-4 rounded-lg whitespace-pre-wrap">
+                    {selectedInsight.notes || 'No notes provided'}
+                  </p>
+                </div>
+
+                {/* Motivations */}
+                <div>
+                  <h4 className="font-semibold text-[#A62639] mb-2">Motivations</h4>
+                  <div className="space-y-1 text-sm">
+                    {selectedInsight.motivations && selectedInsight.motivations.length > 0 ? (
+                      selectedInsight.motivations.map((m, i) => (
+                        <div key={i} className="flex justify-between items-center bg-[#F8F6F5] px-3 py-2 rounded">
+                          <span>{m.name}</span>
+                          <span className="font-semibold text-[#A62639]">{m.strength}</span>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-[#6C5F5F]">None</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Pain Points */}
+                <div>
+                  <h4 className="font-semibold text-[#A62639] mb-2">Pain Points</h4>
+                  <div className="space-y-1 text-sm">
+                    {selectedInsight.pains && selectedInsight.pains.length > 0 ? (
+                      selectedInsight.pains.map((p, i) => (
+                        <div key={i} className="flex justify-between items-center bg-[#F8F6F5] px-3 py-2 rounded">
+                          <span>{p.name}</span>
+                          <span className="font-semibold text-[#A62639]">{p.strength}</span>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-[#6C5F5F]">None</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Products */}
+                <div>
+                  <h4 className="font-semibold text-[#A62639] mb-2">Products Mentioned</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedInsight.products && selectedInsight.products.length > 0 ? (
+                      selectedInsight.products.map((product, i) => (
+                        <span key={i} className="px-3 py-1 bg-[#E0AFA0]/20 text-[#6C5F5F] rounded-full text-xs">
+                          {product}
+                        </span>
+                      ))
+                    ) : (
+                      <p className="text-sm text-[#6C5F5F]">None</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Behaviours */}
+                <div>
+                  <h4 className="font-semibold text-[#A62639] mb-2">Behaviours</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedInsight.behaviours && selectedInsight.behaviours.length > 0 ? (
+                      selectedInsight.behaviours.map((behaviour, i) => (
+                        <span key={i} className="px-3 py-1 bg-[#E0AFA0]/20 text-[#6C5F5F] rounded-full text-xs">
+                          {behaviour}
+                        </span>
+                      ))
+                    ) : (
+                      <p className="text-sm text-[#6C5F5F]">None</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Channels */}
+                <div>
+                  <h4 className="font-semibold text-[#A62639] mb-2">Channels</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedInsight.channels && selectedInsight.channels.length > 0 ? (
+                      selectedInsight.channels.map((channel, i) => (
+                        <span key={i} className="px-3 py-1 bg-[#E0AFA0]/20 text-[#6C5F5F] rounded-full text-xs">
+                          {channel}
+                        </span>
+                      ))
+                    ) : (
+                      <p className="text-sm text-[#6C5F5F]">None</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Scores */}
+                <div>
+                  <h4 className="font-semibold text-[#A62639] mb-2">Scores</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between items-center bg-[#F8F6F5] px-3 py-2 rounded">
+                      <span>Purchase Intent:</span>
+                      <span className="font-semibold text-[#A62639]">{selectedInsight.purchase_intent}</span>
+                    </div>
+                    <div className="flex justify-between items-center bg-[#F8F6F5] px-3 py-2 rounded">
+                      <span>Influencer Effect:</span>
+                      <span className="font-semibold text-[#A62639]">{selectedInsight.influencer_effect}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 flex justify-end">
+                <button
+                  onClick={() => setDetailModalOpen(false)}
+                  className="px-6 py-2 bg-[#A62639] text-white rounded-lg hover:bg-[#8a1f2d] transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
