@@ -57,8 +57,8 @@ const Sidebar = () => {
       modules.push({ label: 'Daily Reflections', path: '/daily-reflections', icon: '📝' });
     }
     
-    if (isAdmin || isSuperAdmin) {
-      // Presentations - Admin and SuperAdmin only
+    // Presentations - check permissions
+    if (permissionsService.canAccessModule('presentations')) {
       modules.push({ label: 'Presentations', path: '/presentations', icon: '📊' });
       
       // SEO & Content
