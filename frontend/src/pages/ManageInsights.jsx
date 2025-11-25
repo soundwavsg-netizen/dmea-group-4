@@ -236,6 +236,12 @@ const ManageInsights = () => {
                       <td className="px-4 py-3 text-xs text-[#1F1A1A]">{insight.platform}</td>
                       <td className="px-4 py-3 text-xs text-[#1F1A1A]">{insight.research_method}</td>
                       <td className="px-4 py-3 text-xs text-[#6C5F5F]">{formatDemographics(insight)}</td>
+                      <td className="px-4 py-3 text-xs text-[#6C5F5F]" title={formatTopMotivationsOrPains(insight.motivations, 10)}>
+                        {truncateText(formatTopMotivationsOrPains(insight.motivations), 40)}
+                      </td>
+                      <td className="px-4 py-3 text-xs text-[#6C5F5F]" title={formatTopMotivationsOrPains(insight.pains, 10)}>
+                        {truncateText(formatTopMotivationsOrPains(insight.pains), 40)}
+                      </td>
                       <td className="px-4 py-3 text-xs text-[#6C5F5F] italic" title={insight.quote}>
                         {truncateText(insight.quote, 40)}
                       </td>
