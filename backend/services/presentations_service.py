@@ -3,8 +3,11 @@ Presentations Service
 Handles CRUD operations for custom user-uploaded presentations
 """
 from firebase_client import db
+from firebase_admin import storage
 from datetime import datetime, timezone
 import uuid
+import base64
+import mimetypes
 
 
 def get_all_presentations(user_id=None):
@@ -34,14 +37,47 @@ def get_all_presentations(user_id=None):
         raise
 
 
-def create_presentation(name, file_url, file_type, created_by):
-    """Create a new presentation"""
+def create_presentation(name, description, file_url, file_type, file_data, filename, created_by):
+    """Create a new presentation with optional file upload"""
     try:
         presentation_id = str(uuid.uuid4())
+        
+        # If file_data is provided, upload to Firebase Storage
+        if file_data and filename:
+            try:
+                # Get storage bucket
+                bucket = storage.bucket()
+                
+                # Create unique filename
+                file_extension = filename.split('.')[-1] if '.' in filename else ''
+                storage_filename = f"presentations/{presentation_id}/{filename}"
+                
+                # Decode base64 file data
+                file_bytes = base64.b64decode(file_data.split(',')[1] if ',' in file_data else file_data)
+                
+                # Upload to Firebase Storage
+                blob = bucket.blob(storage_filename)
+                
+                # Determine content type
+                content_type = mimetypes.guess_type(filename)[0] or 'application/octet-stream'
+                blob.upload_from_string(file_bytes, content_type=content_type)
+                
+                # Make the file publicly accessible
+                blob.make_public()
+                
+                # Get public URL
+                file_url = blob.public_url
+                
+                print(f"File uploaded successfully: {file_url}")
+            except Exception as upload_error:
+                print(f"Error uploading file: {upload_error}")
+                raise Exception(f"Failed to upload file: {str(upload_error)}")
+        
         doc_ref = db.collection('custom_presentations').document(presentation_id)
         
         presentation_data = {
             'name': name,
+            'description': description,
             'file_url': file_url,
             'file_type': file_type,  # 'slides' or 'video'
             'created_by': created_by,
