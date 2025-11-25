@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FileText, GitBranch, ArrowRight, Plus, Video, Trash2 } from 'lucide-react';
 import axios from 'axios';
 import authService from '../../services/authService';
+import permissionsService from '../../services/permissionsService';
 import AddPresentationModal from '../../components/AddPresentationModal';
 import PresentationViewerModal from '../../components/PresentationViewerModal';
 
