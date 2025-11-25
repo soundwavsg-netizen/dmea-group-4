@@ -34,6 +34,44 @@ const PresentationsHome = () => {
     }
   ];
 
+  // Fetch custom presentations
+  useEffect(() => {
+    fetchCustomPresentations();
+  }, []);
+
+  const fetchCustomPresentations = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/presentations`, {
+        headers: {
+          'X-User-Name': session?.username || session?.email
+        }
+      });
+      setCustomPresentations(response.data.presentations || []);
+    } catch (error) {
+      console.error('Error fetching custom presentations:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (presentationId) => {
+    if (!window.confirm('Are you sure you want to delete this presentation?')) {
+      return;
+    }
+
+    try {
+      await axios.delete(`${backendUrl}/api/presentations/${presentationId}`, {
+        headers: {
+          'X-User-Role': session?.role
+        }
+      });
+      fetchCustomPresentations();
+    } catch (error) {
+      alert('Failed to delete presentation');
+      console.error('Error deleting presentation:', error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#FAF7F5] py-8">
       <div className="container mx-auto max-w-6xl px-4">
