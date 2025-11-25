@@ -224,8 +224,18 @@ const Personas = () => {
                       ) : (
                         <h2 className="text-3xl font-bold text-[#1F1A1A]">{persona.name}</h2>
                       )}
-                      {persona.representative_quotes && persona.representative_quotes.length > 0 && (
-                        <p className="text-base italic text-[#6C5F5F]">"{persona.representative_quotes[0]}"</p>
+                      {editingPersona === persona.id ? (
+                        <textarea
+                          value={editedData.representative_quotes}
+                          onChange={(e) => handleFieldChange('representative_quotes', e.target.value)}
+                          placeholder="Pipe-separated quotes: Quote 1 | Quote 2"
+                          rows={2}
+                          className="text-base italic text-[#6C5F5F] p-2 border-2 border-[#A62639] rounded-lg focus:outline-none resize-none"
+                        />
+                      ) : (
+                        persona.representative_quotes && persona.representative_quotes.length > 0 && (
+                          <p className="text-base italic text-[#6C5F5F]">"{persona.representative_quotes[0]}"</p>
+                        )
                       )}
                     </div>
                   </div>
