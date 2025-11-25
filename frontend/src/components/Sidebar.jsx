@@ -11,11 +11,23 @@ const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
   const [resetPasswordOpen, setResetPasswordOpen] = useState(false);
+  const [permissionsLoaded, setPermissionsLoaded] = useState(false);
   const session = authService.getSession();
   const role = session?.role;
   const isSuperAdmin = authService.isSuperAdmin();
   const isAdmin = authService.isAdmin();
   const flags = featureFlagService.getFlags();
+
+  // Load permissions on mount
+  useEffect(() => {
+    const loadPermissions = async () => {
+      if (session?.username && session?.role) {
+        await permissionsService.fetchPermissions(session.username, session.role);
+        setPermissionsLoaded(true);
+      }
+    };
+    loadPermissions();
+  }, [session?.username, session?.role]);
 
   const handleLogout = () => {
     authService.logout();
