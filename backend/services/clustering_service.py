@@ -288,6 +288,7 @@ def get_persona_threshold() -> float:
         Minimum TCSS threshold
     """
     try:
+        from firebase_client import db
         doc = db.collection('settings').document('persona_threshold').get()
         if doc.exists:
             return float(doc.to_dict().get('minimum_tcss', 2.0))
@@ -300,7 +301,7 @@ def get_persona_threshold() -> float:
             })
             return 2.0
     except Exception as e:
-        print(f"Error getting persona threshold: {e}")
+        print(f"Error getting persona threshold, using default: {e}")
         return 2.0
 
 
@@ -315,6 +316,7 @@ def set_persona_threshold(threshold: float) -> bool:
         Success status
     """
     try:
+        from firebase_client import db
         # Validate range
         threshold = max(0.0, min(6.0, float(threshold)))
         
