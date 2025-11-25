@@ -162,12 +162,7 @@ const PresentationsHome = () => {
             );
           })}
 
-        {/* Default Presentations Grid */}
-        <div>
-          <h2 className="text-3xl font-bold text-[#333333] mb-6" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Default Presentations
-          </h2>
-          <div className="grid md:grid-cols-2 gap-8">
+          {/* Default Presentations */}
           {presentations.map((presentation) => {
             const Icon = presentation.icon;
             return (
