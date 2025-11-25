@@ -34,10 +34,15 @@ const Personas = () => {
         }
       });
       
-      // Sort personas by best_persona_score (highest first)
-      const sortedPersonas = response.data.sort((a, b) => 
-        (b.best_persona_score || 0) - (a.best_persona_score || 0)
-      );
+      // Sort personas: Star persona first, then by TCSS (highest first)
+      const sortedPersonas = response.data.sort((a, b) => {
+        // Star persona always first
+        if (a.is_star_persona && !b.is_star_persona) return -1;
+        if (!a.is_star_persona && b.is_star_persona) return 1;
+        
+        // Then sort by TCSS (higher first)
+        return (b.tcss || 0) - (a.tcss || 0);
+      });
       
       setPersonas(sortedPersonas);
     } catch (err) {
