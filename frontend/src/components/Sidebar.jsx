@@ -157,8 +157,8 @@ const Sidebar = () => {
           </button>
         </div>
 
-        {/* Navigation - Make sure this scrolls */}
-        <nav className="flex-1 overflow-y-auto p-4" style={{ minHeight: 0 }}>
+        {/* Navigation - Scrollable with bottom padding */}
+        <nav className="flex-1 overflow-y-auto p-4 pb-24" style={{ minHeight: 0, WebkitOverflowScrolling: 'touch' }}>
           <div className="space-y-2">
             {modules.map((module, index) => (
               <NavLink
