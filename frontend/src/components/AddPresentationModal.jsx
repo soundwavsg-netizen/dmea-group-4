@@ -249,26 +249,93 @@ const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
             </div>
           </div>
 
-          {/* File URL */}
+          {/* Upload Method Selection */}
           <div>
             <label className="block text-sm font-semibold text-[#333333] mb-2">
-              File URL <span className="text-red-500">*</span>
+              Upload Method <span className="text-red-500">*</span>
             </label>
-            <input
-              type="url"
-              value={fileUrl}
-              onChange={(e) => setFileUrl(e.target.value)}
-              placeholder="https://docs.google.com/presentation/... or https://youtube.com/..."
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A62639] focus:border-transparent"
-              data-testid="presentation-url-input"
-            />
-            <p className="text-xs text-[#6C5F5F] mt-1">
-              {fileType === 'slides' 
-                ? 'Google Slides, PowerPoint Online, or PDF URL'
-                : 'YouTube, Vimeo, or direct video URL'}
-            </p>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setUploadMethod('url');
+                  setSelectedFile(null);
+                }}
+                className={`px-4 py-3 rounded-lg border-2 transition-all text-sm font-medium ${
+                  uploadMethod === 'url'
+                    ? 'border-[#A62639] bg-[#A62639]/5 text-[#A62639]'
+                    : 'border-gray-300 text-[#6C5F5F] hover:border-[#A62639]/50'
+                }`}
+              >
+                Provide URL
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setUploadMethod('file');
+                  setFileUrl('');
+                }}
+                className={`px-4 py-3 rounded-lg border-2 transition-all text-sm font-medium ${
+                  uploadMethod === 'file'
+                    ? 'border-[#A62639] bg-[#A62639]/5 text-[#A62639]'
+                    : 'border-gray-300 text-[#6C5F5F] hover:border-[#A62639]/50'
+                }`}
+              >
+                Upload File
+              </button>
+            </div>
           </div>
+
+          {/* File URL (if URL method selected) */}
+          {uploadMethod === 'url' && (
+            <div>
+              <label className="block text-sm font-semibold text-[#333333] mb-2">
+                File URL <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="url"
+                value={fileUrl}
+                onChange={(e) => setFileUrl(e.target.value)}
+                placeholder="https://docs.google.com/presentation/... or https://youtube.com/..."
+                required={uploadMethod === 'url'}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A62639] focus:border-transparent"
+                data-testid="presentation-url-input"
+              />
+              <p className="text-xs text-[#6C5F5F] mt-1">
+                {fileType === 'slides' 
+                  ? 'Google Slides, PowerPoint Online, or PDF URL'
+                  : 'YouTube, Vimeo, or direct video URL'}
+              </p>
+            </div>
+          )}
+
+          {/* File Upload (if file method selected) */}
+          {uploadMethod === 'file' && (
+            <div>
+              <label className="block text-sm font-semibold text-[#333333] mb-2">
+                Upload File <span className="text-red-500">*</span>
+              </label>
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-[#A62639] transition-colors">
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  accept={fileType === 'slides' ? '.pdf,.ppt,.pptx' : '.mp4,.mov,.avi,.webm'}
+                  required={uploadMethod === 'file'}
+                  className="hidden"
+                  id="file-upload"
+                />
+                <label htmlFor="file-upload" className="cursor-pointer">
+                  <Upload className="w-12 h-12 mx-auto mb-3 text-[#6C5F5F]" />
+                  <p className="text-[#333333] font-medium mb-1">
+                    {selectedFile ? selectedFile.name : 'Click to upload or drag and drop'}
+                  </p>
+                  <p className="text-xs text-[#6C5F5F]">
+                    {fileType === 'slides' ? 'PDF, PPT, PPTX (max 50MB)' : 'MP4, MOV, AVI, WEBM (max 50MB)'}
+                  </p>
+                </label>
+              </div>
+            </div>
+          )}
 
           {/* Buttons */}
           <div className="flex items-center justify-end gap-3 pt-2">
