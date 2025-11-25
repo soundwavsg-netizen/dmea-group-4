@@ -199,7 +199,7 @@ const Personas = () => {
               {/* Best Persona Badge */}
               {isBestPersona && (
                 <div className="bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] px-4 py-2 text-center">
-                  <p className="text-white text-xs font-bold tracking-wide">
+                  <p className="text-white text-xs font-bold tracking-wide drop-shadow-md">
                     ⭐ BEST PERSONA - Largest User Group
                   </p>
                 </div>
