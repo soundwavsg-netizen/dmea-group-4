@@ -50,9 +50,9 @@ function App() {
           </ProtectedRoute>
         } />
         
-        {/* Buyer Persona Module - Admin Only + buyer_research flag */}
+        {/* Buyer Persona Module - Check permissions */}
         <Route path="/report" element={
-          <ProtectedRoute adminOnly={true} requiredFeature="buyer_research">
+          <ProtectedRoute adminOnly={true} requiredFeature="buyer_research" requiredModule="buyer_persona" requiredTab="report">
             <Layout>
               <Report />
             </Layout>
@@ -60,7 +60,7 @@ function App() {
         } />
         
         <Route path="/persona-generator" element={
-          <ProtectedRoute adminOnly={true} requiredFeature="buyer_research">
+          <ProtectedRoute adminOnly={true} requiredFeature="buyer_research" requiredModule="buyer_persona" requiredTab="persona_generator">
             <Layout>
               <PersonaGenerator />
             </Layout>
@@ -68,7 +68,7 @@ function App() {
         } />
         
         <Route path="/personas" element={
-          <ProtectedRoute adminOnly={true} requiredFeature="buyer_research">
+          <ProtectedRoute adminOnly={true} requiredFeature="buyer_research" requiredModule="buyer_persona" requiredTab="personas">
             <Layout>
               <Personas />
             </Layout>
@@ -76,7 +76,7 @@ function App() {
         } />
         
         <Route path="/manage-insights" element={
-          <ProtectedRoute adminOnly={true}>
+          <ProtectedRoute adminOnly={true} requiredModule="buyer_persona" requiredTab="manage_insights">
             <Layout>
               <ManageInsights />
             </Layout>
