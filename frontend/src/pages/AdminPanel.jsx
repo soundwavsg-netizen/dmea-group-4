@@ -302,8 +302,25 @@ const AdminPanel = () => {
                           </button>
                           {user.has_custom_permissions && (
                             <button
-                              onClick={() => handleResetPermissions(user.username)}
-                              className="px-3 py-1 bg-gray-500 text-white text-xs rounded hover:bg-gray-600"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                console.log('Reset button clicked via onClick');
+                                handleResetPermissions(user.username);
+                              }}
+                              onMouseDown={(e) => {
+                                console.log('Reset button mousedown');
+                              }}
+                              onTouchStart={(e) => {
+                                console.log('Reset button touchstart');
+                              }}
+                              className="px-3 py-1 bg-gray-500 text-white text-xs rounded hover:bg-gray-600 transition-colors cursor-pointer select-none"
+                              style={{ 
+                                touchAction: 'manipulation',
+                                userSelect: 'none',
+                                WebkitUserSelect: 'none'
+                              }}
+                              data-testid={`reset-user-${user.username}`}
                             >
                               Reset
                             </button>
