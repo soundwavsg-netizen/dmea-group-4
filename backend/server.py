@@ -188,9 +188,17 @@ def delete_insight(
 # ==================== Report Endpoint ====================
 
 @app.get("/api/report", response_model=ReportResponse)
-def get_report(x_user_role: Optional[str] = Header(None)):
-    """Get aggregated report of all insights - Admin/SuperAdmin only"""
-    check_admin_access(x_user_role)
+def get_report(
+    x_user_name: Optional[str] = Header(None),
+    x_user_role: Optional[str] = Header(None)
+):
+    """Get aggregated report of all insights - Check permissions"""
+    check_permission_access(
+        x_user_name=x_user_name,
+        x_user_role=x_user_role,
+        required_module='buyer_persona',
+        required_tab='report'
+    )
     try:
         return ReportService.generate_report()
     except Exception as e:
