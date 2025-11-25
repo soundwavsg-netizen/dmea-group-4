@@ -198,6 +198,22 @@ const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
             />
           </div>
 
+          {/* Description */}
+          <div>
+            <label className="block text-sm font-semibold text-[#333333] mb-2">
+              Description <span className="text-red-500">*</span>
+            </label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Brief description of what this presentation covers..."
+              required
+              rows={3}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A62639] focus:border-transparent resize-none"
+              data-testid="presentation-description-input"
+            />
+          </div>
+
           {/* File Type Selection */}
           <div>
             <label className="block text-sm font-semibold text-[#333333] mb-2">
