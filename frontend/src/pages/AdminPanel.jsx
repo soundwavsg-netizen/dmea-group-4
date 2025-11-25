@@ -115,24 +115,57 @@ const AdminPanel = () => {
   };
 
   const handleResetPermissions = async (username) => {
-    if (!window.confirm(`Reset permissions to default for ${username}?`)) return;
+    console.log('Reset button clicked for:', username);
+    
+    if (!window.confirm(`Reset permissions to default for ${username}?`)) {
+      console.log('Reset cancelled by user');
+      return;
+    }
     
     try {
-      console.log(`Resetting permissions for ${username}...`);
+      console.log('Starting reset process...');
+      
+      // Get session from multiple sources
+      let session = authService.getSession();
+      if (!session) {
+        console.warn('No session from authService, trying localStorage directly');
+        const sessionData = localStorage.getItem('mufe_auth_session');
+        if (sessionData) {
+          session = JSON.parse(sessionData);
+        }
+      }
+      
+      if (!session || !session.role) {
+        console.error('No valid session found');
+        setError('Authentication error. Please logout and login again.');
+        return;
+      }
+      
+      console.log('Making API call with session role:', session.role);
+      
       const response = await axios.delete(`${API}/api/admin/permissions/${username}`, {
         headers: { 'X-User-Role': session.role }
       });
-      console.log('Reset response:', response.data);
+      
+      console.log('Reset API response:', response.data);
       setSuccessMessage(`Permissions reset for ${username}`);
       setError(''); // Clear any previous errors
       setTimeout(() => setSuccessMessage(''), 3000);
+      
+      // Refresh the data
       await fetchUsers();
       if (selectedUser === username) {
         await fetchUserPermissions(username);
       }
+      
     } catch (err) {
-      console.error('Reset error:', err);
-      const errorMsg = err.response?.data?.detail || 'Failed to reset permissions';
+      console.error('Reset error details:', {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status
+      });
+      
+      const errorMsg = err.response?.data?.detail || err.message || 'Failed to reset permissions';
       setError(errorMsg);
       setSuccessMessage(''); // Clear success message
       setTimeout(() => setError(''), 5000);
