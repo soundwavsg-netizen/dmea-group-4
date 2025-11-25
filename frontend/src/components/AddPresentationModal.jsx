@@ -135,8 +135,11 @@ const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
   const handleClose = () => {
     if (!loading) {
       setName('');
+      setDescription('');
       setFileUrl('');
+      setSelectedFile(null);
       setFileType('slides');
+      setUploadMethod('url');
       setError('');
       setSuccess(false);
       onClose();
