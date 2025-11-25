@@ -373,8 +373,9 @@ const AddPresentationModal = ({ isOpen, onClose, onSuccess }) => {
               className="flex items-center gap-2 px-6 py-2 bg-[#A62639] text-white rounded-lg font-semibold hover:bg-[#8a1f2d] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               data-testid="add-presentation-submit"
             >
-              <Upload size={18} />
-              {loading ? 'Adding...' : 'Add Presentation'}
+              {loading && <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>}
+              {!loading && <Upload size={18} />}
+              {loading ? 'Uploading...' : 'Add Presentation'}
             </button>
           </div>
         </form>
