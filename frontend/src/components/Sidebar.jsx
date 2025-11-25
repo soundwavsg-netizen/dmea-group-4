@@ -87,7 +87,7 @@ const Sidebar = () => {
       }
     }
     
-    // Admin Panel - SuperAdmin only
+    // Admin Panel - Superadmin only (no permission check needed)
     if (isSuperAdmin) {
       modules.push({ label: 'Admin Panel', path: '/admin', icon: '⚙️' });
     }
