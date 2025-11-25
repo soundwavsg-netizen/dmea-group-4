@@ -241,20 +241,20 @@ const Personas = () => {
                   </div>
                   
                   {isSuperAdmin && (
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 flex-shrink-0">
                       {editingPersona === persona.id ? (
                         <>
                           <button
                             onClick={() => handleSave(persona.id)}
                             disabled={saving}
-                            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 text-sm"
+                            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 text-sm whitespace-nowrap"
                           >
                             {saving ? 'Saving...' : 'Save'}
                           </button>
                           <button
                             onClick={handleCancelEdit}
                             disabled={saving}
-                            className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50 text-sm"
+                            className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50 text-sm whitespace-nowrap"
                           >
                             Cancel
                           </button>
@@ -262,7 +262,7 @@ const Personas = () => {
                       ) : (
                         <button
                           onClick={() => handleEdit(persona)}
-                          className="px-4 py-2 bg-[#A62639] text-white rounded-lg hover:bg-[#8a1f2d] transition-colors text-sm"
+                          className="px-4 py-2 bg-[#A62639] text-white rounded-lg hover:bg-[#8a1f2d] transition-colors text-sm whitespace-nowrap"
                         >
                           Edit
                         </button>
