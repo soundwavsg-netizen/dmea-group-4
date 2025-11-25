@@ -241,6 +241,16 @@ const PresentationsHome = () => {
         onClose={() => setAddModalOpen(false)}
         onSuccess={fetchCustomPresentations}
       />
+
+      {/* Presentation Viewer Modal */}
+      <PresentationViewerModal
+        isOpen={viewerModalOpen}
+        onClose={() => {
+          setViewerModalOpen(false);
+          setSelectedPresentation(null);
+        }}
+        presentation={selectedPresentation}
+      />
     </div>
   );
 };
