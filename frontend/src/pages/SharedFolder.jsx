@@ -630,7 +630,7 @@ const SharedFolder = () => {
                       >
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
-                            <FileText size={20} style={{ color: getFolderColor(file.folderID) }} />
+                            <FileText size={18} style={{ color: getFolderColor(file.folderID) }} />
                             <span className="text-sm font-medium text-[#1F1A1A]">{file.fileName}</span>
                           </div>
                         </td>
