@@ -61,7 +61,7 @@ class SharedFolderService:
         )
     
     @staticmethod
-    def get_all_folders() -> List[Dict[str, Any]]:
+    def get_all_folders(user_id: str = None, include_personal: bool = False) -> List[Dict[str, Any]]:
         """Get all folders with file counts, ordered by order field"""
         folders = []
         folder_docs = list(db.collection('folders').stream())
@@ -71,19 +71,29 @@ class SharedFolderService:
             folder_data = doc.to_dict()
             folder_data['id'] = doc.id
             
+            # Filter personal folders unless requested
+            is_personal = folder_data.get('isPersonal', False)
+            if is_personal:
+                # Only include personal folders if:
+                # 1. include_personal is True AND
+                # 2. It belongs to the requesting user
+                if not (include_personal and folder_data.get('ownerUserID') == user_id):
+                    continue
+            
             # Get file count for this folder
             file_count = db.collection('sharedFiles').where('folderID', '==', doc.id).count().get()[0][0].value
             folder_data['fileCount'] = file_count
             
             folders.append(folder_data)
         
-        # Assign order if missing
+        # Assign order if missing (only for non-personal folders)
         for i, folder in enumerate(folders):
-            if 'order' not in folder or folder.get('order') is None or folder.get('order') == 0:
-                new_order = i + 1
-                db.collection('folders').document(folder['id']).update({'order': new_order})
-                folder['order'] = new_order
-                print(f"Updated folder {folder['name']} with order {new_order}")
+            if not folder.get('isPersonal', False):
+                if 'order' not in folder or folder.get('order') is None or folder.get('order') == 0:
+                    new_order = i + 1
+                    db.collection('folders').document(folder['id']).update({'order': new_order})
+                    folder['order'] = new_order
+                    print(f"Updated folder {folder['name']} with order {new_order}")
         
         # Sort by order field
         folders.sort(key=lambda x: x.get('order', 0))
