@@ -15,12 +15,15 @@ const AdminPanel = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [personaThreshold, setPersonaThreshold] = useState(2.0);
   const [loadingThreshold, setLoadingThreshold] = useState(false);
+  const [sharedFolderPermissions, setSharedFolderPermissions] = useState(null);
+  const [loadingSharedPerms, setLoadingSharedPerms] = useState(false);
 
   const session = authService.getSession();
 
   useEffect(() => {
     fetchUsers();
     fetchPersonaThreshold();
+    fetchSharedFolderPermissions();
   }, []);
 
   const fetchUsers = async () => {
