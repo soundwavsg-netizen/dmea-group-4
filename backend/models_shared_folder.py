@@ -32,6 +32,8 @@ class FolderResponse(BaseModel):
     color: Optional[str] = "#A62639"
     order: Optional[int] = 0  # Display order
     fileCount: Optional[int] = 0  # Computed field
+    isPersonal: Optional[bool] = False  # Personal folder flag
+    ownerUserID: Optional[str] = None  # Owner of personal folder
 
 
 # ==================== Shared File Models ====================
