@@ -305,7 +305,21 @@ const SharedFolder = () => {
         
         {/* Left Sidebar - Folder Navigation */}
         <div className="w-64 bg-white border-r border-[#E0AFA0]/30 p-4">
-          <h2 className="text-lg font-bold text-[#1F1A1A] mb-4 font-display">Folders</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold text-[#1F1A1A] font-display">Folders</h2>
+            {isSuperAdmin && (
+              <button
+                onClick={() => setCreateFolderModalOpen(true)}
+                className="p-1.5 text-[#A62639] hover:bg-[#F1D6CD] rounded transition-colors"
+                title="Create Folder"
+                data-testid="create-folder-btn"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+              </button>
+            )}
+          </div>
           
           {/* Special Views */}
           <div className="space-y-1 mb-4">
