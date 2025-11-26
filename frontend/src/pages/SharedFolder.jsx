@@ -255,15 +255,28 @@ const SharedFolder = () => {
           <div className="bg-white border-b border-[#E0AFA0]/30 p-4">
             <div className="flex items-center justify-between gap-4">
               
-              {/* Left: Upload Button */}
-              <button
-                onClick={() => setUploadModalOpen(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-[#A62639] text-white rounded-lg font-semibold hover:bg-[#8a1f2d] transition-colors"
-                data-testid="upload-file-btn"
-              >
-                <Upload size={18} />
-                Upload File
-              </button>
+              {/* Left: Upload Button & Analytics */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setUploadModalOpen(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-[#A62639] text-white rounded-lg font-semibold hover:bg-[#8a1f2d] transition-colors"
+                  data-testid="upload-file-btn"
+                >
+                  <Upload size={18} />
+                  Upload File
+                </button>
+                
+                {isSuperAdmin && (
+                  <button
+                    onClick={() => navigate('/shared-folder/analytics')}
+                    className="flex items-center gap-2 px-4 py-2 border-2 border-[#A62639] text-[#A62639] rounded-lg font-semibold hover:bg-[#A62639] hover:text-white transition-colors"
+                    data-testid="view-analytics-btn"
+                  >
+                    <BarChart3 size={18} />
+                    Analytics
+                  </button>
+                )}
+              </div>
               
               {/* Center: Search */}
               <div className="flex-1 max-w-md relative">
