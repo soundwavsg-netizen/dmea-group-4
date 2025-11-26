@@ -12,8 +12,8 @@ class SharedFolderService:
     """Service for folder CRUD operations"""
     
     @staticmethod
-    def create_folder(name: str, created_by: str, icon: str = "folder", color: str = "#A62639") -> Dict[str, Any]:
-        """Create a new folder (Superadmin only)"""
+    def create_folder(name: str, created_by: str, icon: str = "folder", color: str = "#A62639", is_personal: bool = False, owner_user_id: str = None) -> Dict[str, Any]:
+        """Create a new folder (Superadmin only, or auto-create for personal folders)"""
         folder_id = str(uuid.uuid4())
         
         # Get current max order
@@ -31,11 +31,34 @@ class SharedFolderService:
             "createdAt": datetime.now(timezone.utc).isoformat(),
             "icon": icon,
             "color": color,
-            "order": max_order + 1
+            "order": max_order + 1,
+            "isPersonal": is_personal,
+            "ownerUserID": owner_user_id if is_personal else None
         }
         
         db.collection('folders').document(folder_id).set(folder_data)
         return folder_data
+    
+    @staticmethod
+    def get_or_create_personal_folder(user_id: str) -> Dict[str, Any]:
+        """Get or create a personal folder for a user"""
+        # Check if personal folder exists
+        folders = db.collection('folders').where('isPersonal', '==', True).where('ownerUserID', '==', user_id).limit(1).stream()
+        
+        for folder in folders:
+            folder_data = folder.to_dict()
+            folder_data['id'] = folder.id
+            return folder_data
+        
+        # Create if doesn't exist
+        return SharedFolderService.create_folder(
+            name=f"{user_id}'s Files",
+            created_by=user_id,
+            icon="user",
+            color="#9C27B0",
+            is_personal=True,
+            owner_user_id=user_id
+        )
     
     @staticmethod
     def get_all_folders() -> List[Dict[str, Any]]:
