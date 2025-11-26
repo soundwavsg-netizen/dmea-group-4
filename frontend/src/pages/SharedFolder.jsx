@@ -472,6 +472,25 @@ const SharedFolder = () => {
               </div>
             ))}
           </div>
+          
+          <div className="h-px bg-[#E0AFA0]/30 my-4"></div>
+          
+          {/* Personal Folder */}
+          <div className="space-y-1">
+            <button
+              onClick={() => setSelectedFolder('personal')}
+              className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left transition-colors ${
+                selectedFolder === 'personal'
+                  ? 'bg-[#A62639] text-white'
+                  : 'text-[#6C5F5F] hover:bg-[#F1D6CD]'
+              }`}
+              data-testid="folder-personal"
+            >
+              <User size={20} style={{ color: selectedFolder === 'personal' ? 'white' : '#9C27B0' }} />
+              <span className="text-sm font-medium">{session.username}</span>
+              <span className="ml-auto text-xs opacity-70">Private</span>
+            </button>
+          </div>
         </div>
 
         {/* Main Content Area */}
