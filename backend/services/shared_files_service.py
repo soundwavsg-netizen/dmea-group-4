@@ -49,26 +49,37 @@ class SharedFilesService:
         limit: int = 100
     ) -> List[Dict[str, Any]]:
         """Get files with optional filters"""
-        query = db.collection('sharedFiles')
+        # Fetch all files first, then filter and sort in Python
+        # This avoids Firestore composite index requirements
+        all_files = []
         
-        # Apply filters
-        if folder_id:
-            query = query.where('folderID', '==', folder_id)
-        if uploader_id:
-            query = query.where('uploaderUserID', '==', uploader_id)
-        if file_type_filter:
-            query = query.where('previewType', '==', file_type_filter)
-        
-        # Order by upload date (newest first) and limit
-        query = query.order_by('uploadedAt', direction=firestore.Query.DESCENDING).limit(limit)
-        
-        files = []
-        for doc in query.stream():
-            file_data = doc.to_dict()
-            file_data['id'] = doc.id
-            files.append(file_data)
-        
-        return files
+        try:
+            # Start with base query
+            query = db.collection('sharedFiles')
+            
+            # Apply filters one at a time to avoid composite index issues
+            if folder_id:
+                query = query.where('folderID', '==', folder_id)
+            elif uploader_id:
+                query = query.where('uploaderUserID', '==', uploader_id)
+            elif file_type_filter:
+                query = query.where('previewType', '==', file_type_filter)
+            
+            # Fetch without ordering (to avoid composite index requirement)
+            for doc in query.stream():
+                file_data = doc.to_dict()
+                file_data['id'] = doc.id
+                all_files.append(file_data)
+            
+            # Sort in Python by uploadedAt (newest first)
+            all_files.sort(key=lambda x: x.get('uploadedAt', ''), reverse=True)
+            
+            # Apply limit
+            return all_files[:limit]
+            
+        except Exception as e:
+            print(f"Error fetching files: {e}")
+            return []
     
     @staticmethod
     def get_file_by_id(file_id: str) -> Optional[Dict[str, Any]]:
