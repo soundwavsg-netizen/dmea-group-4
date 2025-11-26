@@ -499,7 +499,7 @@ const SharedFolder = () => {
                   }`}
                   data-testid="folder-personal"
                 >
-                  <User size={20} style={{ color: selectedFolder === personalFolder.id ? 'white' : '#9C27B0' }} />
+                  <User size={18} style={{ color: selectedFolder === personalFolder.id ? 'white' : '#9C27B0' }} />
                   <span className="text-sm font-medium">{session.username}</span>
                   <div className="flex items-center gap-1 ml-auto">
                     <span className="text-xs opacity-70">Private</span>
