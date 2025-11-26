@@ -43,12 +43,15 @@ class SharedFolderService:
         folders = []
         folder_docs = db.collection('folders').stream()
         
+        needs_order_migration = False
+        
         for doc in folder_docs:
             folder_data = doc.to_dict()
             folder_data['id'] = doc.id
             
-            # Ensure order field exists
+            # Check if order field exists
             if 'order' not in folder_data:
+                needs_order_migration = True
                 folder_data['order'] = 0
             
             # Get file count for this folder
@@ -56,6 +59,13 @@ class SharedFolderService:
             folder_data['fileCount'] = file_count
             
             folders.append(folder_data)
+        
+        # If any folders lack order field, assign them now
+        if needs_order_migration:
+            for i, folder in enumerate(folders):
+                if folder.get('order', 0) == 0:
+                    db.collection('folders').document(folder['id']).update({'order': i + 1})
+                    folder['order'] = i + 1
         
         # Sort by order field
         folders.sort(key=lambda x: x.get('order', 0))
