@@ -29,6 +29,7 @@ const SharedFolder = () => {
   const [selectedFolderForEdit, setSelectedFolderForEdit] = useState(null);
   const [newFolderName, setNewFolderName] = useState('');
   const [folderActionLoading, setFolderActionLoading] = useState(false);
+  const [personalFolder, setPersonalFolder] = useState(null);
   
   const session = authService.getSession();
   const isSuperAdmin = authService.isSuperAdmin();
@@ -36,6 +37,7 @@ const SharedFolder = () => {
 
   useEffect(() => {
     fetchFolders();
+    fetchPersonalFolder();
     fetchFiles();
   }, []);
 
