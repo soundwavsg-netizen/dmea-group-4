@@ -931,6 +931,30 @@ def delete_folder(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.put("/api/shared-folders/{folder_id}/reorder")
+def reorder_folder(
+    folder_id: str,
+    direction: str,
+    x_user_role: Optional[str] = Header(None)
+):
+    """Reorder folder (Superadmin only) - direction: 'up' or 'down'"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can reorder folders")
+    
+    if direction not in ['up', 'down']:
+        raise HTTPException(status_code=400, detail="Direction must be 'up' or 'down'")
+    
+    try:
+        success = SharedFolderService.reorder_folder(folder_id, direction)
+        if not success:
+            raise HTTPException(status_code=400, detail="Cannot move folder in that direction")
+        return {"message": "Folder reordered successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.post("/api/shared-folders/initialize")
 def initialize_default_folders(x_user_role: Optional[str] = Header(None)):
     """Initialize default folders (Superadmin only, one-time setup)"""
