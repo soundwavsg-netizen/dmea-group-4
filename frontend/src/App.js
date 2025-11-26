@@ -200,6 +200,15 @@ function App() {
           </ProtectedRoute>
         } />
         
+        {/* Shared Folder - All Authenticated Users */}
+        <Route path="/shared-folder" element={
+          <ProtectedRoute>
+            <Layout>
+              <SharedFolder />
+            </Layout>
+          </ProtectedRoute>
+        } />
+        
         {/* Catch all - redirect to home or login */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
