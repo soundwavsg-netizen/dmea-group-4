@@ -41,18 +41,12 @@ class SharedFolderService:
     def get_all_folders() -> List[Dict[str, Any]]:
         """Get all folders with file counts, ordered by order field"""
         folders = []
-        folder_docs = db.collection('folders').stream()
+        folder_docs = list(db.collection('folders').stream())
         
-        needs_order_migration = False
-        
+        # First pass: collect all folders and check for missing order fields
         for doc in folder_docs:
             folder_data = doc.to_dict()
             folder_data['id'] = doc.id
-            
-            # Check if order field exists
-            if 'order' not in folder_data:
-                needs_order_migration = True
-                folder_data['order'] = 0
             
             # Get file count for this folder
             file_count = db.collection('sharedFiles').where('folderID', '==', doc.id).count().get()[0][0].value
@@ -60,12 +54,13 @@ class SharedFolderService:
             
             folders.append(folder_data)
         
-        # If any folders lack order field, assign them now
-        if needs_order_migration:
-            for i, folder in enumerate(folders):
-                if folder.get('order', 0) == 0:
-                    db.collection('folders').document(folder['id']).update({'order': i + 1})
-                    folder['order'] = i + 1
+        # Assign order if missing
+        for i, folder in enumerate(folders):
+            if 'order' not in folder or folder.get('order') is None or folder.get('order') == 0:
+                new_order = i + 1
+                db.collection('folders').document(folder['id']).update({'order': new_order})
+                folder['order'] = new_order
+                print(f"Updated folder {folder['name']} with order {new_order}")
         
         # Sort by order field
         folders.sort(key=lambda x: x.get('order', 0))
