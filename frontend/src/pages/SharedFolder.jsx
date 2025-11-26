@@ -366,7 +366,7 @@ const SharedFolder = () => {
               }`}
               data-testid="folder-all-files"
             >
-              <FolderOpen size={18} />
+              <FolderOpen size={20} />
               <span className="text-sm font-medium">All Files</span>
             </button>
             
@@ -379,7 +379,7 @@ const SharedFolder = () => {
               }`}
               data-testid="folder-my-uploads"
             >
-              <User size={18} />
+              <User size={20} />
               <span className="text-sm font-medium">My Uploads</span>
             </button>
           </div>
