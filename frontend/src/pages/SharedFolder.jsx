@@ -145,6 +145,105 @@ const SharedFolder = () => {
     return isSuperAdmin || file.uploaderUserID === session.username;
   };
 
+  const handleCreateFolder = async () => {
+    if (!newFolderName.trim()) {
+      setError('Folder name is required');
+      return;
+    }
+
+    try {
+      setFolderActionLoading(true);
+      await axios.post(`${API}/api/shared-folders`, {
+        name: newFolderName.trim(),
+        icon: 'folder',
+        color: '#A62639'
+      }, {
+        headers: {
+          'X-User-Name': session.username,
+          'X-User-Role': session.role
+        }
+      });
+      
+      setNewFolderName('');
+      setCreateFolderModalOpen(false);
+      fetchFolders();
+    } catch (err) {
+      console.error('Error creating folder:', err);
+      setError(err.response?.data?.detail || 'Failed to create folder');
+    } finally {
+      setFolderActionLoading(false);
+    }
+  };
+
+  const handleEditFolder = async () => {
+    if (!newFolderName.trim()) {
+      setError('Folder name is required');
+      return;
+    }
+
+    try {
+      setFolderActionLoading(true);
+      await axios.put(`${API}/api/shared-folders/${selectedFolderForEdit.id}`, {
+        name: newFolderName.trim(),
+        icon: selectedFolderForEdit.icon,
+        color: selectedFolderForEdit.color
+      }, {
+        headers: {
+          'X-User-Name': session.username,
+          'X-User-Role': session.role
+        }
+      });
+      
+      setNewFolderName('');
+      setEditFolderModalOpen(false);
+      setSelectedFolderForEdit(null);
+      fetchFolders();
+    } catch (err) {
+      console.error('Error updating folder:', err);
+      setError(err.response?.data?.detail || 'Failed to update folder');
+    } finally {
+      setFolderActionLoading(false);
+    }
+  };
+
+  const handleDeleteFolder = async () => {
+    try {
+      setFolderActionLoading(true);
+      await axios.delete(`${API}/api/shared-folders/${selectedFolderForEdit.id}`, {
+        headers: {
+          'X-User-Name': session.username,
+          'X-User-Role': session.role
+        }
+      });
+      
+      setDeleteFolderModalOpen(false);
+      setSelectedFolderForEdit(null);
+      
+      // If deleted folder was selected, switch to "all"
+      if (selectedFolder === selectedFolderForEdit.id) {
+        setSelectedFolder('all');
+      }
+      
+      fetchFolders();
+    } catch (err) {
+      console.error('Error deleting folder:', err);
+      setError(err.response?.data?.detail || 'Failed to delete folder. Make sure the folder is empty.');
+    } finally {
+      setFolderActionLoading(false);
+    }
+  };
+
+  const openEditFolderModal = (folder) => {
+    setSelectedFolderForEdit(folder);
+    setNewFolderName(folder.name);
+    setEditFolderModalOpen(true);
+  };
+
+  const openDeleteFolderModal = (folder) => {
+    setSelectedFolderForEdit(folder);
+    setDeleteFolderModalOpen(true);
+  };
+
   const formatFileSize = (bytes) => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
