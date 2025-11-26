@@ -369,7 +369,7 @@ const SharedFolder = () => {
           
           {/* Custom Folders */}
           <div className="space-y-1">
-            {folders.map(folder => (
+            {folders.map((folder, index) => (
               <div
                 key={folder.id}
                 className={`group flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${
@@ -387,29 +387,62 @@ const SharedFolder = () => {
                   <span className="text-sm font-medium">{folder.name}</span>
                 </button>
                 
-                <div className="flex items-center gap-2">
-                  <span className="text-xs">{folder.fileCount}</span>
+                <div className="flex items-center gap-1">
+                  <span className="text-xs mr-1">{folder.fileCount}</span>
                   
                   {isSuperAdmin && (
-                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                      {/* Up Arrow */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleReorderFolder(folder.id, 'up');
+                        }}
+                        disabled={index === 0}
+                        className="p-0.5 hover:bg-white/20 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                        title="Move up"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                        </svg>
+                      </button>
+                      
+                      {/* Down Arrow */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleReorderFolder(folder.id, 'down');
+                        }}
+                        disabled={index === folders.length - 1}
+                        className="p-0.5 hover:bg-white/20 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                        title="Move down"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      
+                      {/* Edit Button */}
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           openEditFolderModal(folder);
                         }}
-                        className="p-1 hover:bg-white/20 rounded"
+                        className="p-0.5 hover:bg-white/20 rounded ml-0.5"
                         title="Edit folder"
                       >
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                         </svg>
                       </button>
+                      
+                      {/* Delete Button */}
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           openDeleteFolderModal(folder);
                         }}
-                        className="p-1 hover:bg-white/20 rounded"
+                        className="p-0.5 hover:bg-white/20 rounded"
                         title="Delete folder"
                       >
                         <Trash2 size={14} />
