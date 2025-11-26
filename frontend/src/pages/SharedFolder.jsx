@@ -328,6 +328,11 @@ const SharedFolder = () => {
     return folder ? folder.name : 'Unknown';
   };
 
+  const getFolderColor = (folderId) => {
+    const folder = folders.find(f => f.id === folderId);
+    return folder ? folder.color : '#A62639';
+  };
+
   return (
     <div className="min-h-screen bg-[#F8F6F5]">
       <div className="flex h-[calc(100vh-60px)]">
