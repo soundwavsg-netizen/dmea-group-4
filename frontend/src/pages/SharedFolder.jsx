@@ -80,11 +80,11 @@ const SharedFolder = () => {
       setError(''); // Clear previous errors
       const params = {};
       
-      if (selectedFolder === 'my-uploads' || selectedFolder === 'personal') {
-        // Both show only user's files
+      if (selectedFolder === 'my-uploads') {
+        // Show all files uploaded by user across all folders
         params.uploaderID = session.username;
       } else if (selectedFolder !== 'all') {
-        // Regular folder filter
+        // Regular folder filter (including personal folder)
         params.folderID = selectedFolder;
       }
 
