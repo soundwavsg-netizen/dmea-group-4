@@ -97,11 +97,13 @@ const SharedFolder = () => {
   };
 
   const handleFileView = (file) => {
+    console.log('View clicked for file:', file);
     setSelectedFile(file);
     setViewerModalOpen(true);
   };
 
   const handleFileDownload = async (file) => {
+    console.log('Download clicked for file:', file);
     try {
       // Increment download count
       await axios.put(`${API}/api/shared-files/${file.id}/download`, {}, {
@@ -111,6 +113,7 @@ const SharedFolder = () => {
         }
       });
       
+      console.log('Opening file URL:', file.fileURL);
       // Trigger download
       window.open(file.fileURL, '_blank');
     } catch (err) {
