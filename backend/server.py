@@ -824,6 +824,321 @@ def set_persona_threshold_api(
         raise HTTPException(status_code=500, detail="Service temporarily unavailable")
 
 
+# ==================== Shared Folder Endpoints ====================
+
+# Import Shared Folder models and services
+from models_shared_folder import (
+    FolderCreate,
+    FolderUpdate,
+    FolderResponse,
+    SharedFileCreate,
+    SharedFileResponse,
+    SharedFileListResponse,
+    SharedFolderPermissions,
+    UpdatePermissionsRequest,
+    SharedFolderAnalyticsResponse
+)
+from services.shared_folder_service import SharedFolderService
+from services.shared_files_service import SharedFilesService
+from services.shared_folder_permissions_service import SharedFolderPermissionsService
+from services.shared_folder_analytics_service import SharedFolderAnalyticsService
+
+
+# -------- Folder Management (Superadmin only) --------
+
+@app.post("/api/shared-folders", response_model=FolderResponse)
+def create_folder(
+    folder: FolderCreate,
+    x_user_name: Optional[str] = Header(None),
+    x_user_role: Optional[str] = Header(None)
+):
+    """Create a new folder (Superadmin only)"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can create folders")
+    
+    try:
+        result = SharedFolderService.create_folder(
+            name=folder.name,
+            created_by=x_user_name,
+            icon=folder.icon,
+            color=folder.color
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/shared-folders", response_model=List[FolderResponse])
+def get_folders(
+    x_user_name: Optional[str] = Header(None),
+    x_user_role: Optional[str] = Header(None)
+):
+    """Get all folders (all authenticated users)"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    # Check if user can view files
+    can_view = SharedFolderPermissionsService.check_permission(x_user_role, 'allowViewAll')
+    if not can_view:
+        raise HTTPException(status_code=403, detail="You don't have permission to view shared files")
+    
+    try:
+        folders = SharedFolderService.get_all_folders()
+        return folders
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.put("/api/shared-folders/{folder_id}", response_model=FolderResponse)
+def update_folder(
+    folder_id: str,
+    folder: FolderUpdate,
+    x_user_role: Optional[str] = Header(None)
+):
+    """Update folder name/icon/color (Superadmin only)"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can update folders")
+    
+    try:
+        result = SharedFolderService.update_folder(
+            folder_id=folder_id,
+            name=folder.name,
+            icon=folder.icon,
+            color=folder.color
+        )
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete("/api/shared-folders/{folder_id}")
+def delete_folder(
+    folder_id: str,
+    x_user_role: Optional[str] = Header(None)
+):
+    """Delete a folder (Superadmin only, must be empty)"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can delete folders")
+    
+    try:
+        SharedFolderService.delete_folder(folder_id)
+        return {"message": "Folder deleted successfully"}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/shared-folders/initialize")
+def initialize_default_folders(x_user_role: Optional[str] = Header(None)):
+    """Initialize default folders (Superadmin only, one-time setup)"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can initialize folders")
+    
+    try:
+        SharedFolderService.initialize_default_folders(created_by="superadmin")
+        return {"message": "Default folders initialized successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# -------- File Management --------
+
+@app.post("/api/shared-files", response_model=SharedFileResponse)
+def create_shared_file(
+    file: SharedFileCreate,
+    x_user_name: Optional[str] = Header(None),
+    x_user_role: Optional[str] = Header(None)
+):
+    """Create file metadata after frontend uploads to Firebase Storage"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    # Check upload permission
+    can_upload = SharedFolderPermissionsService.check_permission(x_user_role, 'allowUpload')
+    if not can_upload:
+        raise HTTPException(status_code=403, detail="You don't have permission to upload files")
+    
+    try:
+        result = SharedFilesService.create_file(
+            folder_id=file.folderID,
+            file_name=file.fileName,
+            file_type=file.fileType,
+            file_size=file.fileSize,
+            file_url=file.fileURL,
+            preview_type=file.previewType,
+            uploader_user_id=x_user_name,
+            uploader_name=x_user_name  # Could be enhanced with full name
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/shared-files", response_model=List[SharedFileResponse])
+def get_shared_files(
+    folderID: Optional[str] = None,
+    uploaderID: Optional[str] = None,
+    fileType: Optional[str] = None,
+    limit: int = 100,
+    x_user_name: Optional[str] = Header(None),
+    x_user_role: Optional[str] = Header(None)
+):
+    """Get files with optional filters"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    # Check view permission
+    can_view = SharedFolderPermissionsService.check_permission(x_user_role, 'allowViewAll')
+    if not can_view:
+        raise HTTPException(status_code=403, detail="You don't have permission to view shared files")
+    
+    try:
+        files = SharedFilesService.get_all_files(
+            folder_id=folderID,
+            uploader_id=uploaderID,
+            file_type_filter=fileType,
+            limit=limit
+        )
+        return files
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/shared-files/{file_id}", response_model=SharedFileResponse)
+def get_shared_file(
+    file_id: str,
+    x_user_name: Optional[str] = Header(None),
+    x_user_role: Optional[str] = Header(None)
+):
+    """Get a single file by ID"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    can_view = SharedFolderPermissionsService.check_permission(x_user_role, 'allowViewAll')
+    if not can_view:
+        raise HTTPException(status_code=403, detail="You don't have permission to view shared files")
+    
+    try:
+        file_data = SharedFilesService.get_file_by_id(file_id)
+        if not file_data:
+            raise HTTPException(status_code=404, detail="File not found")
+        return file_data
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete("/api/shared-files/{file_id}")
+def delete_shared_file(
+    file_id: str,
+    x_user_name: Optional[str] = Header(None),
+    x_user_role: Optional[str] = Header(None)
+):
+    """Delete a file (owner or superadmin only)"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    is_superadmin = (x_user_role == 'superadmin')
+    
+    # Check delete permission for non-superadmin
+    if not is_superadmin:
+        can_delete_own = SharedFolderPermissionsService.check_permission(x_user_role, 'allowDeleteOwn')
+        if not can_delete_own:
+            raise HTTPException(status_code=403, detail="You don't have permission to delete files")
+    
+    try:
+        SharedFilesService.delete_file(
+            file_id=file_id,
+            requesting_user_id=x_user_name,
+            is_superadmin=is_superadmin
+        )
+        return {"message": "File deleted successfully"}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except PermissionError as e:
+        raise HTTPException(status_code=403, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.put("/api/shared-files/{file_id}/download")
+def increment_file_download(
+    file_id: str,
+    x_user_name: Optional[str] = Header(None),
+    x_user_role: Optional[str] = Header(None)
+):
+    """Increment download count for analytics"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    can_download = SharedFolderPermissionsService.check_permission(x_user_role, 'allowDownloadAll')
+    if not can_download:
+        raise HTTPException(status_code=403, detail="You don't have permission to download files")
+    
+    try:
+        success = SharedFilesService.increment_download_count(file_id)
+        if not success:
+            raise HTTPException(status_code=404, detail="File not found")
+        return {"message": "Download count incremented"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# -------- Permission Settings (Superadmin only) --------
+
+@app.get("/api/admin/shared-folder-permissions", response_model=SharedFolderPermissions)
+def get_shared_folder_permissions(x_user_role: Optional[str] = Header(None)):
+    """Get current shared folder permission settings (Superadmin only)"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can access permission settings")
+    
+    try:
+        permissions = SharedFolderPermissionsService.get_permissions()
+        return permissions
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.put("/api/admin/shared-folder-permissions", response_model=SharedFolderPermissions)
+def update_shared_folder_permissions(
+    updates: UpdatePermissionsRequest,
+    x_user_role: Optional[str] = Header(None)
+):
+    """Update shared folder permission settings (Superadmin only)"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can modify permission settings")
+    
+    try:
+        # Convert to dict, excluding None values
+        update_dict = {k: v for k, v in updates.dict().items() if v is not None}
+        
+        updated_permissions = SharedFolderPermissionsService.update_permissions(update_dict)
+        return updated_permissions
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# -------- Analytics (Superadmin only) --------
+
+@app.get("/api/admin/shared-folder-analytics", response_model=SharedFolderAnalyticsResponse)
+def get_shared_folder_analytics(x_user_role: Optional[str] = Header(None)):
+    """Get analytics for shared folder (Superadmin only)"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can access analytics")
+    
+    try:
+        analytics = SharedFolderAnalyticsService.get_analytics()
+        return analytics
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # ==================== Health Check ====================
 
 @app.get("/")
