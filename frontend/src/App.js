@@ -21,6 +21,7 @@ import FinalCapstone from './pages/FinalCapstone';
 import PresentationsHome from './pages/presentations/PresentationsHome';
 import FriendlyBrief from './pages/presentations/FriendlyBrief';
 import ClusteringTechnical from './pages/presentations/ClusteringTechnical';
+import SharedFolder from './pages/SharedFolder';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import './App.css';
