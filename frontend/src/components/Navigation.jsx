@@ -70,15 +70,10 @@ const Navigation = () => {
       if (isSuperAdmin || flags.final_capstone) {
         items.push({ label: 'Final Capstone', path: '/final/report', visible: true });
       }
-      
-      // Shared Folder Module - All authenticated users
-      items.push({ label: 'Shared Folder', path: '/shared-folder', visible: true });
     }
     
-    // Admin Panel - SUPERADMIN only
-    if (isSuperAdmin) {
-      items.push({ label: 'Admin Panel', path: '/admin', visible: true });
-    }
+    // Shared Folder Module - Available to ALL authenticated users (User, Admin, Superadmin)
+    items.push({ label: 'Shared Folder', path: '/shared-folder', visible: true });
     
     return items.filter(item => item.visible);
   };
