@@ -213,6 +213,45 @@ const AdminPanel = () => {
     }
   };
 
+  const fetchSharedFolderPermissions = async () => {
+    try {
+      setLoadingSharedPerms(true);
+      const response = await axios.get(`${API}/api/admin/shared-folder-permissions`, {
+        headers: { 'X-User-Role': session?.role }
+      });
+      setSharedFolderPermissions(response.data);
+    } catch (err) {
+      console.error('Error fetching shared folder permissions:', err);
+      setError('Failed to load shared folder permissions');
+    } finally {
+      setLoadingSharedPerms(false);
+    }
+  };
+
+  const handleSharedPermissionToggle = (key) => {
+    setSharedFolderPermissions(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
+  const handleSaveSharedFolderPermissions = async () => {
+    try {
+      setSaving(true);
+      await axios.put(`${API}/api/admin/shared-folder-permissions`, sharedFolderPermissions, {
+        headers: { 'X-User-Role': session?.role }
+      });
+      setSuccessMessage('Shared Folder permissions updated successfully');
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (err) {
+      console.error('Error updating shared folder permissions:', err);
+      setError('Failed to update shared folder permissions');
+      setTimeout(() => setError(''), 5000);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const getModuleLabel = (moduleName) => {
     const labels = {
       dashboard: 'Dashboard',
