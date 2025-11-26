@@ -55,6 +55,7 @@ const SharedFolder = () => {
   const fetchFiles = async () => {
     try {
       setLoading(true);
+      setError(''); // Clear previous errors
       const params = {};
       
       if (selectedFolder !== 'all' && selectedFolder !== 'my-uploads') {
@@ -76,7 +77,14 @@ const SharedFolder = () => {
       setFiles(response.data);
     } catch (err) {
       console.error('Error fetching files:', err);
-      setError('Failed to load files');
+      // Only show error if it's not a 403 or network issue - empty folders shouldn't error
+      if (err.response && err.response.status !== 403) {
+        // Don't show error for empty results
+        if (err.response.status !== 404) {
+          setError('Failed to load files');
+        }
+      }
+      setFiles([]); // Set empty array on error
     } finally {
       setLoading(false);
     }
