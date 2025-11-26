@@ -693,8 +693,11 @@ const SharedFolder = () => {
       <UploadFileModal
         isOpen={uploadModalOpen}
         onClose={() => setUploadModalOpen(false)}
-        onSuccess={fetchFiles}
-        folders={folders}
+        onSuccess={() => {
+          fetchFiles();
+          fetchPersonalFolder();
+        }}
+        folders={[...folders, ...(personalFolder ? [personalFolder] : [])]}
         selectedFolder={selectedFolder !== 'all' && selectedFolder !== 'my-uploads' ? selectedFolder : folders[0]?.id}
       />
 
