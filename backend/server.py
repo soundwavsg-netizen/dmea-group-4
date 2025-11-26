@@ -870,6 +870,7 @@ def create_folder(
 
 @app.get("/api/shared-folders", response_model=List[FolderResponse])
 def get_folders(
+    include_personal: bool = False,
     x_user_name: Optional[str] = Header(None),
     x_user_role: Optional[str] = Header(None)
 ):
@@ -883,8 +884,24 @@ def get_folders(
         raise HTTPException(status_code=403, detail="You don't have permission to view shared files")
     
     try:
-        folders = SharedFolderService.get_all_folders()
+        folders = SharedFolderService.get_all_folders(user_id=x_user_name, include_personal=include_personal)
         return folders
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/shared-folders/personal")
+def get_personal_folder(
+    x_user_name: Optional[str] = Header(None),
+    x_user_role: Optional[str] = Header(None)
+):
+    """Get or create personal folder for current user"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    try:
+        folder = SharedFolderService.get_or_create_personal_folder(x_user_name)
+        return folder
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
