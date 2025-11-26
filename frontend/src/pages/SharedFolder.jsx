@@ -98,6 +98,7 @@ const SharedFolder = () => {
 
   const handleFileView = (file) => {
     console.log('View clicked for file:', file);
+    alert('View button clicked! Opening viewer...');
     setSelectedFile(file);
     setViewerModalOpen(true);
   };
