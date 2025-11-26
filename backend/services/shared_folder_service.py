@@ -15,13 +15,23 @@ class SharedFolderService:
     def create_folder(name: str, created_by: str, icon: str = "folder", color: str = "#A62639") -> Dict[str, Any]:
         """Create a new folder (Superadmin only)"""
         folder_id = str(uuid.uuid4())
+        
+        # Get current max order
+        existing_folders = list(db.collection('folders').stream())
+        max_order = 0
+        for folder in existing_folders:
+            folder_order = folder.to_dict().get('order', 0)
+            if folder_order > max_order:
+                max_order = folder_order
+        
         folder_data = {
             "id": folder_id,
             "name": name,
             "createdBy": created_by,
             "createdAt": datetime.now(timezone.utc).isoformat(),
             "icon": icon,
-            "color": color
+            "color": color,
+            "order": max_order + 1
         }
         
         db.collection('folders').document(folder_id).set(folder_data)
