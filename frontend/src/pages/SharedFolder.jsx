@@ -244,6 +244,21 @@ const SharedFolder = () => {
     setDeleteFolderModalOpen(true);
   };
 
+  const handleReorderFolder = async (folderId, direction) => {
+    try {
+      await axios.put(`${API}/api/shared-folders/${folderId}/reorder?direction=${direction}`, {}, {
+        headers: {
+          'X-User-Name': session.username,
+          'X-User-Role': session.role
+        }
+      });
+      fetchFolders();
+    } catch (err) {
+      console.error('Error reordering folder:', err);
+      setError(err.response?.data?.detail || 'Failed to reorder folder');
+    }
+  };
+
   const formatFileSize = (bytes) => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
