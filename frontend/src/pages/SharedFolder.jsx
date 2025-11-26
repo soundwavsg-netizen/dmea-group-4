@@ -64,12 +64,12 @@ const SharedFolder = () => {
       setError(''); // Clear previous errors
       const params = {};
       
-      if (selectedFolder !== 'all' && selectedFolder !== 'my-uploads') {
-        params.folderID = selectedFolder;
-      }
-      
-      if (selectedFolder === 'my-uploads') {
+      if (selectedFolder === 'my-uploads' || selectedFolder === 'personal') {
+        // Both show only user's files
         params.uploaderID = session.username;
+      } else if (selectedFolder !== 'all') {
+        // Regular folder filter
+        params.folderID = selectedFolder;
       }
 
       const response = await axios.get(`${API}/api/shared-files`, {
