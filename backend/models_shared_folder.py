@@ -30,6 +30,7 @@ class FolderResponse(BaseModel):
     createdAt: str
     icon: Optional[str] = "folder"
     color: Optional[str] = "#A62639"
+    order: Optional[int] = 0  # Display order
     fileCount: Optional[int] = 0  # Computed field
 
 
