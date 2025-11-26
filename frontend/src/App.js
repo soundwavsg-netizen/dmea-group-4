@@ -210,6 +210,15 @@ function App() {
           </ProtectedRoute>
         } />
         
+        {/* Shared Folder Analytics - Superadmin Only */}
+        <Route path="/shared-folder/analytics" element={
+          <ProtectedRoute superAdminOnly={true}>
+            <Layout>
+              <SharedFolderAnalytics />
+            </Layout>
+          </ProtectedRoute>
+        } />
+        
         {/* Catch all - redirect to home or login */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
