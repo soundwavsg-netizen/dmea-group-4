@@ -607,6 +607,147 @@ const AdminPanel = () => {
             </div>
           </div>
         )}
+
+        {activeTab === 'shared-folder-settings' && sharedFolderPermissions && (
+          <div className="bg-white rounded-xl border border-[#E0AFA0]/50 shadow-sm p-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-[#1F1A1A] mb-2">Shared Folder Permissions</h2>
+              <p className="text-[#6C5F5F]">Configure global permissions for the Shared Folder module (applies to Users & Admins)</p>
+            </div>
+
+            <div className="space-y-6">
+              <div className="border border-[#E0AFA0]/30 rounded-lg p-6">
+                <h3 className="text-xl font-bold text-[#1F1A1A] mb-4">User & Admin Permissions</h3>
+                <p className="text-sm text-[#6C5F5F] mb-6">
+                  These toggles control what regular users and admins can do. Superadmin always has full access.
+                </p>
+                
+                <div className="space-y-4">
+                  {/* Allow Upload */}
+                  <div className="flex items-center justify-between p-4 bg-[#FAF7F5] rounded-lg">
+                    <div>
+                      <h4 className="text-sm font-semibold text-[#1F1A1A]">Allow Upload</h4>
+                      <p className="text-xs text-[#6C5F5F] mt-1">Users can upload files to shared folders</p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={sharedFolderPermissions.allowUpload}
+                        onChange={() => handleSharedPermissionToggle('allowUpload')}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#A62639]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#A62639]"></div>
+                    </label>
+                  </div>
+
+                  {/* Allow Delete Own */}
+                  <div className="flex items-center justify-between p-4 bg-[#FAF7F5] rounded-lg">
+                    <div>
+                      <h4 className="text-sm font-semibold text-[#1F1A1A]">Allow Delete Own Files</h4>
+                      <p className="text-xs text-[#6C5F5F] mt-1">Users can delete files they uploaded</p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={sharedFolderPermissions.allowDeleteOwn}
+                        onChange={() => handleSharedPermissionToggle('allowDeleteOwn')}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#A62639]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#A62639]"></div>
+                    </label>
+                  </div>
+
+                  {/* Allow View All */}
+                  <div className="flex items-center justify-between p-4 bg-[#FAF7F5] rounded-lg">
+                    <div>
+                      <h4 className="text-sm font-semibold text-[#1F1A1A]">Allow View All Files</h4>
+                      <p className="text-xs text-[#6C5F5F] mt-1">Users can see files uploaded by others</p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={sharedFolderPermissions.allowViewAll}
+                        onChange={() => handleSharedPermissionToggle('allowViewAll')}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#A62639]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#A62639]"></div>
+                    </label>
+                  </div>
+
+                  {/* Allow Download All */}
+                  <div className="flex items-center justify-between p-4 bg-[#FAF7F5] rounded-lg">
+                    <div>
+                      <h4 className="text-sm font-semibold text-[#1F1A1A]">Allow Download All Files</h4>
+                      <p className="text-xs text-[#6C5F5F] mt-1">Users can download any file in shared folders</p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={sharedFolderPermissions.allowDownloadAll}
+                        onChange={() => handleSharedPermissionToggle('allowDownloadAll')}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#A62639]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#A62639]"></div>
+                    </label>
+                  </div>
+
+                  {/* Allow Create Folders */}
+                  <div className="flex items-center justify-between p-4 bg-[#FAF7F5] rounded-lg">
+                    <div>
+                      <h4 className="text-sm font-semibold text-[#1F1A1A]">Allow Create Folders</h4>
+                      <p className="text-xs text-[#6C5F5F] mt-1">Users can create new folders (currently disabled)</p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={sharedFolderPermissions.allowCreateFolders}
+                        onChange={() => handleSharedPermissionToggle('allowCreateFolders')}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#A62639]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#A62639]"></div>
+                    </label>
+                  </div>
+
+                  {/* Allow Delete Folders */}
+                  <div className="flex items-center justify-between p-4 bg-[#FAF7F5] rounded-lg">
+                    <div>
+                      <h4 className="text-sm font-semibold text-[#1F1A1A]">Allow Delete Folders</h4>
+                      <p className="text-xs text-[#6C5F5F] mt-1">Users can delete empty folders (currently disabled)</p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={sharedFolderPermissions.allowDeleteFolders}
+                        onChange={() => handleSharedPermissionToggle('allowDeleteFolders')}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#A62639]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#A62639]"></div>
+                    </label>
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <button
+                    onClick={handleSaveSharedFolderPermissions}
+                    disabled={saving || loadingSharedPerms}
+                    className="px-6 py-2 bg-[#A62639] text-white rounded-lg hover:bg-[#8a1f2d] disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold"
+                  >
+                    {saving ? 'Saving...' : 'Save Permissions'}
+                  </button>
+                </div>
+
+                <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <h4 className="text-sm font-semibold text-blue-800 mb-2">Note:</h4>
+                  <ul className="text-sm text-blue-700 space-y-1">
+                    <li>• Superadmin always has full access regardless of these settings</li>
+                    <li>• These permissions apply to both regular users and admins</li>
+                    <li>• Changes take effect immediately for all users</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
