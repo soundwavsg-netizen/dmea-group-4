@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Upload, Search, Grid, List, Download, Trash2, Eye, FolderOpen, FileText, User } from 'lucide-react';
+import { Upload, Search, Grid, List, Download, Trash2, Eye, FolderOpen, FileText, User, BarChart3 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import authService from '../services/authService';
 import UploadFileModal from '../components/UploadFileModal';
