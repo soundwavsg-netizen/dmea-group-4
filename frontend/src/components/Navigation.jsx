@@ -98,12 +98,30 @@ const Navigation = () => {
             ))}
           </div>
 
-          {/* Right: User Info + Logout */}
+          {/* Right: User Info + Admin Panel + Logout */}
           <div className="flex items-center space-x-4">
             <span className="text-[#6C5F5F] text-sm">
               {session?.username} 
               <span className="text-[#A62639] font-semibold">({role})</span>
             </span>
+            
+            {/* Admin Panel Button - Superadmin Only */}
+            {isSuperAdmin && (
+              <NavLink
+                to="/admin"
+                className={({ isActive }) => 
+                  `px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+                    isActive 
+                      ? 'bg-[#A62639] text-white' 
+                      : 'bg-[#F1D6CD] text-[#A62639] hover:bg-[#E0AFA0]'
+                  }`
+                }
+                data-testid="admin-panel-btn"
+              >
+                Admin Panel
+              </NavLink>
+            )}
+            
             <button
               onClick={handleLogout}
               className="px-4 py-2 bg-[#E0AFA0] text-[#1F1A1A] rounded-full text-sm font-semibold hover:bg-[#D19F90] transition-colors"
