@@ -115,6 +115,38 @@ class SharedFolderService:
         return True
     
     @staticmethod
+    def reorder_folder(folder_id: str, direction: str) -> bool:
+        """Move folder up or down in order (Superadmin only)"""
+        folders = SharedFolderService.get_all_folders()
+        
+        # Find current folder
+        current_index = None
+        for i, folder in enumerate(folders):
+            if folder['id'] == folder_id:
+                current_index = i
+                break
+        
+        if current_index is None:
+            return False
+        
+        # Determine swap index
+        if direction == 'up' and current_index > 0:
+            swap_index = current_index - 1
+        elif direction == 'down' and current_index < len(folders) - 1:
+            swap_index = current_index + 1
+        else:
+            return False  # Can't move
+        
+        # Swap order values
+        current_order = folders[current_index].get('order', current_index)
+        swap_order = folders[swap_index].get('order', swap_index)
+        
+        db.collection('folders').document(folder_id).update({'order': swap_order})
+        db.collection('folders').document(folders[swap_index]['id']).update({'order': current_order})
+        
+        return True
+    
+    @staticmethod
     def initialize_default_folders(created_by: str = "system"):
         """Initialize default folders if they don't exist"""
         default_folders = [
@@ -130,11 +162,16 @@ class SharedFolderService:
         if existing:
             return  # Folders already initialized
         
-        # Create default folders
-        for folder in default_folders:
-            SharedFolderService.create_folder(
-                name=folder["name"],
-                created_by=created_by,
-                icon=folder["icon"],
-                color=folder["color"]
-            )
+        # Create default folders with order
+        for i, folder in enumerate(default_folders):
+            folder_id = str(uuid.uuid4())
+            folder_data = {
+                "id": folder_id,
+                "name": folder["name"],
+                "createdBy": created_by,
+                "createdAt": datetime.now(timezone.utc).isoformat(),
+                "icon": folder["icon"],
+                "color": folder["color"],
+                "order": i + 1
+            }
+            db.collection('folders').document(folder_id).set(folder_data)
