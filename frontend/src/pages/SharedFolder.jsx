@@ -387,7 +387,7 @@ const SharedFolder = () => {
           <div className="h-px bg-[#E0AFA0]/30 my-4"></div>
           
           {/* Custom Folders */}
-          <div className="space-y-1">
+          <div className="space-y-1 mb-4">
             {folders.map((folder, index) => (
               <div
                 key={folder.id}
