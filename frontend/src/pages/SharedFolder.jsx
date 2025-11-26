@@ -413,7 +413,7 @@ const SharedFolder = () => {
                   onClick={() => setSelectedFolder(folder.id)}
                   className="flex items-center gap-2 flex-1 text-left"
                 >
-                  <Folder size={18} style={{ color: selectedFolder === folder.id ? 'white' : folder.color }} />
+                  <Folder className="flex-shrink-0" size={16} />
                   <span className="text-sm font-medium">{folder.name}</span>
                 </button>
                 
