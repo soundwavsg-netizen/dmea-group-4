@@ -60,6 +60,20 @@ const SharedFolder = () => {
     }
   };
 
+  const fetchPersonalFolder = async () => {
+    try {
+      const response = await axios.get(`${API}/api/shared-folders/personal`, {
+        headers: {
+          'X-User-Name': session.username,
+          'X-User-Role': session.role
+        }
+      });
+      setPersonalFolder(response.data);
+    } catch (err) {
+      console.error('Error fetching personal folder:', err);
+    }
+  };
+
   const fetchFiles = async () => {
     try {
       setLoading(true);
