@@ -89,10 +89,8 @@ const Sidebar = () => {
       modulesList.push({ label: 'Final Capstone', path: '/final/report', icon: '🎓' });
     }
     
-    // Admin Panel - Superadmin only (no permission check needed)
-    if (isSuperAdmin) {
-      modulesList.push({ label: 'Admin Panel', path: '/admin', icon: '⚙️' });
-    }
+    // Shared Folder - Available to ALL authenticated users
+    modulesList.push({ label: 'Shared Folder', path: '/shared-folder', icon: '📁' });
     
     return modulesList;
   }, [permissionsLoaded, isSuperAdmin, flags]);
