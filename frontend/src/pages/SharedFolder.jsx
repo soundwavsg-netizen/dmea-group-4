@@ -104,6 +104,8 @@ const SharedFolder = () => {
 
   const handleFileDownload = async (file) => {
     console.log('Download clicked for file:', file);
+    alert('Download button clicked! Check console for details.');
+    
     try {
       // Increment download count
       await axios.put(`${API}/api/shared-files/${file.id}/download`, {}, {
@@ -114,10 +116,18 @@ const SharedFolder = () => {
       });
       
       console.log('Opening file URL:', file.fileURL);
-      // Trigger download
-      window.open(file.fileURL, '_blank');
+      
+      // Create a temporary anchor element and click it for download
+      const link = document.createElement('a');
+      link.href = file.fileURL;
+      link.target = '_blank';
+      link.download = file.fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (err) {
       console.error('Error downloading file:', err);
+      alert('Error: ' + (err.response?.data?.detail || err.message));
     }
   };
 
