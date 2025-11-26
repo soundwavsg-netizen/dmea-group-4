@@ -169,6 +169,24 @@ const Sidebar = () => {
             </button>
           )}
           
+          {/* Admin Panel Button (Superadmin only) */}
+          {isSuperAdmin && (
+            <NavLink
+              to="/admin"
+              onClick={() => setIsOpen(false)}
+              className={({ isActive }) =>
+                `block w-full px-4 py-2 mb-2 rounded-lg text-sm font-semibold transition-colors text-center ${
+                  isActive
+                    ? 'bg-[#1769AA] text-white'
+                    : 'bg-[#F1D6CD] text-[#A62639] hover:bg-[#E0AFA0]'
+                }`
+              }
+              data-testid="admin-panel-btn"
+            >
+              ⚙️ Admin Panel
+            </NavLink>
+          )}
+          
           {/* Logout Button */}
           <button
             onClick={handleLogout}
