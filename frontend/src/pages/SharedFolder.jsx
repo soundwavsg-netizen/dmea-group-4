@@ -158,13 +158,16 @@ const SharedFolder = () => {
   };
 
   const canDeleteFile = (file) => {
-    // In personal folder, user can delete their own files
-    // Superadmin can delete any file
-    // In other folders, user can delete their own files if permission allows
-    if (selectedFolder === 'personal') {
+    // Superadmin can delete any file anywhere
+    if (isSuperAdmin) return true;
+    
+    // In personal folder, owner can delete
+    if (personalFolder && selectedFolder === personalFolder.id) {
       return file.uploaderUserID === session.username;
     }
-    return isSuperAdmin || file.uploaderUserID === session.username;
+    
+    // In other folders, user can delete their own files
+    return file.uploaderUserID === session.username;
   };
 
   const handleCreateFolder = async () => {
