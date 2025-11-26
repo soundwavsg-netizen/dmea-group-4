@@ -26,6 +26,7 @@ const SharedFolder = () => {
   
   const session = authService.getSession();
   const isSuperAdmin = authService.isSuperAdmin();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchFolders();
