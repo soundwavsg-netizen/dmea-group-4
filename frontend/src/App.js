@@ -22,6 +22,7 @@ import PresentationsHome from './pages/presentations/PresentationsHome';
 import FriendlyBrief from './pages/presentations/FriendlyBrief';
 import ClusteringTechnical from './pages/presentations/ClusteringTechnical';
 import SharedFolder from './pages/SharedFolder';
+import SharedFolderAnalytics from './pages/SharedFolderAnalytics';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import './App.css';
