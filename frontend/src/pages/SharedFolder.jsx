@@ -645,20 +645,18 @@ const SharedFolder = () => {
         selectedFolder={selectedFolder !== 'all' && selectedFolder !== 'my-uploads' ? selectedFolder : folders[0]?.id}
       />
 
-      {selectedFile && (
-        <PresentationViewerModal
-          isOpen={viewerModalOpen}
-          onClose={() => {
-            setViewerModalOpen(false);
-            setSelectedFile(null);
-          }}
-          presentation={{
-            name: selectedFile.fileName,
-            file_url: selectedFile.fileURL,
-            file_type: selectedFile.previewType
-          }}
-        />
-      )}
+      <PresentationViewerModal
+        isOpen={viewerModalOpen && selectedFile !== null}
+        onClose={() => {
+          setViewerModalOpen(false);
+          setSelectedFile(null);
+        }}
+        presentation={selectedFile ? {
+          name: selectedFile.fileName,
+          file_url: selectedFile.fileURL,
+          file_type: selectedFile.previewType
+        } : null}
+      />
 
       <DeleteConfirmModal
         isOpen={deleteModalOpen}
