@@ -23,6 +23,12 @@ const SharedFolder = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [fileToDelete, setFileToDelete] = useState(null);
   const [error, setError] = useState('');
+  const [createFolderModalOpen, setCreateFolderModalOpen] = useState(false);
+  const [editFolderModalOpen, setEditFolderModalOpen] = useState(false);
+  const [deleteFolderModalOpen, setDeleteFolderModalOpen] = useState(false);
+  const [selectedFolderForEdit, setSelectedFolderForEdit] = useState(null);
+  const [newFolderName, setNewFolderName] = useState('');
+  const [folderActionLoading, setFolderActionLoading] = useState(false);
   
   const session = authService.getSession();
   const isSuperAdmin = authService.isSuperAdmin();
