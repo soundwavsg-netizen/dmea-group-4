@@ -39,19 +39,26 @@ class SharedFolderService:
     
     @staticmethod
     def get_all_folders() -> List[Dict[str, Any]]:
-        """Get all folders with file counts"""
+        """Get all folders with file counts, ordered by order field"""
         folders = []
-        folder_docs = db.collection('folders').order_by('name').stream()
+        folder_docs = db.collection('folders').stream()
         
         for doc in folder_docs:
             folder_data = doc.to_dict()
             folder_data['id'] = doc.id
+            
+            # Ensure order field exists
+            if 'order' not in folder_data:
+                folder_data['order'] = 0
             
             # Get file count for this folder
             file_count = db.collection('sharedFiles').where('folderID', '==', doc.id).count().get()[0][0].value
             folder_data['fileCount'] = file_count
             
             folders.append(folder_data)
+        
+        # Sort by order field
+        folders.sort(key=lambda x: x.get('order', 0))
         
         return folders
     
