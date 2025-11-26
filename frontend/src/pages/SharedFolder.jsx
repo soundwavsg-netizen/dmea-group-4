@@ -619,6 +619,165 @@ const SharedFolder = () => {
         title="Delete File"
         message={`Are you sure you want to delete "${fileToDelete?.fileName}"? This action cannot be undone.`}
       />
+
+      {/* Create Folder Modal */}
+      {createFolderModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center p-4 bg-black/50 z-50">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-md">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#E0AFA0]/30">
+              <h2 className="text-xl font-bold text-[#A62639]">Create New Folder</h2>
+              <button
+                onClick={() => {
+                  setCreateFolderModalOpen(false);
+                  setNewFolderName('');
+                }}
+                className="text-[#6C5F5F] hover:text-[#A62639]"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-6">
+              <label className="block text-sm font-semibold text-[#1F1A1A] mb-2">
+                Folder Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                value={newFolderName}
+                onChange={(e) => setNewFolderName(e.target.value)}
+                placeholder="Enter folder name"
+                className="w-full px-4 py-2 border border-[#E0AFA0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A62639]"
+                data-testid="folder-name-input"
+              />
+            </div>
+            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-[#E0AFA0]/30">
+              <button
+                onClick={() => {
+                  setCreateFolderModalOpen(false);
+                  setNewFolderName('');
+                }}
+                className="px-6 py-2 border border-[#E0AFA0] text-[#6C5F5F] rounded-lg hover:bg-[#FAF7F5]"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleCreateFolder}
+                disabled={folderActionLoading || !newFolderName.trim()}
+                className="px-6 py-2 bg-[#A62639] text-white rounded-lg hover:bg-[#8a1f2d] disabled:opacity-50"
+                data-testid="create-folder-confirm"
+              >
+                {folderActionLoading ? 'Creating...' : 'Create'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Folder Modal */}
+      {editFolderModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center p-4 bg-black/50 z-50">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-md">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#E0AFA0]/30">
+              <h2 className="text-xl font-bold text-[#A62639]">Edit Folder</h2>
+              <button
+                onClick={() => {
+                  setEditFolderModalOpen(false);
+                  setSelectedFolderForEdit(null);
+                  setNewFolderName('');
+                }}
+                className="text-[#6C5F5F] hover:text-[#A62639]"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-6">
+              <label className="block text-sm font-semibold text-[#1F1A1A] mb-2">
+                Folder Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                value={newFolderName}
+                onChange={(e) => setNewFolderName(e.target.value)}
+                placeholder="Enter folder name"
+                className="w-full px-4 py-2 border border-[#E0AFA0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A62639]"
+                data-testid="edit-folder-name-input"
+              />
+            </div>
+            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-[#E0AFA0]/30">
+              <button
+                onClick={() => {
+                  setEditFolderModalOpen(false);
+                  setSelectedFolderForEdit(null);
+                  setNewFolderName('');
+                }}
+                className="px-6 py-2 border border-[#E0AFA0] text-[#6C5F5F] rounded-lg hover:bg-[#FAF7F5]"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleEditFolder}
+                disabled={folderActionLoading || !newFolderName.trim()}
+                className="px-6 py-2 bg-[#A62639] text-white rounded-lg hover:bg-[#8a1f2d] disabled:opacity-50"
+                data-testid="edit-folder-confirm"
+              >
+                {folderActionLoading ? 'Saving...' : 'Save'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Folder Modal */}
+      {deleteFolderModalOpen && selectedFolderForEdit && (
+        <div className="fixed inset-0 flex items-center justify-center p-4 bg-black/50 z-50">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-md">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#E0AFA0]/30">
+              <h2 className="text-xl font-bold text-red-600">Delete Folder</h2>
+              <button
+                onClick={() => {
+                  setDeleteFolderModalOpen(false);
+                  setSelectedFolderForEdit(null);
+                }}
+                className="text-[#6C5F5F] hover:text-[#A62639]"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-6">
+              <p className="text-[#1F1A1A] mb-4">
+                Are you sure you want to delete the folder <strong>"{selectedFolderForEdit.name}"</strong>?
+              </p>
+              <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800">
+                ⚠️ You can only delete empty folders. Make sure all files are moved or deleted first.
+              </div>
+            </div>
+            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-[#E0AFA0]/30">
+              <button
+                onClick={() => {
+                  setDeleteFolderModalOpen(false);
+                  setSelectedFolderForEdit(null);
+                }}
+                className="px-6 py-2 border border-[#E0AFA0] text-[#6C5F5F] rounded-lg hover:bg-[#FAF7F5]"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteFolder}
+                disabled={folderActionLoading}
+                className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
+                data-testid="delete-folder-confirm"
+              >
+                {folderActionLoading ? 'Deleting...' : 'Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
