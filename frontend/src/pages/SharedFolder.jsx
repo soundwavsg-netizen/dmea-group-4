@@ -355,22 +355,54 @@ const SharedFolder = () => {
           {/* Custom Folders */}
           <div className="space-y-1">
             {folders.map(folder => (
-              <button
+              <div
                 key={folder.id}
-                onClick={() => setSelectedFolder(folder.id)}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-left transition-colors ${
+                className={`group flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${
                   selectedFolder === folder.id
                     ? 'bg-[#A62639] text-white'
                     : 'text-[#6C5F5F] hover:bg-[#F1D6CD]'
                 }`}
                 data-testid={`folder-${folder.name.toLowerCase()}`}
               >
-                <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setSelectedFolder(folder.id)}
+                  className="flex items-center gap-2 flex-1 text-left"
+                >
                   <FileText size={18} style={{ color: selectedFolder === folder.id ? 'white' : folder.color }} />
                   <span className="text-sm font-medium">{folder.name}</span>
+                </button>
+                
+                <div className="flex items-center gap-2">
+                  <span className="text-xs">{folder.fileCount}</span>
+                  
+                  {isSuperAdmin && (
+                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openEditFolderModal(folder);
+                        }}
+                        className="p-1 hover:bg-white/20 rounded"
+                        title="Edit folder"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openDeleteFolderModal(folder);
+                        }}
+                        className="p-1 hover:bg-white/20 rounded"
+                        title="Delete folder"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  )}
                 </div>
-                <span className="text-xs">{folder.fileCount}</span>
-              </button>
+              </div>
             ))}
           </div>
         </div>
