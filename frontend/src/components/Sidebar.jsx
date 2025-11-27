@@ -34,6 +34,15 @@ const Sidebar = () => {
     loadPermissions();
   }, [session?.username, session?.role]);
 
+  // Load module settings on mount
+  useEffect(() => {
+    const loadModuleSettings = async () => {
+      const settings = await moduleSettingsService.getSettings();
+      setModuleSettings(settings);
+    };
+    loadModuleSettings();
+  }, []);
+
   const handleLogout = () => {
     permissionsService.clearPermissions(); // Clear permissions on logout
     authService.logout();
