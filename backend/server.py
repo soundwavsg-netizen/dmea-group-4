@@ -848,9 +848,22 @@ from services.important_links_service import ImportantLinksService
 
 # -------- Module Settings (Superadmin only) --------
 
+@app.get("/api/module-settings")
+def get_module_settings(x_user_name: Optional[str] = Header(None)):
+    """Get module visibility settings (all authenticated users can read)"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    try:
+        settings = ModuleSettingsService.get_settings()
+        return settings
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.get("/api/admin/module-settings")
-def get_module_settings(x_user_role: Optional[str] = Header(None)):
-    """Get module visibility settings (Superadmin only)"""
+def get_module_settings_admin(x_user_role: Optional[str] = Header(None)):
+    """Get module visibility settings (Superadmin only - for admin panel)"""
     if x_user_role != 'superadmin':
         raise HTTPException(status_code=403, detail="Only superadmin can access module settings")
     
