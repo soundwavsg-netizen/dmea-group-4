@@ -800,6 +800,71 @@ const AdminPanel = () => {
             </div>
           </div>
         )}
+
+        {activeTab === 'module-settings' && moduleSettings && (
+          <div className="bg-white rounded-xl border border-[#E0AFA0]/50 shadow-sm p-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-[#1F1A1A] mb-2">Module Visibility Settings</h2>
+              <p className="text-[#6C5F5F]">Control which modules are visible to users</p>
+            </div>
+
+            <div className="space-y-4">
+              {/* Shared Folder Module Toggle */}
+              <div className="flex items-center justify-between p-4 bg-[#FAF7F5] rounded-lg">
+                <div>
+                  <h4 className="text-sm font-semibold text-[#1F1A1A]">Shared Folder Module</h4>
+                  <p className="text-xs text-[#6C5F5F] mt-1">Enable or disable the Shared Folder module for all users</p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={moduleSettings.shared_folder_enabled}
+                    onChange={() => handleModuleToggle('shared_folder_enabled')}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#A62639]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#A62639]"></div>
+                </label>
+              </div>
+
+              {/* Important Links Module Toggle */}
+              <div className="flex items-center justify-between p-4 bg-[#FAF7F5] rounded-lg">
+                <div>
+                  <h4 className="text-sm font-semibold text-[#1F1A1A]">Important Links Module</h4>
+                  <p className="text-xs text-[#6C5F5F] mt-1">Enable or disable the Important Links module for all users</p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={moduleSettings.important_links_enabled}
+                    onChange={() => handleModuleToggle('important_links_enabled')}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#A62639]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#A62639]"></div>
+                </label>
+              </div>
+
+              <div className="mt-6">
+                <button
+                  onClick={handleSaveModuleSettings}
+                  disabled={saving || loadingModuleSettings}
+                  className="px-6 py-2 bg-[#A62639] text-white rounded-lg hover:bg-[#8a1f2d] disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold"
+                >
+                  {saving ? 'Saving...' : 'Save Settings'}
+                </button>
+              </div>
+
+              <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <h4 className="text-sm font-semibold text-blue-800 mb-2">Note:</h4>
+                <ul className="text-sm text-blue-700 space-y-1">
+                  <li>• Disabling a module will hide it from all users (except superadmin)</li>
+                  <li>• Superadmin always has access to all modules</li>
+                  <li>• Changes take effect immediately after saving</li>
+                  <li>• Users may need to refresh the page to see changes</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
