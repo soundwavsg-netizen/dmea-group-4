@@ -842,6 +842,144 @@ from services.shared_folder_service import SharedFolderService
 from services.shared_files_service import SharedFilesService
 from services.shared_folder_permissions_service import SharedFolderPermissionsService
 from services.shared_folder_analytics_service import SharedFolderAnalyticsService
+from services.module_settings_service import ModuleSettingsService
+from services.important_links_service import ImportantLinksService
+
+
+# -------- Module Settings (Superadmin only) --------
+
+@app.get("/api/admin/module-settings")
+def get_module_settings(x_user_role: Optional[str] = Header(None)):
+    """Get module visibility settings (Superadmin only)"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can access module settings")
+    
+    try:
+        settings = ModuleSettingsService.get_settings()
+        return settings
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.put("/api/admin/module-settings")
+def update_module_settings(
+    updates: dict,
+    x_user_role: Optional[str] = Header(None)
+):
+    """Update module visibility settings (Superadmin only)"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can modify module settings")
+    
+    try:
+        updated_settings = ModuleSettingsService.update_settings(updates)
+        return updated_settings
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# -------- Important Links --------
+
+@app.post("/api/important-links")
+def create_important_link(
+    link_data: dict,
+    x_user_name: Optional[str] = Header(None),
+    x_user_role: Optional[str] = Header(None)
+):
+    """Create a new important link (Superadmin only)"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can create important links")
+    
+    try:
+        result = ImportantLinksService.create_link(
+            title=link_data.get('title'),
+            url=link_data.get('url'),
+            description=link_data.get('description', ''),
+            icon=link_data.get('icon', 'link'),
+            created_by=x_user_name
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/important-links")
+def get_important_links(
+    x_user_name: Optional[str] = Header(None)
+):
+    """Get all important links (all authenticated users)"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    try:
+        links = ImportantLinksService.get_all_links()
+        return links
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.put("/api/important-links/{link_id}")
+def update_important_link(
+    link_id: str,
+    link_data: dict,
+    x_user_role: Optional[str] = Header(None)
+):
+    """Update an important link (Superadmin only)"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can update important links")
+    
+    try:
+        result = ImportantLinksService.update_link(
+            link_id=link_id,
+            title=link_data.get('title'),
+            url=link_data.get('url'),
+            description=link_data.get('description'),
+            icon=link_data.get('icon')
+        )
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete("/api/important-links/{link_id}")
+def delete_important_link(
+    link_id: str,
+    x_user_role: Optional[str] = Header(None)
+):
+    """Delete an important link (Superadmin only)"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can delete important links")
+    
+    try:
+        ImportantLinksService.delete_link(link_id)
+        return {"message": "Link deleted successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.put("/api/important-links/{link_id}/reorder")
+def reorder_important_link(
+    link_id: str,
+    direction: str,
+    x_user_role: Optional[str] = Header(None)
+):
+    """Reorder link (Superadmin only) - direction: 'up' or 'down'"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can reorder important links")
+    
+    if direction not in ['up', 'down']:
+        raise HTTPException(status_code=400, detail="Direction must be 'up' or 'down'")
+    
+    try:
+        success = ImportantLinksService.reorder_link(link_id, direction)
+        if not success:
+            raise HTTPException(status_code=400, detail="Cannot move link in that direction")
+        return {"message": "Link reordered successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # -------- Folder Management (Superadmin only) --------
