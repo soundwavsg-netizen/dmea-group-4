@@ -220,6 +220,15 @@ function App() {
           </ProtectedRoute>
         } />
         
+        {/* Important Links - All Authenticated Users */}
+        <Route path="/important-links" element={
+          <ProtectedRoute>
+            <Layout>
+              <ImportantLinks />
+            </Layout>
+          </ProtectedRoute>
+        } />
+        
         {/* Catch all - redirect to home or login */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
