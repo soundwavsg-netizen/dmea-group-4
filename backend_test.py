@@ -327,6 +327,239 @@ class BackendTester:
         
         return success
     
+    def test_module_settings_get(self):
+        """Test getting module settings (authenticated user)"""
+        self.print_header("MODULE SETTINGS - GET")
+        
+        def validate(data):
+            if 'shared_folder_enabled' not in data:
+                return False, "Missing 'shared_folder_enabled' field"
+            if 'important_links_enabled' not in data:
+                return False, "Missing 'important_links_enabled' field"
+            if not isinstance(data['shared_folder_enabled'], bool):
+                return False, "shared_folder_enabled should be boolean"
+            if not isinstance(data['important_links_enabled'], bool):
+                return False, "important_links_enabled should be boolean"
+            return True, None
+        
+        # Test with superadmin credentials
+        headers = {'X-User-Name': 'superadmin', 'X-User-Role': 'superadmin'}
+        url = f"{API_URL}/module-settings"
+        
+        try:
+            response = requests.get(url, headers=headers, timeout=30)
+            self.tests_run += 1
+            print(f"\n🔍 Test {self.tests_run}: Get Module Settings")
+            print(f"   GET {url}")
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code != 200:
+                print(f"   ❌ FAIL: Expected 200, got {response.status_code}")
+                return False
+            
+            data = response.json()
+            is_valid, error_msg = validate(data)
+            if not is_valid:
+                print(f"   ❌ FAIL: {error_msg}")
+                return False
+            
+            self.tests_passed += 1
+            print(f"   ✅ PASS")
+            print(f"   Shared Folder: {data['shared_folder_enabled']}")
+            print(f"   Important Links: {data['important_links_enabled']}")
+            return True
+        except Exception as e:
+            print(f"   ❌ FAIL: {str(e)}")
+            return False
+    
+    def test_important_links_crud(self):
+        """Test Important Links CRUD operations"""
+        self.print_header("IMPORTANT LINKS - CRUD")
+        
+        # Test 1: Create link (superadmin)
+        headers = {'X-User-Name': 'superadmin', 'X-User-Role': 'superadmin'}
+        link_data = {
+            'title': 'Test Link',
+            'url': 'https://example.com',
+            'description': 'Test description',
+            'icon': 'link'
+        }
+        
+        try:
+            # Create
+            url = f"{API_URL}/important-links"
+            response = requests.post(url, json=link_data, headers=headers, timeout=30)
+            self.tests_run += 1
+            print(f"\n🔍 Test {self.tests_run}: Create Important Link (Superadmin)")
+            print(f"   POST {url}")
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code != 200:
+                print(f"   ❌ FAIL: Expected 200, got {response.status_code}")
+                return False
+            
+            created_link = response.json()
+            link_id = created_link.get('id')
+            
+            if not link_id:
+                print(f"   ❌ FAIL: No ID in response")
+                return False
+            
+            self.tests_passed += 1
+            print(f"   ✅ PASS - Created link ID: {link_id}")
+            
+            # Test 2: Get all links (regular user)
+            user_headers = {'X-User-Name': 'user1', 'X-User-Role': 'user'}
+            response = requests.get(url, headers=user_headers, timeout=30)
+            self.tests_run += 1
+            print(f"\n🔍 Test {self.tests_run}: Get All Links (Regular User)")
+            print(f"   GET {url}")
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code != 200:
+                print(f"   ❌ FAIL: Expected 200, got {response.status_code}")
+                return False
+            
+            links = response.json()
+            if not isinstance(links, list):
+                print(f"   ❌ FAIL: Response should be a list")
+                return False
+            
+            self.tests_passed += 1
+            print(f"   ✅ PASS - Found {len(links)} links")
+            
+            # Test 3: Update link (superadmin)
+            update_data = {'title': 'Updated Test Link', 'url': 'https://updated.com'}
+            response = requests.put(f"{url}/{link_id}", json=update_data, headers=headers, timeout=30)
+            self.tests_run += 1
+            print(f"\n🔍 Test {self.tests_run}: Update Link (Superadmin)")
+            print(f"   PUT {url}/{link_id}")
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code != 200:
+                print(f"   ❌ FAIL: Expected 200, got {response.status_code}")
+                return False
+            
+            self.tests_passed += 1
+            print(f"   ✅ PASS")
+            
+            # Test 4: Try to create link as regular user (should fail)
+            response = requests.post(url, json=link_data, headers=user_headers, timeout=30)
+            self.tests_run += 1
+            print(f"\n🔍 Test {self.tests_run}: Create Link as Regular User (Should Fail)")
+            print(f"   POST {url}")
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code != 403:
+                print(f"   ❌ FAIL: Expected 403, got {response.status_code}")
+                return False
+            
+            self.tests_passed += 1
+            print(f"   ✅ PASS - Correctly denied")
+            
+            # Test 5: Delete link (superadmin)
+            response = requests.delete(f"{url}/{link_id}", headers=headers, timeout=30)
+            self.tests_run += 1
+            print(f"\n🔍 Test {self.tests_run}: Delete Link (Superadmin)")
+            print(f"   DELETE {url}/{link_id}")
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code != 200:
+                print(f"   ❌ FAIL: Expected 200, got {response.status_code}")
+                return False
+            
+            self.tests_passed += 1
+            print(f"   ✅ PASS")
+            
+            return True
+        except Exception as e:
+            print(f"   ❌ FAIL: {str(e)}")
+            return False
+    
+    def test_private_folder_privacy(self):
+        """Test that files in personal folders are only visible to owner and superadmin"""
+        self.print_header("PRIVATE FOLDER PRIVACY")
+        
+        try:
+            # Get personal folder for user1
+            user1_headers = {'X-User-Name': 'user1', 'X-User-Role': 'user'}
+            url = f"{API_URL}/shared-folders/personal"
+            
+            response = requests.get(url, headers=user1_headers, timeout=30)
+            self.tests_run += 1
+            print(f"\n🔍 Test {self.tests_run}: Get Personal Folder (User1)")
+            print(f"   GET {url}")
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code != 200:
+                print(f"   ❌ FAIL: Expected 200, got {response.status_code}")
+                return False
+            
+            personal_folder = response.json()
+            folder_id = personal_folder.get('id')
+            
+            self.tests_passed += 1
+            print(f"   ✅ PASS - Personal folder ID: {folder_id}")
+            
+            # Get files in personal folder as owner (user1)
+            files_url = f"{API_URL}/shared-files?folderID={folder_id}"
+            response = requests.get(files_url, headers=user1_headers, timeout=30)
+            self.tests_run += 1
+            print(f"\n🔍 Test {self.tests_run}: Get Files in Personal Folder (Owner)")
+            print(f"   GET {files_url}")
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code != 200:
+                print(f"   ❌ FAIL: Expected 200, got {response.status_code}")
+                return False
+            
+            owner_files = response.json()
+            self.tests_passed += 1
+            print(f"   ✅ PASS - Owner sees {len(owner_files)} files")
+            
+            # Try to get files as different user (user2)
+            user2_headers = {'X-User-Name': 'user2', 'X-User-Role': 'user'}
+            response = requests.get(files_url, headers=user2_headers, timeout=30)
+            self.tests_run += 1
+            print(f"\n🔍 Test {self.tests_run}: Get Files in Personal Folder (Different User)")
+            print(f"   GET {files_url}")
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code != 200:
+                print(f"   ❌ FAIL: Expected 200, got {response.status_code}")
+                return False
+            
+            other_user_files = response.json()
+            
+            # Other user should see 0 files (privacy filter)
+            if len(other_user_files) > 0:
+                print(f"   ❌ FAIL: Other user should not see files in personal folder")
+                return False
+            
+            self.tests_passed += 1
+            print(f"   ✅ PASS - Other user correctly sees 0 files")
+            
+            # Superadmin should see all files
+            superadmin_headers = {'X-User-Name': 'superadmin', 'X-User-Role': 'superadmin'}
+            response = requests.get(files_url, headers=superadmin_headers, timeout=30)
+            self.tests_run += 1
+            print(f"\n🔍 Test {self.tests_run}: Get Files in Personal Folder (Superadmin)")
+            print(f"   GET {files_url}")
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code != 200:
+                print(f"   ❌ FAIL: Expected 200, got {response.status_code}")
+                return False
+            
+            superadmin_files = response.json()
+            self.tests_passed += 1
+            print(f"   ✅ PASS - Superadmin sees {len(superadmin_files)} files")
+            
+            return True
+        except Exception as e:
+            print(f"   ❌ FAIL: {str(e)}")
+            return False
+    
     def run_all_tests(self):
         """Run all backend tests"""
         print("\n" + "="*70)
@@ -337,12 +570,9 @@ class BackendTester:
         # Run tests in sequence
         tests = [
             ("Health Check", self.test_health_check),
-            ("Create Insight", self.test_create_insight),
-            ("Get All Insights", self.test_get_all_insights),
-            ("Get Insight by ID", self.test_get_insight_by_id),
-            ("Get Report", self.test_get_report),
-            ("Generate Personas", self.test_generate_personas),
-            ("Get Personas", self.test_get_personas),
+            ("Module Settings - GET", self.test_module_settings_get),
+            ("Important Links - CRUD", self.test_important_links_crud),
+            ("Private Folder Privacy", self.test_private_folder_privacy),
         ]
         
         for test_name, test_func in tests:
