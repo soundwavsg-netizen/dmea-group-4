@@ -46,9 +46,11 @@ class SharedFilesService:
         folder_id: Optional[str] = None,
         uploader_id: Optional[str] = None,
         file_type_filter: Optional[str] = None,
-        limit: int = 100
+        limit: int = 100,
+        requesting_user_id: str = None,
+        is_superadmin: bool = False
     ) -> List[Dict[str, Any]]:
-        """Get files with optional filters"""
+        """Get files with optional filters, respecting personal folder privacy"""
         # Fetch all files first, then filter and sort in Python
         # This avoids Firestore composite index requirements
         all_files = []
@@ -71,11 +73,35 @@ class SharedFilesService:
                 file_data['id'] = doc.id
                 all_files.append(file_data)
             
+            # Filter out files from personal folders that don't belong to user
+            # Get all folders to check which are personal
+            all_folders = list(db.collection('folders').stream())
+            personal_folder_ids = {}
+            for folder_doc in all_folders:
+                folder_data = folder_doc.to_dict()
+                if folder_data.get('isPersonal', False):
+                    personal_folder_ids[folder_doc.id] = folder_data.get('ownerUserID')
+            
+            # Filter files based on personal folder ownership
+            filtered_files = []
+            for file in all_files:
+                file_folder_id = file.get('folderID')
+                
+                # If file is in a personal folder
+                if file_folder_id in personal_folder_ids:
+                    folder_owner = personal_folder_ids[file_folder_id]
+                    # Only show to owner or superadmin
+                    if is_superadmin or requesting_user_id == folder_owner:
+                        filtered_files.append(file)
+                else:
+                    # Not in personal folder, show to everyone
+                    filtered_files.append(file)
+            
             # Sort in Python by uploadedAt (newest first)
-            all_files.sort(key=lambda x: x.get('uploadedAt', ''), reverse=True)
+            filtered_files.sort(key=lambda x: x.get('uploadedAt', ''), reverse=True)
             
             # Apply limit
-            return all_files[:limit]
+            return filtered_files[:limit]
             
         except Exception as e:
             print(f"Error fetching files: {e}")
