@@ -103,11 +103,18 @@ const Sidebar = () => {
       modulesList.push({ label: 'Final Capstone', path: '/final/report', icon: '🎓' });
     }
     
-    // Shared Folder - Available to ALL authenticated users
-    modulesList.push({ label: 'Shared Folder', path: '/shared-folder', icon: '📁' });
+    // Shared Folder - Check module settings (Superadmin always sees it)
+    if (isSuperAdmin || moduleSettings.shared_folder_enabled) {
+      modulesList.push({ label: 'Shared Folder', path: '/shared-folder', icon: '📁' });
+    }
+    
+    // Important Links - Check module settings (Superadmin always sees it)
+    if (isSuperAdmin || moduleSettings.important_links_enabled) {
+      modulesList.push({ label: 'Important Links', path: '/important-links', icon: '🔗' });
+    }
     
     return modulesList;
-  }, [permissionsLoaded, isSuperAdmin, flags]);
+  }, [permissionsLoaded, isSuperAdmin, flags, moduleSettings]);
 
   return (
     <>
