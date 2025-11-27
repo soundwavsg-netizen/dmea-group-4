@@ -1027,7 +1027,7 @@ def get_shared_files(
     x_user_name: Optional[str] = Header(None),
     x_user_role: Optional[str] = Header(None)
 ):
-    """Get files with optional filters"""
+    """Get files with optional filters, respecting personal folder privacy"""
     if not x_user_name:
         raise HTTPException(status_code=401, detail="Authentication required")
     
@@ -1041,7 +1041,9 @@ def get_shared_files(
             folder_id=folderID,
             uploader_id=uploaderID,
             file_type_filter=fileType,
-            limit=limit
+            limit=limit,
+            requesting_user_id=x_user_name,
+            is_superadmin=(x_user_role == 'superadmin')
         )
         return files
     except Exception as e:
