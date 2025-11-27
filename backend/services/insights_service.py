@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from firebase_client import db
 from firebase_admin import firestore
 from models import InsightCreate, InsightResponse
