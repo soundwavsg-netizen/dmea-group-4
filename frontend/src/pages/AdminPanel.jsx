@@ -434,6 +434,16 @@ const AdminPanel = () => {
           >
             Shared Folder Settings
           </button>
+          <button
+            onClick={() => setActiveTab('module-settings')}
+            className={`px-6 py-3 font-semibold transition-colors ${
+              activeTab === 'module-settings'
+                ? 'text-[#A62639] border-b-2 border-[#A62639]'
+                : 'text-[#6C5F5F] hover:text-[#A62639]'
+            }`}
+          >
+            Module Settings
+          </button>
         </div>
 
         {activeTab === 'users' && (
