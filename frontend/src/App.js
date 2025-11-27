@@ -23,6 +23,7 @@ import FriendlyBrief from './pages/presentations/FriendlyBrief';
 import ClusteringTechnical from './pages/presentations/ClusteringTechnical';
 import SharedFolder from './pages/SharedFolder';
 import SharedFolderAnalytics from './pages/SharedFolderAnalytics';
+import ImportantLinks from './pages/ImportantLinks';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import './App.css';
