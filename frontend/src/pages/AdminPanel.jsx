@@ -255,6 +255,45 @@ const AdminPanel = () => {
     }
   };
 
+  const fetchModuleSettings = async () => {
+    try {
+      setLoadingModuleSettings(true);
+      const response = await axios.get(`${API}/api/admin/module-settings`, {
+        headers: { 'X-User-Role': session?.role }
+      });
+      setModuleSettings(response.data);
+    } catch (err) {
+      console.error('Error fetching module settings:', err);
+      setError('Failed to load module settings');
+    } finally {
+      setLoadingModuleSettings(false);
+    }
+  };
+
+  const handleModuleToggle = (key) => {
+    setModuleSettings(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
+  const handleSaveModuleSettings = async () => {
+    try {
+      setSaving(true);
+      await axios.put(`${API}/api/admin/module-settings`, moduleSettings, {
+        headers: { 'X-User-Role': session?.role }
+      });
+      setSuccessMessage('Module settings updated successfully');
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (err) {
+      console.error('Error updating module settings:', err);
+      setError('Failed to update module settings');
+      setTimeout(() => setError(''), 5000);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const getModuleLabel = (moduleName) => {
     const labels = {
       dashboard: 'Dashboard',
