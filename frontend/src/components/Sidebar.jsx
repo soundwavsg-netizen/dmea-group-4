@@ -13,6 +13,10 @@ const Sidebar = () => {
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
   const [resetPasswordOpen, setResetPasswordOpen] = useState(false);
   const [permissionsLoaded, setPermissionsLoaded] = useState(false);
+  const [moduleSettings, setModuleSettings] = useState({
+    shared_folder_enabled: true,
+    important_links_enabled: true
+  });
   const session = authService.getSession();
   const role = session?.role;
   const isSuperAdmin = authService.isSuperAdmin();
