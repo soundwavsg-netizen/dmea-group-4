@@ -17,6 +17,8 @@ const AdminPanel = () => {
   const [loadingThreshold, setLoadingThreshold] = useState(false);
   const [sharedFolderPermissions, setSharedFolderPermissions] = useState(null);
   const [loadingSharedPerms, setLoadingSharedPerms] = useState(false);
+  const [moduleSettings, setModuleSettings] = useState(null);
+  const [loadingModuleSettings, setLoadingModuleSettings] = useState(false);
 
   const session = authService.getSession();
 
@@ -24,6 +26,7 @@ const AdminPanel = () => {
     fetchUsers();
     fetchPersonaThreshold();
     fetchSharedFolderPermissions();
+    fetchModuleSettings();
   }, []);
 
   const fetchUsers = async () => {
