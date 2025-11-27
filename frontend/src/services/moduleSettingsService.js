@@ -1,13 +1,15 @@
 import axios from 'axios';
+import authService from './authService';
 
 const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
 class ModuleSettingsService {
   async getSettings() {
     try {
-      const response = await axios.get(`${API}/api/admin/module-settings`, {
+      const session = authService.getSession();
+      const response = await axios.get(`${API}/api/module-settings`, {
         headers: {
-          'X-User-Role': 'superadmin' // Only superadmin can fetch, but will apply to all users
+          'X-User-Name': session?.username
         }
       });
       return response.data;
