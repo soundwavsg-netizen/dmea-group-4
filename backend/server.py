@@ -746,6 +746,32 @@ def update_user_permissions_api(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.patch("/api/admin/user-modules/{username}")
+def toggle_user_modules_api(
+    username: str,
+    modules_data: dict,
+    x_user_role: Optional[str] = Header(None)
+):
+    """Toggle module visibility for a user - Superadmin only"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can toggle user modules")
+    
+    try:
+        from services.permissions_service import set_user_module_list
+        modules_enabled = modules_data.get('modules_enabled', [])
+        
+        success = set_user_module_list(username, modules_enabled)
+        if success:
+            return {
+                "message": f"Modules updated for {username}",
+                "modules_enabled": modules_enabled,
+                "success": True
+            }
+        else:
+            raise HTTPException(status_code=500, detail="Failed to update modules")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.delete("/api/admin/permissions/{username}")
 def reset_user_permissions_api(username: str, x_user_role: Optional[str] = Header(None)):
     """Reset user permissions to default - Superadmin only"""
