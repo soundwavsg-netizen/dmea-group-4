@@ -876,6 +876,7 @@ from services.shared_folder_analytics_service import SharedFolderAnalyticsServic
 from services.module_settings_service import ModuleSettingsService
 from services.important_links_service import ImportantLinksService
 from services.module_order_service import ModuleOrderService
+from services.marketing_data_service import MarketingDataService
 
 
 # -------- Module Settings (Superadmin only) --------
