@@ -97,25 +97,25 @@ const Sidebar = () => {
         label: 'SEO & Content', 
         path: '/seo', 
         icon: '🔍',
-        check: () => isSuperAdmin || flags.seo_content
+        check: () => (isSuperAdmin || flags.seo_content) && permissionsService.canAccessModule('seo_content')
       },
       social_media: { 
         label: 'Social Media Diagnostics', 
         path: '/social/library', 
         icon: '📱',
-        check: () => isSuperAdmin || flags.social_media
+        check: () => (isSuperAdmin || flags.social_media) && permissionsService.canAccessModule('social_media')
       },
       analytics: { 
         label: 'Search Marketing Diagnostics', 
         path: '/analytics/traffic', 
         icon: '📊',
-        check: () => isSuperAdmin || flags.analytics
+        check: () => (isSuperAdmin || flags.analytics) && permissionsService.canAccessModule('analytics')
       },
       final_capstone: { 
         label: 'Final Capstone', 
         path: '/final/report', 
         icon: '🎓',
-        check: () => isSuperAdmin || flags.final_capstone
+        check: () => (isSuperAdmin || flags.final_capstone) && permissionsService.canAccessModule('final_capstone')
       },
       shared_folder: { 
         label: 'Shared Folder', 
