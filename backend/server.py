@@ -877,6 +877,8 @@ from services.module_settings_service import ModuleSettingsService
 from services.important_links_service import ImportantLinksService
 from services.module_order_service import ModuleOrderService
 from services.marketing_data_service import MarketingDataService
+from services.dynamic_data_service import DynamicDataService
+from services.analytics_engine_service import AnalyticsEngineService
 
 
 # -------- Module Settings (Superadmin only) --------
