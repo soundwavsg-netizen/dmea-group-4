@@ -45,6 +45,15 @@ const Sidebar = () => {
     loadModuleSettings();
   }, []);
 
+  // Load module order on mount
+  useEffect(() => {
+    const loadModuleOrder = async () => {
+      const order = await moduleOrderService.getOrder();
+      setModuleOrder(order);
+    };
+    loadModuleOrder();
+  }, []);
+
   const handleLogout = () => {
     permissionsService.clearPermissions(); // Clear permissions on logout
     authService.logout();
