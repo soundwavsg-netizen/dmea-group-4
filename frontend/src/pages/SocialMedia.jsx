@@ -195,7 +195,13 @@ const SocialMedia = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {dataRows.map((row, index) => (
+                      {dataRows.length === 0 ? (
+                        <tr>
+                          <td colSpan="16" className="px-4 py-12 text-center text-[#6C5F5F]">
+                            No data entries yet. Click "Add Row" above to start entering data.
+                          </td>
+                        </tr>
+                      ) : dataRows.map((row, index) => (
                         <tr key={row.id} className={index % 2 === 0 ? 'bg-white' : 'bg-[#FAF7F5]/30'}>
                           <td className="px-3 py-2">
                             <select
