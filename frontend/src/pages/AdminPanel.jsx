@@ -445,6 +445,16 @@ const AdminPanel = () => {
           >
             Module Settings
           </button>
+          <button
+            onClick={() => setActiveTab('module-order')}
+            className={`px-6 py-3 font-semibold transition-colors ${
+              activeTab === 'module-order'
+                ? 'text-[#A62639] border-b-2 border-[#A62639]'
+                : 'text-[#6C5F5F] hover:text-[#A62639]'
+            }`}
+          >
+            Module Order
+          </button>
         </div>
 
         {activeTab === 'users' && (
