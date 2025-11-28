@@ -83,19 +83,14 @@ const Sidebar = () => {
       modulesList.push({ label: 'SEO & Content', path: '/seo', icon: '🔍' });
     }
     
-    // Social Media - feature flag check
+    // Social Media Diagnostics - feature flag check
     if (isSuperAdmin || flags.social_media) {
-      modulesList.push({ label: 'Social Media', path: '/social/library', icon: '📱' });
+      modulesList.push({ label: 'Social Media Diagnostics', path: '/social/library', icon: '📱' });
     }
     
-    // Analytics - feature flag check
+    // Search Marketing Diagnostics - feature flag check
     if (isSuperAdmin || flags.analytics) {
-      modulesList.push({ label: 'Analytics', path: '/analytics/traffic', icon: '📊' });
-    }
-    
-    // Presentation - feature flag check
-    if (isSuperAdmin || flags.presentation) {
-      modulesList.push({ label: 'Presentation', path: '/presentation/drafts', icon: '🎤' });
+      modulesList.push({ label: 'Search Marketing Diagnostics', path: '/analytics/traffic', icon: '📊' });
     }
     
     // Final Capstone - feature flag check
