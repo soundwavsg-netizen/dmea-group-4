@@ -6,6 +6,7 @@ import ChangePasswordModal from './ChangePasswordModal';
 import ResetPasswordModal from './ResetPasswordModal';
 import featureFlagService from '../services/featureFlagService';
 import moduleSettingsService from '../services/moduleSettingsService';
+import moduleOrderService from '../services/moduleOrderService';
 
 const Sidebar = () => {
   const navigate = useNavigate();
