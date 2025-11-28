@@ -20,8 +20,24 @@ const AdminPanel = () => {
   const [loadingSharedPerms, setLoadingSharedPerms] = useState(false);
   const [moduleSettings, setModuleSettings] = useState(null);
   const [loadingModuleSettings, setLoadingModuleSettings] = useState(false);
+  const [expandedUsers, setExpandedUsers] = useState(new Set());
+  const [togglingModule, setTogglingModule] = useState(null);
 
   const session = authService.getSession();
+
+  // All available modules
+  const ALL_MODULES = [
+    { key: 'dashboard', label: '🏠 Dashboard' },
+    { key: 'buyer_persona', label: '👥 Buyer Persona' },
+    { key: 'daily_reflections', label: '📝 Daily Reflections' },
+    { key: 'presentations', label: '📊 Presentations' },
+    { key: 'seo_content', label: '🔍 SEO & Content' },
+    { key: 'social_media', label: '📱 Social Media Diagnostics' },
+    { key: 'analytics', label: '📊 Search Marketing Diagnostics' },
+    { key: 'final_capstone', label: '🎓 Final Capstone' },
+    { key: 'shared_folder', label: '📁 Shared Folder' },
+    { key: 'important_links', label: '🔗 Important Links' }
+  ];
 
   useEffect(() => {
     fetchUsers();
