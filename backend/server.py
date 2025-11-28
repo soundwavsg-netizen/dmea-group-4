@@ -1347,6 +1347,40 @@ def root():
     return {"status": "healthy", "service": "MUFE Persona System", "version": "1.0"}
 
 
+# ==================== Module Order Endpoints ====================
+
+@app.get("/api/module-order")
+def get_module_order(
+    x_user_name: Optional[str] = Header(None)
+):
+    """Get module order (all authenticated users)"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    try:
+        order = ModuleOrderService.get_order()
+        return {"order": order}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.put("/api/admin/module-order")
+def update_module_order(
+    order_data: dict,
+    x_user_role: Optional[str] = Header(None)
+):
+    """Update module order (Superadmin only)"""
+    if x_user_role != 'superadmin':
+        raise HTTPException(status_code=403, detail="Only superadmin can update module order")
+    
+    try:
+        new_order = order_data.get('order', [])
+        result = ModuleOrderService.update_order(new_order)
+        return {"order": result, "message": "Module order updated successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.get("/health")
 def health_check():
     """Health check endpoint for deployment"""
