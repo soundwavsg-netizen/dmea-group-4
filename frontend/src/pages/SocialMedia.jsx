@@ -171,14 +171,6 @@ const SocialMedia = () => {
             <CardContent>
               {loading ? (
                 <div className="text-center py-8 text-[#6C5F5F]">Loading data...</div>
-              ) : dataRows.length === 0 ? (
-                <div className="text-center py-12">
-                  <p className="text-[#6C5F5F] mb-4">No data entries yet. Click "Add Row" to start.</p>
-                  <Button onClick={addNewRow} className="bg-[#A62639] hover:bg-[#8a1f2d]">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add First Row
-                  </Button>
-                </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full min-w-[2000px] text-sm">
@@ -197,6 +189,7 @@ const SocialMedia = () => {
                         <th className="px-3 py-2 text-left font-semibold">Views</th>
                         <th className="px-3 py-2 text-left font-semibold">Eng. Rate (%)</th>
                         <th className="px-3 py-2 text-left font-semibold">Sentiment</th>
+                        <th className="px-3 py-2 text-left font-semibold">Key Themes</th>
                         <th className="px-3 py-2 text-left font-semibold">Notes</th>
                         <th className="px-3 py-2 text-left font-semibold">Actions</th>
                       </tr>
