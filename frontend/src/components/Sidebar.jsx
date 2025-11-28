@@ -18,6 +18,7 @@ const Sidebar = () => {
     shared_folder_enabled: true,
     important_links_enabled: true
   });
+  const [moduleOrder, setModuleOrder] = useState([]);
   const session = authService.getSession();
   const role = session?.role;
   const isSuperAdmin = authService.isSuperAdmin();
