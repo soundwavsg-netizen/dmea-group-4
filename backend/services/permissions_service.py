@@ -152,3 +152,51 @@ def reset_user_permissions(username: str) -> bool:
     except Exception as e:
         print(f"Error resetting permissions for {username}: {e}")
         return False
+
+
+def set_user_module_list(username: str, modules_enabled: list) -> bool:
+    """
+    Set the list of enabled modules for a user (simplified module toggle)
+    
+    Args:
+        username: User's username
+        modules_enabled: List of module keys that should be enabled
+    
+    Returns:
+        True if successful
+    """
+    try:
+        doc_ref = db.collection('user_permissions').document(username)
+        
+        # Get current permissions or create new
+        doc = doc_ref.get()
+        if doc.exists:
+            current_perms = doc.to_dict()
+        else:
+            # Create minimal structure
+            current_perms = {"modules": {}}
+        
+        # Update module enabled status based on provided list
+        all_modules = [
+            'dashboard', 'buyer_persona', 'daily_reflections', 'presentations',
+            'seo_content', 'social_media', 'analytics', 'final_capstone',
+            'shared_folder', 'important_links'
+        ]
+        
+        for module_key in all_modules:
+            if module_key not in current_perms.get('modules', {}):
+                current_perms['modules'][module_key] = {
+                    'enabled': False,
+                    'tabs': {},
+                    'actions': {}
+                }
+            
+            # Set enabled status based on modules_enabled list
+            current_perms['modules'][module_key]['enabled'] = module_key in modules_enabled
+        
+        # Save to Firestore
+        doc_ref.set(current_perms)
+        return True
+    except Exception as e:
+        print(f"Error setting module list for {username}: {e}")
+        return False
