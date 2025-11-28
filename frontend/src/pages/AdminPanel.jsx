@@ -155,8 +155,8 @@ const AdminPanel = () => {
         updatedModules = [...currentModules, moduleKey];
       }
       
-      // Make API call to update permissions
-      const response = await axios.put(`${API}/api/admin/permissions/${username}`, {
+      // Make API call to update module list
+      const response = await axios.patch(`${API}/api/admin/user-modules/${username}`, {
         modules_enabled: updatedModules
       }, {
         headers: { 'X-User-Role': session.role }
