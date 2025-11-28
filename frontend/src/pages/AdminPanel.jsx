@@ -538,11 +538,34 @@ const AdminPanel = () => {
                         {user.role}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm">
-                      {user.has_custom_permissions ? '✅' : '-'}
-                    </td>
-                    <td className="px-6 py-4 text-xs text-[#6C5F5F]">
-                      {user.modules_enabled.length}
+                    <td className="px-6 py-4">
+                      {user.role === 'superadmin' ? (
+                        <span className="text-xs text-[#6C5F5F] italic">All modules enabled</span>
+                      ) : (
+                        <div className="flex flex-wrap gap-2">
+                          {ALL_MODULES.map((module) => {
+                            const isEnabled = user.modules_enabled.includes(module.key);
+                            const isToggling = togglingModule === `${user.username}-${module.key}`;
+                            
+                            return (
+                              <label 
+                                key={module.key}
+                                className="flex items-center gap-1.5 cursor-pointer"
+                                title={module.label}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={isEnabled}
+                                  disabled={isToggling}
+                                  onChange={() => toggleUserModule(user.username, module.key, user.modules_enabled)}
+                                  className="w-4 h-4 text-[#A62639] bg-gray-100 border-gray-300 rounded focus:ring-[#A62639] focus:ring-2"
+                                />
+                                <span className="text-xs">{module.label}</span>
+                              </label>
+                            );
+                          })}
+                        </div>
+                      )}
                     </td>
                     <td className="px-6 py-4">
                       {user.role !== 'superadmin' && (
@@ -551,7 +574,7 @@ const AdminPanel = () => {
                             onClick={() => fetchUserPermissions(user.username)}
                             className="px-3 py-1 bg-[#A62639] text-white text-xs rounded hover:bg-[#8a1f2d]"
                           >
-                            Edit
+                            Advanced
                           </button>
                           {user.has_custom_permissions && (
                             <button
