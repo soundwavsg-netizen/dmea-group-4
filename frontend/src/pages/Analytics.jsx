@@ -159,14 +159,6 @@ const Analytics = () => {
             <CardContent>
               {loading ? (
                 <div className="text-center py-8 text-[#6C5F5F]">Loading data...</div>
-              ) : dataRows.length === 0 ? (
-                <div className="text-center py-12">
-                  <p className="text-[#6C5F5F] mb-4">No data entries yet. Click "Add Row" to start.</p>
-                  <Button onClick={addNewRow} className="bg-[#A62639] hover:bg-[#8a1f2d]">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add First Row
-                  </Button>
-                </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
