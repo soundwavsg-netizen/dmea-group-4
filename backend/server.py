@@ -1408,6 +1408,74 @@ def update_module_order(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# ==================== Marketing Data Input Endpoints ====================
+
+@app.get("/api/social-media-data")
+def get_social_media_data(x_user_name: Optional[str] = Header(None)):
+    """Get social media performance data for current user"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    try:
+        data = MarketingDataService.get_social_media_data(x_user_name)
+        return data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/social-media-data")
+def save_social_media_data(
+    request: dict,
+    x_user_name: Optional[str] = Header(None)
+):
+    """Save social media performance data for current user"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    try:
+        data = request.get('data', [])
+        success = MarketingDataService.save_social_media_data(x_user_name, data)
+        if success:
+            return {"message": "Data saved successfully", "count": len(data)}
+        else:
+            raise HTTPException(status_code=500, detail="Failed to save data")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/search-marketing-data")
+def get_search_marketing_data(x_user_name: Optional[str] = Header(None)):
+    """Get search marketing data for current user"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    try:
+        data = MarketingDataService.get_search_marketing_data(x_user_name)
+        return data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/search-marketing-data")
+def save_search_marketing_data(
+    request: dict,
+    x_user_name: Optional[str] = Header(None)
+):
+    """Save search marketing data for current user"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    try:
+        data = request.get('data', [])
+        success = MarketingDataService.save_search_marketing_data(x_user_name, data)
+        if success:
+            return {"message": "Data saved successfully", "count": len(data)}
+        else:
+            raise HTTPException(status_code=500, detail="Failed to save data")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.get("/health")
 def health_check():
     """Health check endpoint for deployment"""
