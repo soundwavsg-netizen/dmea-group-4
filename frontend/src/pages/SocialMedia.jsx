@@ -326,6 +326,14 @@ const SocialMedia = () => {
                             </select>
                           </td>
                           <td className="px-3 py-2">
+                            <Input
+                              value={(row.keyThemes || []).join(', ')}
+                              onChange={(e) => updateRow(row.id, 'keyThemes', e.target.value.split(',').map(t => t.trim()))}
+                              className="w-40 text-xs"
+                              placeholder="Shade Match, Coverage, etc."
+                            />
+                          </td>
+                          <td className="px-3 py-2">
                             <Textarea
                               value={row.notes}
                               onChange={(e) => updateRow(row.id, 'notes', e.target.value)}
