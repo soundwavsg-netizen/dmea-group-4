@@ -876,6 +876,10 @@ const AdminPanel = () => {
             </div>
           </div>
         )}
+
+        {activeTab === 'module-order' && (
+          <ModuleOrderManager />
+        )}
       </div>
     </div>
   );
