@@ -140,6 +140,46 @@ const AdminPanel = () => {
     }
   };
 
+  const toggleUserModule = async (username, moduleKey, currentModules) => {
+    try {
+      setTogglingModule(`${username}-${moduleKey}`);
+      
+      // Check if module is currently enabled
+      const isEnabled = currentModules.includes(moduleKey);
+      
+      // Toggle the module
+      let updatedModules;
+      if (isEnabled) {
+        updatedModules = currentModules.filter(m => m !== moduleKey);
+      } else {
+        updatedModules = [...currentModules, moduleKey];
+      }
+      
+      // Make API call to update permissions
+      const response = await axios.put(`${API}/api/admin/permissions/${username}`, {
+        modules_enabled: updatedModules
+      }, {
+        headers: { 'X-User-Role': session.role }
+      });
+      
+      // Update local state
+      setUsers(users.map(user => 
+        user.username === username 
+          ? { ...user, modules_enabled: updatedModules, has_custom_permissions: true }
+          : user
+      ));
+      
+      setSuccessMessage(`Module ${isEnabled ? 'disabled' : 'enabled'} for ${username}`);
+      setTimeout(() => setSuccessMessage(''), 2000);
+    } catch (err) {
+      console.error('Error toggling module:', err);
+      setError(`Failed to toggle module for ${username}`);
+      setTimeout(() => setError(''), 3000);
+    } finally {
+      setTogglingModule(null);
+    }
+  };
+
   const handleResetPermissions = async (username) => {
     console.log('Reset button clicked for:', username);
     
