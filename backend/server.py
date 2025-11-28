@@ -1410,6 +1410,121 @@ def update_module_order(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# ==================== Dynamic Marketing Data Endpoints ====================
+
+@app.post("/api/dynamic-data/{module}")
+def save_dynamic_table_data(
+    module: str,
+    data: dict,
+    x_user_name: Optional[str] = Header(None)
+):
+    """Save dynamic table data (columns + rows)"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    if module not in ['social_media', 'search_marketing']:
+        raise HTTPException(status_code=400, detail="Invalid module")
+    
+    try:
+        success = DynamicDataService.save_table_data(x_user_name, module, data)
+        if success:
+            return {"message": "Data saved successfully"}
+        raise HTTPException(status_code=500, detail="Failed to save data")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/dynamic-data/{module}")
+def get_dynamic_table_data(
+    module: str,
+    x_user_name: Optional[str] = Header(None)
+):
+    """Get dynamic table data (columns + rows)"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    if module not in ['social_media', 'search_marketing']:
+        raise HTTPException(status_code=400, detail="Invalid module")
+    
+    try:
+        data = DynamicDataService.get_table_data(x_user_name, module)
+        return data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/column-mapping/{module}")
+def save_column_mapping(
+    module: str,
+    mappings: dict,
+    x_user_name: Optional[str] = Header(None)
+):
+    """Save column mappings"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    if module not in ['social_media', 'search_marketing']:
+        raise HTTPException(status_code=400, detail="Invalid module")
+    
+    try:
+        mapping_data = mappings.get('mappings', {})
+        success = DynamicDataService.save_column_mapping(x_user_name, module, mapping_data)
+        if success:
+            return {"message": "Mappings saved successfully", "mappings": mapping_data}
+        raise HTTPException(status_code=500, detail="Failed to save mappings")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/column-mapping/{module}")
+def get_column_mapping(
+    module: str,
+    x_user_name: Optional[str] = Header(None)
+):
+    """Get column mappings"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    if module not in ['social_media', 'search_marketing']:
+        raise HTTPException(status_code=400, detail="Invalid module")
+    
+    try:
+        mappings = DynamicDataService.get_column_mapping(x_user_name, module)
+        return {"mappings": mappings}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/analytics/{module}")
+def get_analytics(
+    module: str,
+    x_user_name: Optional[str] = Header(None)
+):
+    """Get analytics based on mapped data"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    if module not in ['social_media', 'search_marketing']:
+        raise HTTPException(status_code=400, detail="Invalid module")
+    
+    try:
+        # Get mapped data
+        mapped_data = DynamicDataService.get_mapped_data(x_user_name, module)
+        
+        if not mapped_data:
+            return {"error": "No mapped data available. Please upload data and complete column mapping."}
+        
+        # Generate analytics
+        if module == 'social_media':
+            analytics = AnalyticsEngineService.social_media_analytics(mapped_data)
+        else:
+            analytics = AnalyticsEngineService.search_marketing_analytics(mapped_data)
+        
+        return analytics
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # ==================== Marketing Data Input Endpoints ====================
 
 @app.get("/api/social-media-data")
