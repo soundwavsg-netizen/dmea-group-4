@@ -879,6 +879,7 @@ from services.module_order_service import ModuleOrderService
 from services.marketing_data_service import MarketingDataService
 from services.dynamic_data_service import DynamicDataService
 from services.analytics_engine_service import AnalyticsEngineService
+from services.insight_generator_service import InsightGeneratorService
 
 
 # -------- Module Settings (Superadmin only) --------
