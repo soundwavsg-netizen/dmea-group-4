@@ -60,67 +60,111 @@ const Sidebar = () => {
     navigate('/login');
   };
 
-  // Compute modules list based on permissions (reactive)
+  // Compute modules list based on permissions and custom order (reactive)
   const modules = React.useMemo(() => {
-    const modulesList = [];
-    
     // Only show modules if permissions are loaded
     if (!permissionsLoaded) {
-      return modulesList; // Return empty until permissions load
+      return []; // Return empty until permissions load
     }
     
-    // Dashboard - check permissions
-    if (permissionsService.canAccessModule('dashboard')) {
-      modulesList.push({ label: 'Dashboard', path: '/', icon: '🏠' });
+    // Define all possible modules with their configs
+    const moduleConfigs = {
+      dashboard: { 
+        label: 'Dashboard', 
+        path: '/', 
+        icon: '🏠',
+        check: () => permissionsService.canAccessModule('dashboard')
+      },
+      buyer_persona: { 
+        label: 'Buyer Persona', 
+        path: '/report', 
+        icon: '👥',
+        check: () => permissionsService.canAccessModule('buyer_persona')
+      },
+      daily_reflections: { 
+        label: 'Daily Reflections', 
+        path: '/daily-reflections', 
+        icon: '📝',
+        check: () => permissionsService.canAccessModule('daily_reflections')
+      },
+      presentations: { 
+        label: 'Presentations', 
+        path: '/presentations', 
+        icon: '📊',
+        check: () => permissionsService.canAccessModule('presentations')
+      },
+      seo_content: { 
+        label: 'SEO & Content', 
+        path: '/seo', 
+        icon: '🔍',
+        check: () => isSuperAdmin || flags.seo_content
+      },
+      social_media: { 
+        label: 'Social Media Diagnostics', 
+        path: '/social/library', 
+        icon: '📱',
+        check: () => isSuperAdmin || flags.social_media
+      },
+      analytics: { 
+        label: 'Search Marketing Diagnostics', 
+        path: '/analytics/traffic', 
+        icon: '📊',
+        check: () => isSuperAdmin || flags.analytics
+      },
+      final_capstone: { 
+        label: 'Final Capstone', 
+        path: '/final/report', 
+        icon: '🎓',
+        check: () => isSuperAdmin || flags.final_capstone
+      },
+      shared_folder: { 
+        label: 'Shared Folder', 
+        path: '/shared-folder', 
+        icon: '📁',
+        check: () => isSuperAdmin || moduleSettings.shared_folder_enabled
+      },
+      important_links: { 
+        label: 'Important Links', 
+        path: '/important-links', 
+        icon: '🔗',
+        check: () => isSuperAdmin || moduleSettings.important_links_enabled
+      }
+    };
+    
+    // Build modules list based on custom order
+    const modulesList = [];
+    const usedModules = new Set();
+    
+    // Add modules in custom order
+    if (moduleOrder && moduleOrder.length > 0) {
+      for (const moduleKey of moduleOrder) {
+        const config = moduleConfigs[moduleKey];
+        if (config && config.check()) {
+          modulesList.push({
+            key: moduleKey,
+            label: config.label,
+            path: config.path,
+            icon: config.icon
+          });
+          usedModules.add(moduleKey);
+        }
+      }
     }
     
-    // Buyer Persona - check permissions
-    if (permissionsService.canAccessModule('buyer_persona')) {
-      modulesList.push({ label: 'Buyer Persona', path: '/report', icon: '👥' });
-    }
-    
-    // Daily Reflections - check permissions
-    if (permissionsService.canAccessModule('daily_reflections')) {
-      modulesList.push({ label: 'Daily Reflections', path: '/daily-reflections', icon: '📝' });
-    }
-    
-    // Presentations - check permissions
-    if (permissionsService.canAccessModule('presentations')) {
-      modulesList.push({ label: 'Presentations', path: '/presentations', icon: '📊' });
-    }
-    
-    // SEO & Content - feature flag check
-    if (isSuperAdmin || flags.seo_content) {
-      modulesList.push({ label: 'SEO & Content', path: '/seo', icon: '🔍' });
-    }
-    
-    // Social Media Diagnostics - feature flag check
-    if (isSuperAdmin || flags.social_media) {
-      modulesList.push({ label: 'Social Media Diagnostics', path: '/social/library', icon: '📱' });
-    }
-    
-    // Search Marketing Diagnostics - feature flag check
-    if (isSuperAdmin || flags.analytics) {
-      modulesList.push({ label: 'Search Marketing Diagnostics', path: '/analytics/traffic', icon: '📊' });
-    }
-    
-    // Final Capstone - feature flag check
-    if (isSuperAdmin || flags.final_capstone) {
-      modulesList.push({ label: 'Final Capstone', path: '/final/report', icon: '🎓' });
-    }
-    
-    // Shared Folder - Check module settings (Superadmin always sees it)
-    if (isSuperAdmin || moduleSettings.shared_folder_enabled) {
-      modulesList.push({ label: 'Shared Folder', path: '/shared-folder', icon: '📁' });
-    }
-    
-    // Important Links - Check module settings (Superadmin always sees it)
-    if (isSuperAdmin || moduleSettings.important_links_enabled) {
-      modulesList.push({ label: 'Important Links', path: '/important-links', icon: '🔗' });
+    // Add any remaining modules that weren't in the custom order
+    for (const [moduleKey, config] of Object.entries(moduleConfigs)) {
+      if (!usedModules.has(moduleKey) && config.check()) {
+        modulesList.push({
+          key: moduleKey,
+          label: config.label,
+          path: config.path,
+          icon: config.icon
+        });
+      }
     }
     
     return modulesList;
-  }, [permissionsLoaded, isSuperAdmin, flags, moduleSettings]);
+  }, [permissionsLoaded, isSuperAdmin, flags, moduleSettings, moduleOrder]);
 
   return (
     <>
