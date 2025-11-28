@@ -465,8 +465,7 @@ const AdminPanel = () => {
                 <tr>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Username</th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Role</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Custom</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Modules</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Module Visibility</th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-[#1F1A1A] uppercase">Actions</th>
                 </tr>
               </thead>
