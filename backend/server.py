@@ -849,6 +849,7 @@ from services.shared_folder_permissions_service import SharedFolderPermissionsSe
 from services.shared_folder_analytics_service import SharedFolderAnalyticsService
 from services.module_settings_service import ModuleSettingsService
 from services.important_links_service import ImportantLinksService
+from services.module_order_service import ModuleOrderService
 
 
 # -------- Module Settings (Superadmin only) --------
