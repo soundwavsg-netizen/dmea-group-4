@@ -358,10 +358,6 @@ const SocialMedia = () => {
                   </table>
                 </div>
               )}
-                    </tbody>
-                  </table>
-                </div>
-              )}
             </CardContent>
           </Card>
         )}
