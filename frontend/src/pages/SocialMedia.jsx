@@ -468,18 +468,253 @@ const SocialMedia = () => {
           </Card>
         )}
 
-        {activeTab === 'analytics' && (
+        {activeTab === 'dashboard' && (
           <Card>
-            <CardHeader><CardTitle>Analytics Dashboard</CardTitle></CardHeader>
+            <CardHeader>
+              <div className="flex justify-between items-center">
+                <div>
+                  <CardTitle>Analytics Dashboard</CardTitle>
+                  <CardDescription>Run analytics to visualize your social media performance</CardDescription>
+                </div>
+                <Button 
+                  onClick={analyzeData} 
+                  disabled={analyzing || rows.length === 0}
+                  className="bg-[#A62639] hover:bg-[#8a1f2d]"
+                  data-testid="analyze-data-button"
+                >
+                  <BarChart3 className="w-4 h-4 mr-2" />
+                  {analyzing ? 'Analyzing...' : 'Analyze Data'}
+                </Button>
+              </div>
+            </CardHeader>
             <CardContent>
-              {!analytics ? (<div className="text-center py-12 text-[#6C5F5F]">Loading...</div>) : analytics.error ? (<div className="text-center py-12"><p className="text-red-600 mb-4">{analytics.error}</p></div>) : (
-                <div className="space-y-6">
-                  <div className="grid grid-cols-3 gap-4">
-                    <Card><CardContent className="pt-6"><div className="text-2xl font-bold text-[#A62639]">{analytics.overview?.total_posts}</div><div className="text-sm text-[#6C5F5F]">Total Posts</div></CardContent></Card>
-                    <Card><CardContent className="pt-6"><div className="text-2xl font-bold text-[#A62639]">{analytics.overview?.total_likes?.toLocaleString()}</div><div className="text-sm text-[#6C5F5F]">Total Likes</div></CardContent></Card>
-                    <Card><CardContent className="pt-6"><div className="text-2xl font-bold text-[#A62639]">{analytics.overview?.avg_engagement_rate}%</div><div className="text-sm text-[#6C5F5F]">Avg Engagement</div></CardContent></Card>
+              {!analytics ? (
+                <div className="text-center py-12">
+                  <BarChart3 className="w-16 h-16 mx-auto text-[#E0AFA0] mb-4" />
+                  <p className="text-[#6C5F5F] mb-4">Click "Analyze Data" to generate insights from your uploaded data.</p>
+                </div>
+              ) : analytics.error ? (
+                <div className="text-center py-12">
+                  <AlertCircle className="w-16 h-16 mx-auto text-red-500 mb-4" />
+                  <p className="text-red-600 mb-4">{analytics.error}</p>
+                </div>
+              ) : (
+                <div className="space-y-8">
+                  {/* Overview Metrics */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <Card><CardContent className="pt-6"><div className="text-3xl font-bold text-[#A62639]">{analytics.overview?.total_posts}</div><div className="text-sm text-[#6C5F5F]">Total Posts</div></CardContent></Card>
+                    <Card><CardContent className="pt-6"><div className="text-3xl font-bold text-[#A62639]">{analytics.overview?.total_likes?.toLocaleString()}</div><div className="text-sm text-[#6C5F5F]">Total Likes</div></CardContent></Card>
+                    <Card><CardContent className="pt-6"><div className="text-3xl font-bold text-[#A62639]">{analytics.overview?.total_views?.toLocaleString()}</div><div className="text-sm text-[#6C5F5F]">Total Views</div></CardContent></Card>
+                    <Card><CardContent className="pt-6"><div className="text-3xl font-bold text-[#A62639]">{(analytics.overview?.avg_engagement_rate * 100).toFixed(2)}%</div><div className="text-sm text-[#6C5F5F]">Avg Engagement</div></CardContent></Card>
                   </div>
-                  <Card><CardHeader><CardTitle>Platform Performance</CardTitle></CardHeader><CardContent><div className="space-y-2">{Object.entries(analytics.platform_performance || {}).map(([platform, stats]) => (<div key={platform} className="flex justify-between items-center p-3 bg-[#FAF7F5] rounded"><span className="font-semibold">{platform}</span><span className="text-[#6C5F5F]">{stats.posts} posts | {stats.engagement} engagement</span></div>))}</div></CardContent></Card>
+
+                  {/* Content Pillar Performance */}
+                  {analytics.content_pillars && analytics.content_pillars.length > 0 && (
+                    <Card>
+                      <CardHeader><CardTitle>Content Pillar Performance</CardTitle></CardHeader>
+                      <CardContent>
+                        <ResponsiveContainer width="100%" height={300}>
+                          <BarChart data={analytics.content_pillars}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#E8E2DE" />
+                            <XAxis dataKey="pillar" tick={{ fontSize: 12, fill: '#6C5F5F' }} />
+                            <YAxis tick={{ fontSize: 12, fill: '#6C5F5F' }} />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="avg_engagement_rate" fill="#A62639" name="Avg Engagement Rate" />
+                            <Bar dataKey="avg_views" fill="#E0AFA0" name="Avg Views" />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Platform Comparison */}
+                  {analytics.platform_comparison && analytics.platform_comparison.length > 0 && (
+                    <Card>
+                      <CardHeader><CardTitle>Platform Comparison</CardTitle></CardHeader>
+                      <CardContent>
+                        <ResponsiveContainer width="100%" height={300}>
+                          <BarChart data={analytics.platform_comparison}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#E8E2DE" />
+                            <XAxis dataKey="platform" tick={{ fontSize: 12, fill: '#6C5F5F' }} />
+                            <YAxis tick={{ fontSize: 12, fill: '#6C5F5F' }} />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="avg_engagement_rate" fill="#A62639" name="Engagement Rate" />
+                            <Bar dataKey="posting_frequency" fill="#2E7D32" name="Post Count" />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Push/Fix/Drop Recommendations */}
+                  {analytics.push_fix_drop && (
+                    <Card>
+                      <CardHeader><CardTitle>Push / Fix / Drop Recommendations</CardTitle></CardHeader>
+                      <CardContent>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="space-y-2">
+                            <h3 className="font-semibold text-green-700 flex items-center gap-2">
+                              <TrendingUp className="w-4 h-4" /> Push ({analytics.push_fix_drop.push?.length || 0})
+                            </h3>
+                            {analytics.push_fix_drop.push?.map((item, idx) => (
+                              <div key={idx} className="p-3 bg-green-50 border border-green-200 rounded">
+                                <p className="font-medium text-sm">{item.type}</p>
+                                <p className="text-xs text-green-700 mt-1">{item.reason}</p>
+                                <p className="text-xs text-green-600 mt-1 italic">{item.action}</p>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="space-y-2">
+                            <h3 className="font-semibold text-orange-700 flex items-center gap-2">
+                              <AlertCircle className="w-4 h-4" /> Fix ({analytics.push_fix_drop.fix?.length || 0})
+                            </h3>
+                            {analytics.push_fix_drop.fix?.map((item, idx) => (
+                              <div key={idx} className="p-3 bg-orange-50 border border-orange-200 rounded">
+                                <p className="font-medium text-sm">{item.type}</p>
+                                <p className="text-xs text-orange-700 mt-1">{item.reason}</p>
+                                <p className="text-xs text-orange-600 mt-1 italic">{item.action}</p>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="space-y-2">
+                            <h3 className="font-semibold text-red-700 flex items-center gap-2">
+                              <X className="w-4 h-4" /> Drop ({analytics.push_fix_drop.drop?.length || 0})
+                            </h3>
+                            {analytics.push_fix_drop.drop?.map((item, idx) => (
+                              <div key={idx} className="p-3 bg-red-50 border border-red-200 rounded">
+                                <p className="font-medium text-sm">{item.type}</p>
+                                <p className="text-xs text-red-700 mt-1">{item.reason}</p>
+                                <p className="text-xs text-red-600 mt-1 italic">{item.action}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Top Posts */}
+                  {analytics.top_posts && analytics.top_posts.length > 0 && (
+                    <Card>
+                      <CardHeader><CardTitle>Top Performing Posts</CardTitle></CardHeader>
+                      <CardContent>
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-sm">
+                            <thead className="bg-[#FAF7F5]">
+                              <tr>
+                                <th className="px-4 py-2 text-left">Platform</th>
+                                <th className="px-4 py-2 text-left">Post Type</th>
+                                <th className="px-4 py-2 text-right">Likes</th>
+                                <th className="px-4 py-2 text-right">Comments</th>
+                                <th className="px-4 py-2 text-right">Shares</th>
+                                <th className="px-4 py-2 text-right">Engagement Rate</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {analytics.top_posts.slice(0, 10).map((post, idx) => (
+                                <tr key={idx} className={idx % 2 === 0 ? 'bg-white' : 'bg-[#FAF7F5]/30'}>
+                                  <td className="px-4 py-2">{post.platform}</td>
+                                  <td className="px-4 py-2">{post.post_type}</td>
+                                  <td className="px-4 py-2 text-right">{post.likes?.toLocaleString()}</td>
+                                  <td className="px-4 py-2 text-right">{post.comments?.toLocaleString()}</td>
+                                  <td className="px-4 py-2 text-right">{post.shares?.toLocaleString()}</td>
+                                  <td className="px-4 py-2 text-right font-semibold text-[#A62639]">{(post.engagement_rate * 100).toFixed(2)}%</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        {activeTab === 'insight-summary' && (
+          <Card>
+            <CardHeader><CardTitle>Insight Summary</CardTitle><CardDescription>Automated insights and strategic recommendations</CardDescription></CardHeader>
+            <CardContent>
+              {!insights ? (
+                <div className="text-center py-12">
+                  <AlertCircle className="w-16 h-16 mx-auto text-[#E0AFA0] mb-4" />
+                  <p className="text-[#6C5F5F]">Run analytics first to generate insights.</p>
+                </div>
+              ) : insights.error ? (
+                <div className="text-center py-12">
+                  <p className="text-red-600">{insights.error}</p>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {/* Top 5 Insights */}
+                  {insights.top_insights && insights.top_insights.length > 0 && (
+                    <Card className="border-[#A62639]">
+                      <CardHeader className="bg-[#FAF7F5]"><CardTitle className="text-[#A62639]">Top 5 Insights</CardTitle></CardHeader>
+                      <CardContent className="pt-6">
+                        <ul className="space-y-3">
+                          {insights.top_insights.map((insight, idx) => (
+                            <li key={idx} className="flex gap-3">
+                              <Badge className="bg-[#A62639] text-white shrink-0">{idx + 1}</Badge>
+                              <p className="text-[#6C5F5F]">{insight}</p>
+                            </li>
+                          ))}
+                        </ul>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Strategic Recommendations */}
+                  {insights.strategic_recommendations && insights.strategic_recommendations.length > 0 && (
+                    <Card>
+                      <CardHeader><CardTitle>Strategic Recommendations</CardTitle></CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          {insights.strategic_recommendations.map((rec, idx) => (
+                            <div key={idx} className="p-4 border rounded-lg hover:bg-[#FAF7F5] transition-colors">
+                              <div className="flex items-start gap-3">
+                                <Badge variant={rec.priority === 'High' ? 'destructive' : 'secondary'}>{rec.priority}</Badge>
+                                <div className="flex-1">
+                                  <p className="font-medium text-[#A62639]">{rec.action}</p>
+                                  <p className="text-sm text-[#6C5F5F] mt-1">Expected Impact: {rec.expected_impact}</p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Persona Alignment */}
+                  {insights.persona_alignment && (
+                    <Card className="bg-blue-50 border-blue-200">
+                      <CardHeader><CardTitle className="text-blue-900">Persona Alignment</CardTitle></CardHeader>
+                      <CardContent>
+                        <p className="text-blue-800">{insights.persona_alignment}</p>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Priority Actions */}
+                  {insights.priority_actions && insights.priority_actions.length > 0 && (
+                    <Card>
+                      <CardHeader><CardTitle>Priority Actions</CardTitle></CardHeader>
+                      <CardContent>
+                        <div className="space-y-2">
+                          {insights.priority_actions.map((action, idx) => (
+                            <div key={idx} className="flex items-center gap-3 p-3 bg-[#FAF7F5] rounded">
+                              <div className="w-8 h-8 rounded-full bg-[#A62639] text-white flex items-center justify-center font-bold text-sm">{action.priority}</div>
+                              <p className="flex-1 text-[#6C5F5F]">{action.action}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
                 </div>
               )}
             </CardContent>
