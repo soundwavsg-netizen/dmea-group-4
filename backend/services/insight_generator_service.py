@@ -36,114 +36,28 @@ class InsightGeneratorService:
         avg_engagement_rate = overview.get('avg_engagement_rate', 0)
         
         # Platform Performance Insights
-        platforms = analytics.get('platform_performance', {})
+        platforms = analytics.get('platform_comparison', [])
         if platforms:
             # Find best performing platform
-            best_platform = max(platforms.items(), key=lambda x: x[1].get('engagement', 0))
+            best_platform = max(platforms, key=lambda x: x.get('avg_engagement_rate', 0))
             insights['top_insights'].append(
-                f"{best_platform[0]} drives the highest engagement with {best_platform[1].get('engagement', 0)} total interactions across {best_platform[1].get('posts', 0)} posts."
+                f"{best_platform['platform']} drives the highest engagement rate at {round(best_platform['avg_engagement_rate'] * 100, 2)}% across {best_platform['posting_frequency']} posts."
             )
             
             # Find platform with most views
-            views_leader = max(platforms.items(), key=lambda x: x[1].get('views', 0))
-            if views_leader[0] != best_platform[0]:
+            views_leader = max(platforms, key=lambda x: x.get('avg_views', 0))
+            if views_leader['platform'] != best_platform['platform']:
                 insights['top_insights'].append(
-                    f"{views_leader[0]} drives the highest reach with {views_leader[1].get('views', 0)} total views."
+                    f"{views_leader['platform']} drives the highest reach with {int(views_leader['avg_views'])} average views per post."
                 )
         
         # Content Pillar Performance
-        pillars = analytics.get('content_pillars', {})
-        if pillars:
-            sorted_pillars = sorted(pillars.items(), key=lambda x: x[1].get('avg_engagement', 0), reverse=True)
+        pillars = analytics.get('content_pillars', [])
+        if pillars and len(pillars) >= 2:
+            best_pillar = pillars[0]  # Already sorted descending
+            worst_pillar = pillars[-1]
             
-            if len(sorted_pillars) >= 2:
-                best_pillar = sorted_pillars[0]
-                worst_pillar = sorted_pillars[-1]
-                
-                ratio = best_pillar[1].get('avg_engagement', 0) / max(worst_pillar[1].get('avg_engagement', 1), 1)
-                insights['top_insights'].append(
-                    f"{best_pillar[0]} content generates {ratio:.1f}× higher engagement than {worst_pillar[0]} posts."
-                )
-                
-                # Push recommendation
-                if best_pillar[1].get('avg_engagement', 0) > avg_engagement_rate:
-                    insights['push_fix_drop']['push'].append({
-                        'type': best_pillar[0],
-                        'reason': f'High engagement ({int(best_pillar[1].get("avg_engagement", 0))}) above average',
-                        'action': f'Increase {best_pillar[0]} content frequency'
-                    })
-                
-                # Drop recommendation
-                if worst_pillar[1].get('avg_engagement', 0) < avg_engagement_rate * 0.5:
-                    insights['push_fix_drop']['drop'].append({
-                        'type': worst_pillar[0],
-                        'reason': f'Low engagement ({int(worst_pillar[1].get("avg_engagement", 0))}) significantly below average',
-                        'action': f'Reduce or restructure {worst_pillar[0]} content'
-                    })
-        
-        # Sentiment Analysis Insights
-        sentiment = analytics.get('sentiment_distribution', {})
-        if sentiment:
-            total_sentiment = sum(sentiment.values())
-            positive_rate = sentiment.get('Positive', 0) / max(total_sentiment, 1) * 100
-            negative_rate = sentiment.get('Negative', 0) / max(total_sentiment, 1) * 100
-            
-            if positive_rate > 60:
-                insights['top_insights'].append(
-                    f"Strong positive sentiment ({positive_rate:.0f}%) indicates high audience satisfaction."
-                )
-            elif negative_rate > 30:
-                insights['top_insights'].append(
-                    f"Elevated negative sentiment ({negative_rate:.0f}%) requires content strategy review."
-                )
-                insights['push_fix_drop']['fix'].append({
-                    'type': 'Overall Content',
-                    'reason': f'{negative_rate:.0f}% negative sentiment',
-                    'action': 'Review pain points and adjust messaging'
-                })
-        
-        # Engagement Rate Insights
-        if avg_engagement_rate > 5:
-            insights['top_insights'].append(
-                f"Exceptional engagement rate of {avg_engagement_rate:.1f}% indicates strong content-market fit."
-            )
-        elif avg_engagement_rate < 2:
-            insights['top_insights'].append(
-                f"Engagement rate of {avg_engagement_rate:.1f}% below industry average - optimization needed."
-            )
-            insights['final_recommendations'].append({
-                'priority': 'High',
-                'action': 'Audit content hooks and calls-to-action',
-                'expected_impact': 'Increase engagement by 2-3x'
-            })
-        
-        # Final Recommendations
-        insights['final_recommendations'].append({
-            'priority': 'High',
-            'action': 'Create more of top-performing content types',
-            'expected_impact': 'Maintain engagement momentum'
-        })
-        
-        if len(insights['push_fix_drop']['push']) > 0:
-            insights['final_recommendations'].append({
-                'priority': 'Medium',
-                'action': f"Double down on {insights['push_fix_drop']['push'][0]['type']} content",
-                'expected_impact': 'Capitalize on proven performance'
-            })
-        
-        insights['final_recommendations'].append({
-            'priority': 'Medium',
-            'action': 'Test new content formats in underperforming categories',
-            'expected_impact': 'Discover new growth opportunities'
-        })
-        
-        # Trend Signals (basic implementation)
-        if pillars:
-            for pillar_name, stats in pillars.items():
-                if stats.get('count', 0) > 5:  # Sufficient data
-                    insights['trend_signals'].append(
-                        f"{pillar_name} content showing consistent performance with {stats.get('count', 0)} posts published."
-                    )
+            ratio = best_pillar['avg_engagement_rate'] / max(worst_pillar['avg_engagement_rate'], 0.0001)\n            insights['top_insights'].append(\n                f\"{best_pillar['pillar']} content generates {ratio:.1f}× higher engagement ({round(best_pillar['avg_engagement_rate'] * 100, 2)}%) than {worst_pillar['pillar']} posts ({round(worst_pillar['avg_engagement_rate'] * 100, 2)}%).\"\n            )\n        \n        # Sentiment Analysis Insights\n        sentiment_data = analytics.get('sentiment_heatmap', [])\n        if sentiment_data:\n            sentiment_counts = {'positive': 0, 'negative': 0, 'neutral': 0}\n            for item in sentiment_data:\n                sent = str(item.get('sentiment', '')).lower()\n                if 'pos' in sent:\n                    sentiment_counts['positive'] += item.get('count', 0)\n                elif 'neg' in sent:\n                    sentiment_counts['negative'] += item.get('count', 0)\n                else:\n                    sentiment_counts['neutral'] += item.get('count', 0)\n            \n            total_sentiment = sum(sentiment_counts.values())\n            if total_sentiment > 0:\n                positive_rate = (sentiment_counts['positive'] / total_sentiment) * 100\n                negative_rate = (sentiment_counts['negative'] / total_sentiment) * 100\n                \n                if positive_rate > 60:\n                    insights['top_insights'].append(\n                        f\"Strong positive sentiment ({positive_rate:.0f}%) indicates high audience satisfaction and content resonance.\"\n                    )\n                elif negative_rate > 30:\n                    insights['top_insights'].append(\n                        f\"Elevated negative sentiment ({negative_rate:.0f}%) signals need for content strategy review.\"\n                    )\n        \n        # Engagement Rate Insights\n        if avg_engagement_rate > 0.05:  # 5%\n            insights['top_insights'].append(\n                f\"Exceptional engagement rate of {round(avg_engagement_rate * 100, 2)}% indicates strong content-market fit.\"\n            )\n        elif avg_engagement_rate < 0.02:  # 2%\n            insights['top_insights'].append(\n                f\"Engagement rate of {round(avg_engagement_rate * 100, 2)}% below industry average - optimization needed.\"\n            )\n        \n        # Limit to top 5 insights\n        insights['top_insights'] = insights['top_insights'][:5]\n        \n        # STRATEGIC RECOMMENDATIONS\n        push_count = len(insights['push_fix_drop']['push'])\n        fix_count = len(insights['push_fix_drop']['fix'])\n        drop_count = len(insights['push_fix_drop']['drop'])\n        \n        if push_count > 0:\n            insights['strategic_recommendations'].append({\n                'priority': 'High',\n                'action': f\"Scale production of {', '.join([p['type'] for p in insights['push_fix_drop']['push'][:2]])} content\",\n                'expected_impact': 'Maximize engagement and audience growth'\n            })\n        \n        if fix_count > 0:\n            insights['strategic_recommendations'].append({\n                'priority': 'High',\n                'action': f\"Improve messaging for {', '.join([f['type'] for f in insights['push_fix_drop']['fix'][:2]])} to address negative sentiment\",\n                'expected_impact': 'Convert engagement into positive brand perception'\n            })\n        \n        if drop_count > 0:\n            insights['strategic_recommendations'].append({\n                'priority': 'Medium',\n                'action': f\"Reduce or restructure {', '.join([d['type'] for d in insights['push_fix_drop']['drop'][:2]])} content\",\n                'expected_impact': 'Reallocate resources to high-performing content'\n            })\n        \n        insights['strategic_recommendations'].append({\n            'priority': 'Medium',\n            'action': 'A/B test new content formats within top-performing pillars',\n            'expected_impact': 'Discover optimization opportunities'\n        })\n        \n        # PERSONA ALIGNMENT\n        if avg_engagement_rate > 0.03:\n            insights['persona_alignment'] = f\"Content resonates strongly with target audience (avg {round(avg_engagement_rate * 100, 2)}% engagement). Continue current persona targeting with focus on {best_pillar['pillar'] if pillars else 'top content types'}.\"\n        else:\n            insights['persona_alignment'] = f\"Engagement below target ({round(avg_engagement_rate * 100, 2)}%). Review persona assumptions and test content variations to better match audience preferences.\"\n        \n        # PRIORITY ACTIONS\n        insights['priority_actions'] = [\n            {'action': f\"Increase posting frequency for {pillars[0]['pillar']} content\" if pillars else \"Focus on top-performing content types\", 'priority': 1},\n            {'action': 'Analyze sentiment patterns to identify messaging improvements', 'priority': 2},\n            {'action': f\"Test new formats on {best_platform['platform']} platform\" if platforms else \"Optimize platform strategy\", 'priority': 3},\n            {'action': 'Review underperforming content for insights on what to avoid', 'priority': 4},\n            {'action': 'Set up engagement tracking dashboard for real-time monitoring', 'priority': 5}\n        ]
         
         return insights
     
