@@ -413,18 +413,261 @@ const Analytics = () => {
           </Card>
         )}
 
-        {activeTab === 'analytics' && (
+        {activeTab === 'dashboard' && (
           <Card>
-            <CardHeader><CardTitle>Analytics Dashboard</CardTitle></CardHeader>
+            <CardHeader>
+              <div className="flex justify-between items-center">
+                <div>
+                  <CardTitle>Search Marketing Dashboard</CardTitle>
+                  <CardDescription>Run analytics to identify keyword opportunities</CardDescription>
+                </div>
+                <Button 
+                  onClick={analyzeData} 
+                  disabled={analyzing || rows.length === 0}
+                  className="bg-[#A62639] hover:bg-[#8a1f2d]"
+                  data-testid="analyze-data-button"
+                >
+                  <BarChart3 className="w-4 h-4 mr-2" />
+                  {analyzing ? 'Analyzing...' : 'Analyze Data'}
+                </Button>
+              </div>
+            </CardHeader>
             <CardContent>
-              {!analytics ? (<div className="text-center py-12 text-[#6C5F5F]">Loading...</div>) : analytics.error ? (<div className="text-center py-12"><p className="text-red-600 mb-4">{analytics.error}</p></div>) : (
-                <div className="space-y-6">
+              {!analytics ? (
+                <div className="text-center py-12">
+                  <Target className="w-16 h-16 mx-auto text-[#E0AFA0] mb-4" />
+                  <p className="text-[#6C5F5F] mb-4">Click "Analyze Data" to discover keyword opportunities.</p>
+                </div>
+              ) : analytics.error ? (
+                <div className="text-center py-12">
+                  <AlertCircle className="w-16 h-16 mx-auto text-red-500 mb-4" />
+                  <p className="text-red-600 mb-4">{analytics.error}</p>
+                </div>
+              ) : (
+                <div className="space-y-8">
+                  {/* Overview Metrics */}
                   <div className="grid grid-cols-3 gap-4">
-                    <Card><CardContent className="pt-6"><div className="text-2xl font-bold text-[#A62639]">{analytics.overview?.total_keywords}</div><div className="text-sm text-[#6C5F5F]">Total Keywords</div></CardContent></Card>
-                    <Card><CardContent className="pt-6"><div className="text-2xl font-bold text-[#A62639]">{analytics.overview?.total_search_volume?.toLocaleString()}</div><div className="text-sm text-[#6C5F5F]">Total Volume</div></CardContent></Card>
-                    <Card><CardContent className="pt-6"><div className="text-2xl font-bold text-[#A62639]">{analytics.overview?.avg_keyword_difficulty?.toFixed(1)}</div><div className="text-sm text-[#6C5F5F]">Avg Difficulty</div></CardContent></Card>
+                    <Card><CardContent className="pt-6"><div className="text-3xl font-bold text-[#A62639]">{analytics.overview?.total_keywords}</div><div className="text-sm text-[#6C5F5F]">Total Keywords</div></CardContent></Card>
+                    <Card><CardContent className="pt-6"><div className="text-3xl font-bold text-[#A62639]">{analytics.overview?.total_search_volume?.toLocaleString()}</div><div className="text-sm text-[#6C5F5F]">Total Volume</div></CardContent></Card>
+                    <Card><CardContent className="pt-6"><div className="text-3xl font-bold text-[#A62639]">{analytics.overview?.avg_keyword_difficulty?.toFixed(1)}</div><div className="text-sm text-[#6C5F5F]">Avg Difficulty</div></CardContent></Card>
                   </div>
-                  <Card><CardHeader><CardTitle>Top Opportunities</CardTitle></CardHeader><CardContent><table className="w-full text-sm"><thead className="bg-[#FAF7F5]"><tr><th className="px-4 py-2 text-left">Keyword</th><th className="px-4 py-2 text-left">Volume</th><th className="px-4 py-2 text-left">Difficulty</th><th className="px-4 py-2 text-left">Score</th></tr></thead><tbody>{(analytics.top_opportunities || []).slice(0, 10).map((opp, idx) => (<tr key={idx} className={idx % 2 === 0 ? 'bg-white' : 'bg-[#FAF7F5]/30'}><td className="px-4 py-2">{opp.keyword}</td><td className="px-4 py-2">{opp.search_volume?.toLocaleString()}</td><td className="px-4 py-2">{opp.keyword_difficulty}</td><td className="px-4 py-2 font-semibold text-[#A62639]">{opp.opportunity_score}</td></tr>))}</tbody></table></CardContent></Card>
+
+                  {/* Intent Funnel */}
+                  {analytics.intent_funnel && analytics.intent_funnel.length > 0 && (
+                    <Card>
+                      <CardHeader><CardTitle>Intent Funnel</CardTitle></CardHeader>
+                      <CardContent>
+                        <ResponsiveContainer width="100%" height={300}>
+                          <BarChart data={analytics.intent_funnel}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#E8E2DE" />
+                            <XAxis dataKey="intent" tick={{ fontSize: 12, fill: '#6C5F5F' }} />
+                            <YAxis tick={{ fontSize: 12, fill: '#6C5F5F' }} />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="count" fill="#A62639" name="Keyword Count" />
+                            <Bar dataKey="avg_volume" fill="#E0AFA0" name="Avg Volume" />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Top 10 Keywords */}
+                  {analytics.top_keywords && analytics.top_keywords.length > 0 && (
+                    <Card>
+                      <CardHeader><CardTitle>Top 10 Keyword Opportunities</CardTitle></CardHeader>
+                      <CardContent>
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-sm">
+                            <thead className="bg-[#FAF7F5]">
+                              <tr>
+                                <th className="px-4 py-2 text-left">Keyword</th>
+                                <th className="px-4 py-2 text-left">Intent</th>
+                                <th className="px-4 py-2 text-right">Volume</th>
+                                <th className="px-4 py-2 text-right">Difficulty</th>
+                                <th className="px-4 py-2 text-right">Score</th>
+                                <th className="px-4 py-2 text-left">Suggestion</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {analytics.top_keywords.map((kw, idx) => (
+                                <tr key={idx} className={idx % 2 === 0 ? 'bg-white' : 'bg-[#FAF7F5]/30'}>
+                                  <td className="px-4 py-2 font-medium">{kw.keyword}</td>
+                                  <td className="px-4 py-2"><Badge variant="outline">{kw.intent}</Badge></td>
+                                  <td className="px-4 py-2 text-right">{kw.volume?.toLocaleString()}</td>
+                                  <td className="px-4 py-2 text-right">{kw.difficulty}</td>
+                                  <td className="px-4 py-2 text-right font-semibold text-[#A62639]">{kw.opportunity_score}</td>
+                                  <td className="px-4 py-2 text-xs text-[#6C5F5F] italic">{kw.content_suggestion}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Content Gaps */}
+                  {analytics.content_gaps && analytics.content_gaps.length > 0 && (
+                    <Card>
+                      <CardHeader><CardTitle>Content Gap Analysis</CardTitle><CardDescription>Keywords where competitors rank but you don't</CardDescription></CardHeader>
+                      <CardContent>
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-sm">
+                            <thead className="bg-[#FAF7F5]">
+                              <tr>
+                                <th className="px-4 py-2 text-left">Keyword</th>
+                                <th className="px-4 py-2 text-left">Competitor Rank</th>
+                                <th className="px-4 py-2 text-right">Volume</th>
+                                <th className="px-4 py-2 text-right">Difficulty</th>
+                                <th className="px-4 py-2 text-right">Opportunity Score</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {analytics.content_gaps.slice(0, 10).map((gap, idx) => (
+                                <tr key={idx} className={idx % 2 === 0 ? 'bg-white' : 'bg-[#FAF7F5]/30'}>
+                                  <td className="px-4 py-2 font-medium">{gap.keyword}</td>
+                                  <td className="px-4 py-2">{gap.competitor_rank}</td>
+                                  <td className="px-4 py-2 text-right">{gap.volume?.toLocaleString()}</td>
+                                  <td className="px-4 py-2 text-right">{gap.difficulty}</td>
+                                  <td className="px-4 py-2 text-right font-semibold text-[#A62639]">{gap.opportunity_score}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Difficulty Distribution */}
+                  {analytics.difficulty_distribution && (
+                    <Card>
+                      <CardHeader><CardTitle>Keyword Difficulty Distribution</CardTitle></CardHeader>
+                      <CardContent>
+                        <ResponsiveContainer width="100%" height={250}>
+                          <PieChart>
+                            <Pie
+                              data={Object.entries(analytics.difficulty_distribution).map(([name, value]) => ({ name, value }))}
+                              cx="50%"
+                              cy="50%"
+                              labelLine={false}
+                              label={(entry) => `${entry.name}: ${entry.value}`}
+                              outerRadius={80}
+                              fill="#8884d8"
+                              dataKey="value"
+                            >
+                              {Object.entries(analytics.difficulty_distribution).map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                              ))}
+                            </Pie>
+                            <Tooltip />
+                          </PieChart>
+                        </ResponsiveContainer>
+                      </CardContent>
+                    </Card>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        {activeTab === 'insight-summary' && (
+          <Card>
+            <CardHeader><CardTitle>Insight Summary</CardTitle><CardDescription>Automated insights and keyword strategy</CardDescription></CardHeader>
+            <CardContent>
+              {!insights ? (
+                <div className="text-center py-12">
+                  <AlertCircle className="w-16 h-16 mx-auto text-[#E0AFA0] mb-4" />
+                  <p className="text-[#6C5F5F]">Run analytics first to generate insights.</p>
+                </div>
+              ) : insights.error ? (
+                <div className="text-center py-12">
+                  <p className="text-red-600">{insights.error}</p>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {/* Top Insights */}
+                  {insights.top_insights && insights.top_insights.length > 0 && (
+                    <Card className="border-[#A62639]">
+                      <CardHeader className="bg-[#FAF7F5]"><CardTitle className="text-[#A62639]">Key Insights</CardTitle></CardHeader>
+                      <CardContent className="pt-6">
+                        <ul className="space-y-3">
+                          {insights.top_insights.map((insight, idx) => (
+                            <li key={idx} className="flex gap-3">
+                              <Badge className="bg-[#A62639] text-white shrink-0">{idx + 1}</Badge>
+                              <p className="text-[#6C5F5F]">{insight}</p>
+                            </li>
+                          ))}
+                        </ul>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Keyword Opportunities */}
+                  {insights.keyword_opportunities && insights.keyword_opportunities.length > 0 && (
+                    <Card>
+                      <CardHeader><CardTitle>Keyword Opportunities</CardTitle></CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          {insights.keyword_opportunities.slice(0, 5).map((kw, idx) => (
+                            <div key={idx} className="p-4 border rounded-lg hover:bg-[#FAF7F5] transition-colors">
+                              <div className="flex justify-between items-start mb-2">
+                                <p className="font-semibold text-[#A62639]">{kw.keyword}</p>
+                                <Badge className="bg-[#2E7D32] text-white">{kw.opportunity_score}</Badge>
+                              </div>
+                              <div className="grid grid-cols-3 gap-2 text-sm text-[#6C5F5F] mb-2">
+                                <span>Volume: {kw.volume?.toLocaleString()}</span>
+                                <span>Difficulty: {kw.difficulty}</span>
+                                <span>Intent: {kw.intent}</span>
+                              </div>
+                              <p className="text-sm text-[#6C5F5F] italic">{kw.content_suggestion}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Strategic Recommendations */}
+                  {insights.strategic_recommendations && insights.strategic_recommendations.length > 0 && (
+                    <Card>
+                      <CardHeader><CardTitle>Strategic Recommendations</CardTitle></CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          {insights.strategic_recommendations.map((rec, idx) => (
+                            <div key={idx} className="p-4 border rounded-lg hover:bg-[#FAF7F5] transition-colors">
+                              <div className="flex items-start gap-3">
+                                <Badge variant={rec.priority === 'High' ? 'destructive' : 'secondary'}>{rec.priority}</Badge>
+                                <div className="flex-1">
+                                  <p className="font-medium text-[#A62639]">{rec.action}</p>
+                                  <p className="text-sm text-[#6C5F5F] mt-1">Expected Impact: {rec.expected_impact}</p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Priority Actions */}
+                  {insights.priority_actions && insights.priority_actions.length > 0 && (
+                    <Card>
+                      <CardHeader><CardTitle>Priority Actions</CardTitle></CardHeader>
+                      <CardContent>
+                        <div className="space-y-2">
+                          {insights.priority_actions.map((action, idx) => (
+                            <div key={idx} className="flex items-center gap-3 p-3 bg-[#FAF7F5] rounded">
+                              <div className="w-8 h-8 rounded-full bg-[#A62639] text-white flex items-center justify-center font-bold text-sm">{action.priority}</div>
+                              <p className="flex-1 text-[#6C5F5F]">{action.action}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
                 </div>
               )}
             </CardContent>
