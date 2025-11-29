@@ -39,10 +39,14 @@ const SocialMedia = () => {
   const [rows, setRows] = useState([]);
   const [mappings, setMappings] = useState({});
   const [analytics, setAnalytics] = useState(null);
+  const [insights, setInsights] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [analyzing, setAnalyzing] = useState(false);
   const [editingColumn, setEditingColumn] = useState(null);
   const [newColumnName, setNewColumnName] = useState('');
   const session = authService.getSession();
+  
+  const CHART_COLORS = ['#A62639', '#E0AFA0', '#2E7D32', '#1769AA', '#B26A00'];
 
   const REQUIRED_MAPPINGS = [
     { key: 'platform', label: 'Platform' },
