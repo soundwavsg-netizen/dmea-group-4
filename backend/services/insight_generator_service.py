@@ -65,17 +65,18 @@ class InsightGeneratorService:
     def generate_search_marketing_insights(analytics: Dict[str, Any]) -> Dict[str, Any]:
         """
         Generate automatic insights for search marketing analytics
-        Returns structured insights with keyword opportunities
+        Returns: Top insights, keyword opportunities, strategic recommendations,
+                 content gaps, priority actions
         """
         if not analytics or 'overview' not in analytics:
             return {'error': 'No analytics data available'}
         
         insights = {
+            'top_insights': [],
             'keyword_opportunities': [],
-            'content_gaps': [],
-            'intent_insights': [],
-            'competitor_insights': [],
-            'priority_strategy': []
+            'content_gaps': analytics.get('content_gaps', []),
+            'strategic_recommendations': [],
+            'priority_actions': []
         }
         
         overview = analytics.get('overview', {})
