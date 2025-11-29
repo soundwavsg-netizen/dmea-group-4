@@ -16,17 +16,18 @@ class InsightGeneratorService:
     def generate_social_media_insights(analytics: Dict[str, Any]) -> Dict[str, Any]:
         """
         Generate automatic insights for social media analytics
-        Returns structured insights with recommendations
+        Returns: Top 5 insights, Push/Fix/Drop, Strategic recommendations, 
+                 Persona alignment, Priority actions
         """
         if not analytics or 'overview' not in analytics:
             return {'error': 'No analytics data available'}
         
         insights = {
             'top_insights': [],
-            'push_fix_drop': {'push': [], 'fix': [], 'drop': []},
-            'trend_signals': [],
-            'competitive_opportunities': [],
-            'final_recommendations': []
+            'push_fix_drop': analytics.get('push_fix_drop', {'push': [], 'fix': [], 'drop': []}),
+            'strategic_recommendations': [],
+            'persona_alignment': '',
+            'priority_actions': []
         }
         
         # Overview metrics
