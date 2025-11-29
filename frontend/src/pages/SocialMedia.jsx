@@ -104,6 +104,39 @@ const SocialMedia = () => {
     }
   };
 
+  const analyzeData = async () => {
+    try {
+      setAnalyzing(true);
+      toast.info('Running analytics engine...');
+      
+      // Step 1: Run analytics
+      const analyticsResponse = await axios.get(`${API}/api/analytics/social_media`, {
+        headers: { 'X-User-Name': session?.username }
+      });
+      
+      if (analyticsResponse.data.error) {
+        toast.error(analyticsResponse.data.error);
+        return;
+      }
+      
+      setAnalytics(analyticsResponse.data);
+      
+      // Step 2: Generate insights
+      const insightsResponse = await axios.post(`${API}/api/generate-insights/social_media`,
+        analyticsResponse.data,
+        { headers: { 'X-User-Name': session?.username } }
+      );
+      
+      setInsights(insightsResponse.data);
+      toast.success('Analytics complete!');
+    } catch (error) {
+      console.error('Error analyzing data:', error);
+      toast.error('Failed to analyze data');
+    } finally {
+      setAnalyzing(false);
+    }
+  };
+
   const loadAnalytics = async () => {
     try {
       const response = await axios.get(`${API}/api/analytics/social_media`, {
