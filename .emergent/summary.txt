@@ -1,157 +1,165 @@
 <analysis>**original_problem_statement:**
-The user requested two new features and a modification to an existing one:
-1.  **Shared Folder Module Toggle**: Implement a feature in the Superadmin panel to toggle the visibility of the Shared Folder module for regular users and admins.
-2.  **Important Links Module**: Create a new module where a Superadmin can add and manage a list of important external links (e.g., Google Docs, Trello) for the team.
-3.  **Fix Private Folder Visibility**: A bug was reported where files uploaded to a user's private folder were visible to other users in the All Files view. This needs to be corrected so that personal folders and their contents are only visible to the owner and Superadmins.
-
-Additionally, the user has requested a feasibility analysis for live editing of PPTX and PDF files and has provided ongoing feedback on the new Shared Folder module, including requests for folder reordering, consistent icons, and fixes for UI bugs.
+The user requested a series of significant feature additions and enhancements, evolving from simple toggles to a complex data analytics system. The core requirements are:
+1.  **Module Management**: Implement features for Superadmins to toggle module visibility globally (), rename modules, and re-order them in the sidebar.
+2.  **User-Specific Permissions**: Allow Superadmins to enable or disable specific modules for individual users from the All Users tab in the Admin Panel.
+3.  **Comprehensive Data Analytics System (for Social Media & Search Marketing modules)**:
+    *   **Data Input Tab**: A flexible, spreadsheet-like table that supports manual entry and CSV/XLS file uploads.
+    *   **Flexible Table Editor**: The ability for Superadmins to add, rename, delete, and reorder columns dynamically, as the input data structure is unknown.
+    *   **CSV/XLS Upload**: The system must parse uploaded files, preserve a set of pre-defined essential columns, and append any new columns from the file without destroying the existing table structure.
+    *   **Column Mapping Tab**: A critical UI where the user maps the flexible columns from their uploaded data to the specific metrics required by the system's analytics engine (e.g., mapping a column named User Likes to the system's Likes metric).
+    *   **Analytics Engine**: The analytics logic should ONLY process data from the mapped columns.
+    *   **Insight Generator**: An Insight Summary tab that automatically generates an executive summary, recommendations (Push/Fix/Drop), and trend analysis based on the analytics output, requiring no manual input from the user.
+4.  **Bug Fixes**:
+    *   Fix private folder file visibility.
+    *   Resolve recurring backend deployment failures on Google Cloud Run ().
+    *   Ensure the data input table UI is consistent and always shows column headers.
 
 **User's preferred language**: English
 
 **what currently exists?**
-The backend for the Shared Folder module is fully implemented and deployed, including API endpoints for file/folder CRUD, permissions, analytics, and reordering. The backend for the new Important Links and Module Settings features has also been created and deployed.
-
-The frontend for the Shared Folder module is mostly complete, including the main page, upload/management modals, and admin panel settings. The frontend for the Important Links module has NOT been started. The frontend for the Module Settings toggle has been added to the  page, and a service to fetch the settings exists.
+- The backend infrastructure for all requested features is in place, including services and API endpoints for module ordering, user-specific permissions, dynamic data tables, column mapping, and the insight generator.
+- The frontend has been significantly updated. The  and  pages are now complex, multi-tab applications featuring:
+    - A Data Input tab with a dynamic table, CSV/XLS upload, and column management.
+    - A Column Mapping tab with dropdowns to link source data to system metrics.
+    - Placeholder tabs for Dashboard (analytics) and Insight Summary.
+- The Admin Panel has been enhanced with a Module Order management tab and user-specific module toggles.
+- Critical backend deployment issues related to Python pathing on Google Cloud Run have been resolved.
 
 **Last working item**:
--   **Last item agent was working**: Integrating the new Module Settings feature into the frontend. The agent created the backend service and endpoints, added the UI toggles in the , created a frontend service (), and was about to modify  to conditionally render the Shared Folder link based on the fetched settings. The agent also implemented the backend fix for the private folder visibility issue.
--   **Status**: IN PROGRESS
--   **Agent Testing Done**: N (Agent tested backend changes locally but has not completed or tested the final frontend integration in )
--   **Which testing method agent to use?**: Frontend testing agent
--   **User Testing Done**: N
+- **Last item agent was working**: Implementing the final layer of the analytics feature: the Insight Summary tab. The agent created the backend service () and the API endpoint () to produce automated insights. The next step is to connect the frontend UI to this endpoint.
+- **Status**: IN PROGRESS
+- **Agent Testing Done**: N (Backend service was created, but the full end-to-end flow is not implemented or tested).
+- **Which testing method agent to use?**: both. The backend insight generation logic needs verification. The frontend needs to be tested to ensure it correctly fetches and displays the generated summary. An end-to-end test via the testing agent is recommended upon completion.
+- **User Testing Done**: N
 
 **All Pending/In progress Issue list**:
--   **Issue 1**: Personal folder files are visible to all users. (P0)
-    -   **Note**: The backend fix for this has been implemented and tested locally by the agent (). It requires deployment and frontend verification.
+-   **Issue 1: Admin Panel Slow Loading (P1)**: A known, pre-existing performance issue where the Admin Panel takes ~5-10 seconds to load due to a slow  endpoint. This impacts the usability of admin features.
+-   **Issue 2: Sidebar Module Visibility Logic Needs Verification (P2)**: The agent implemented a fix to ensure modules appear for regular users when granted permission, but this flow was not tested end-to-end.
 
 **Issues Detail**:
--   **Issue 1: Personal Folder files visible to all**
-    -   **Attempted fixes**: The agent modified  in the  function to filter out files from personal folders unless the requesting user is the owner or a superadmin.
+-   **Issue 1: Admin Panel Slow Loading**
+    -   **Attempted fixes**: None. The agent identified the slow endpoint () as the root cause but did not attempt to optimize it.
     -   **Next debug checklist**:
-        1.  Ensure the latest backend code is deployed using the  flag.
-        2.  Log in as a regular user and verify that files from another user's personal folder do not appear in the All Files view.
-        3.  Log in as a Superadmin and verify that they can still see all files, including those in personal folders.
-    -   **Why fix this issue and what will be achieved with the fix?**: This is a critical privacy and data segregation bug. Fixing it ensures that user-specific private folders are truly private.
+        - Analyze the  function in the backend, likely within .
+        - Optimize the Firestore query or the data serialization logic within that function.
+    -   **Why fix this issue and what will be achieved with the fix?**: This will significantly improve the user experience for Superadmins and speed up testing of any features within the Admin Panel.
+    -   **Status**: NOT STARTED
+    -   **Is recurring issue?**: Y
+    -   **Should Test frontend/backend/both after fix?**: backend
+    -   **Blocked on other issue**: None
+-   **Issue 2: Sidebar Module Visibility Logic Needs Verification**
+    -   **Attempted fixes**: The agent updated the conditional rendering logic in .
+    -   **Next debug checklist**:
+        1.  Log in as Superadmin, go to Admin Panel, and enable a module for a regular user.
+        2.  Log out and log back in as that regular user.
+        3.  Verify the newly enabled module is now visible in the sidebar.
+    -   **Why fix this issue and what will be achieved with the fix?**: This is required to confirm that the user-specific module permission toggles are fully functional.
     -   **Status**: USER VERIFICATION PENDING
     -   **Is recurring issue?**: N
-    -   **Should Test frontend/backend/both after fix?**: both
+    -   **Should Test frontend/backend/both after fix?**: frontend
     -   **Blocked on other issue**: None
 
 **In progress Task List**:
--   **Task 1**: Complete Frontend Integration for Module Visibility Toggle (P0)
--   **Task 2**: Implement Frontend for Important Links Module (P1)
+-   **Task 1: Connect Frontend to Insight Generator API (P0)**
+-   **Task 2: Implement Analytics Engine Logic (P1)**
 
 **Task Detail**:
--   **Task 1: Complete Frontend Integration for Module Visibility Toggle**
-    -   **Where to resume**: Modify .
-        1.  Import the .
-        2.  Use a  hook to fetch the module settings.
-        3.  Store the visibility state (e.g., ).
-        4.  Wrap the Shared Folder navigation link in a conditional render based on the user's role and the  state.
-    -   **What will be achieved with this?**: Superadmins will be able to dynamically show or hide the Shared Folder module for other users from the Admin Panel.
+-   **Task 1: Connect Frontend to Insight Generator API**
+    -   **Where to resume**: In  and , within the Insight Summary tab.
+        1.  Implement a  hook that triggers when analytics data is ready.
+        2.  Make a  request to the  endpoint, sending the analytics results as the payload.
+        3.  Render the returned summary, recommendations, and trends in a clean, readable format.
+    -   **What will be achieved with this?**: This will complete the final, most valuable feature of the analytics system, providing users with automated, actionable insights.
     -   **Status**: IN PROGRESS
-    -   **Should Test frontend/backend/both after fix?**: frontend
-    -   **Blocked on something**: None
--   **Task 2: Implement Frontend for Important Links Module**
-    -   **Where to resume**: This task has not been started.
-        1.  Create a new page component, e.g., .
-        2.  Add a route for it in  and a link in .
-        3.  On the page, fetch links from .
-        4.  Display the links, perhaps as a list of cards.
-        5.  For Superadmins, add UI elements (e.g., a modal) to add, edit, and delete links using the corresponding API endpoints.
-    -   **What will be achieved with this?**: A new module will be available for sharing important resources with the team.
+    -   **Should Test frontend/backend/both after fix?**: both
+    -   **Blocked on something**: Task 2 (Analytics Engine Logic).
+-   **Task 2: Implement Analytics Engine Logic**
+    -   **Where to resume**: In .
+    -   **What will be achieved with this?**: This service is currently a placeholder. It needs to be implemented with the actual business logic to perform calculations (e.g., engagement rates, content pillar performance, keyword opportunities) on the mapped data. This is a prerequisite for the Insight Generator to work.
     -   **Status**: NOT STARTED
-    -   **Should Test frontend/backend/both after fix?**: frontend
-    -   **Blocked on something**: None
+    -   **Should Test frontend/backend/both after fix?**: backend
+    -   **Blocked on something**: None.
 
 **Upcoming and Future Tasks**
--   **Upcoming Tasks**:
-    -   (P1) Implement sub-level (nested) folders in the Shared Folder module.
--   **Future Tasks**:
-    -   (P2) Follow up on the Live Editing Feasibility analysis. The agent provided a detailed report advising against native PPTX/PDF editing and recommending a PDF Annotation system. The next step is to get the user's decision on how to proceed.
+- **Upcoming Tasks**:
+    - (P2) Add CSV/XLS *export* functionality to the Data Input tabs.
+- **Future Tasks**:
+    - (P2) Address the Admin Panel slow loading issue.
+    - (P3) Live Editing Feasibility: Follow up with the user on the agent's recommendation for a PDF Annotation system instead of native PPTX/PDF editing.
 
 **Completed work in this session**
--   **Critical Backend Deployment Fix**: Resolved a persistent  on Google Cloud Run by identifying that deployments were using an old Docker image. Established the correct, mandatory deployment command is .
--   **Shared Folder Module (Core)**: Implemented the entire feature, including:
-    -   Backend services and API endpoints for folders, files, permissions, and analytics.
-    -   Frontend UI for file/folder display, upload modal, sorting, and filtering.
-    -   Folder management (create/rename/delete) for Superadmins.
-    -   File management (view/download/delete) with role-based permissions.
-    -   Admin panel tab with permission toggles.
--   **Shared Folder Enhancements**:
-    -   **Folder Reordering**: Implemented backend logic and frontend UI for Superadmins to reorder folders.
-    -   **Personal Folders**: Created a private folder for each user, distinct from My Uploads.
--   **UI/UX Bug Fixes**:
-    -   Corrected navigation by adding Shared Folder and moving Admin Panel to the correct component ().
-    -   Replaced error messages on empty folders with a proper empty state UI.
-    -   Fixed inconsistent icon sizes and colors by standardizing to a single folder and file icon.
-    -   Resolved non-functional View and Download buttons by fixing a conditional rendering bug.
--   **Firebase Initialization Fix**: Corrected a  error in  by importing the pre-initialized storage instance.
+- **Module Management**: Implemented module renaming and a drag-and-drop reordering system in the Admin Panel.
+- **User-Specific Module Permissions**: Added toggles in the Admin Panel to control module visibility for each user and updated the backend/frontend logic accordingly.
+- **Comprehensive Data Analytics System (Foundation)**:
+    - Built the dynamic Data Input tab with a flexible table, CSV/XLS upload, and column management.
+    - **Crucially**, fixed the upload logic to preserve preset columns and append new data, preventing the analytics schema from being overwritten.
+    - Implemented the Column Mapping UI and backend logic.
+    - Created the backend service and API endpoint for the Insight Generator.
+- **Deployment & Environment Fixes**:
+    - Resolved a critical, recurring backend deployment failure () by correcting Python import paths for the Google Cloud Run environment.
+    - Documented the user's exact, mandatory deployment commands for both frontend () and backend ().
 
 **Known issue recurrence from previous fork**
--   **Issue recurrence in previous fork**: Backend deployment on Google Cloud Run repeatedly failed with  errors.
--   **Recurrence count**: High (occurred across multiple forks).
--   **Status**: RESOLVED
--   **Note**: The root cause was deploying an old, cached Docker image instead of building from the current source code. The definitive solution is to **always** use the  flag when deploying the backend: . This knowledge is critical and must be passed on.
+- **Issue recurrence in previous fork**: Backend deployment on Google Cloud Run repeatedly failed with .
+- **Recurrence count**: High.
+- **Status**: RESOLVED. The root cause was incorrect Python import paths for the Cloud Run environment. The agent fixed this by adding  to key backend files. This fix is critical and must be preserved.
 
 **Code Architecture**
 
 
 **Key Technical Concepts**
--   **Backend**: FastAPI, Firestore for database, Firebase Admin SDK.
--   **Frontend**: React,  for API calls,  for icons, Shadcn components.
--   **Deployment**: Google Cloud Run for the backend, Firebase Hosting for the frontend.
+- **Backend**: FastAPI, Firestore, Pydantic. The  pattern is critical for Cloud Run deployment.
+- **Frontend**: React, , Shadcn UI,  for drag-and-drop,  for CSV parsing,  for Excel file parsing.
 
-**key DB schema**
--   : 
--   : 
--   : 
--   : 
-
-**changes in tech stack**
--   None. The new features were built using the existing stack (Firestore, not MongoDB).
-
-**All files**
--   **Created/Updated (Backend)**:
-    -   : Pydantic models for the new features.
-    -    (all new , ,  files): Business logic for new features.
-    -   : Added numerous API endpoints for all new modules.
--   **Created/Updated (Frontend)**:
-    -   : Main page for the feature.
-    -   : Analytics dashboard.
-    -   : Modal for file uploads.
-    -   : Heavily modified to include new settings tabs.
-    -   : Modified to add/move navigation links.
-    -   : New service to fetch module visibility.
+**All files** (list a.) all created or updated files in this session and why do they exists? 2. Any other important files)
+- **Created**:
+    - : Logic for module reordering.
+    - : Manages the entire lifecycle of dynamic data (tables, columns, rows, mappings).
+    - : Placeholder for the core analytics calculation logic.
+    - : Logic for generating automated text summaries.
+    - : Frontend service for the module ordering feature.
+    - : The drag-and-drop UI for reordering modules in the Admin Panel.
+- **Updated**:
+    - : Heavily modified to add endpoints for all new features and to fix Python path issues.
+    - : Added a function to handle user-specific module toggles.
+    - : Updated to include the module ordering tab and the user-specific module toggles.
+    - : Updated to reflect renamed modules and to apply the custom module order.
+    -  & : Completely rewritten to implement the multi-tab data analytics system.
+    - : Added new dependencies for file parsing and drag-and-drop.
 
 **Critical Info for New Agent**
--   **MANDATORY DEPLOYMENT INSTRUCTION**: The user has repeatedly deployed an old backend image by mistake. For ANY backend changes, you MUST instruct the user to run . Do NOT use the  flag. This is the most critical piece of information to prevent recurring failures.
--   **Module Visibility Task**: The immediate task is to finish connecting the Module Settings toggle to the  component to make the Shared Folder link appear/disappear based on the superadmin's setting.
--   **User Decision Pending**: The user asked about live PPTX/PDF editing. A detailed analysis was provided (Chat Message 444), concluding it's not feasible and recommending a PDF Annotation System instead. You need to ask the user to review this analysis and decide on the path forward.
+- **User-Specific Deployment Commands are Mandatory**:
+    - **Backend**: From , run: . The  flag is non-negotiable to prevent using stale Docker images.
+    - **Frontend**: From , the user's process is  (NOT yarn install v1.22.22
+[1/4] Resolving packages...
+success Already up-to-date.
+Done in 0.35s.), followed by .
+- **Python Path Fix is Essential**: The agent resolved a recurring  on deployment by adding  to key backend files. This change is critical for the application to run on Google Cloud and must not be altered.
+- **Analytics Logic is a Placeholder**: The core analytics calculations in  have not been implemented. The Insight Generator depends on the output of this service.
+- **Admin Panel Performance**: The Admin Panel has a known loading delay of 5-10 seconds. Be patient when accessing it for testing.
 
 **Last 5 User Messages and any pending user messages**
-1.  **User**: Deployed but all Shared Folder APIs are returning 404.
-2.  **Agent**: Diagnosed that an old Docker image was deployed. Provided the correct  command.
-3.  **User**: Asks if  should be used all the time.
-4.  **Agent**: Confirms yes,  is the recommended and safer method for backend deployments.
-5.  **User**: Forwards a detailed request to analyze the feasibility of live PPTX and PDF editing.
-6.  **Agent**: Provides a comprehensive feasibility study, concluding native editing is not feasible and recommends a PDF annotation system as an alternative.
-7.  **User**: Reports that files in personal folders are visible to all users.
-8.  **Agent**: Acknowledges the bug and implements a backend fix.
-9.  **User**: Requests two new features: a toggle to enable/disable the Shared Folder module and an Important Links module.
-10. **Agent**: Acknowledges the request and starts implementation, ensuring the backend deployment fix is noted for future forks.
+1.  **User**: Requested an Insight Summary tab in both analytics modules to automatically generate executive summaries and recommendations from the analytics data. (COMPLETED - Backend service created, frontend tab is a placeholder).
+2.  **User**: Reported that CSV uploads were deleting preset columns and requested a fix to ensure preset columns are always preserved. Also requested UI consistency between the two analytics modules. (COMPLETED).
+3.  **User**: Provided a comprehensive Master Instruction for the full data analytics system, including CSV upload, a flexible table editor, a column mapping system, and an analytics engine. (COMPLETED - Foundation is built, but core analytics logic is a placeholder).
+4.  **User**: Pointed out that the data input tables were blank and requested that column headers always be visible. (COMPLETED).
+5.  **User**: Confirmed all fixes were working and said All ok. Can carry on. (Agent then proceeded to final summary before being asked about rollback).
 
 **Project Health Check:**
--   **Broken**: The frontend does not yet respect the Shared Folder visibility toggle, and the Important Links UI is missing. The private folder visibility fix has not been verified by the user.
+- **Broken**: The Insight Summary tab is not yet connected to the backend. The analytics engine is not yet functional.
+- **Mocked**: The  is a placeholder and does not perform any real calculations.
 
 **Testing status**
--   **Testing agent used after significant changes**: NO
--   **Troubleshoot agent used after agent stuck in loop**: NO
--   **Test files created**: []
--   **Known regressions**: None.
+- **Testing agent used after significant changes**: NO
+- **Troubleshoot agent used after agent stuck in loop**: NO
+- **Test files created**: []
+- **Known regressions**: None
 
 **Credentials to test flow:**
 -   **Super Admin**:  / 
+-   **Regular User**: Credentials for a regular test user (e.g., ) need to be confirmed or created to test the user-specific permission toggles.
 
 **What agent forgot to execute**
-- The agent started implementing the module settings feature but did not complete the final step of updating  to use the  and conditionally render the navigation link.</analysis>
+- The agent did not implement the core business logic for the analytics engine in . The service exists, but it's a placeholder.
+- The agent created the backend for the Insight Summary but did not connect the frontend to fetch and display the data.
+- The agent fixed the sidebar visibility logic for regular users but did not perform a final end-to-end test to confirm the fix works as expected.</analysis>
