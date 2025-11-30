@@ -33,12 +33,20 @@ const DashboardNav = () => {
                 Change Password
               </button>
               {isSuperAdmin && (
-                <button
-                  onClick={() => navigate('/admin')}
-                  className="px-4 py-2 text-sm bg-[#1769AA] text-white rounded-lg hover:bg-[#135a8a] transition-colors"
-                >
-                  Admin Panel
-                </button>
+                <>
+                  <button
+                    onClick={() => navigate('/admin/reset-password')}
+                    className="px-4 py-2 text-sm bg-[#F59E0B] text-white rounded-lg hover:bg-[#D97706] transition-colors"
+                  >
+                    Reset User Password
+                  </button>
+                  <button
+                    onClick={() => navigate('/admin')}
+                    className="px-4 py-2 text-sm bg-[#1769AA] text-white rounded-lg hover:bg-[#135a8a] transition-colors"
+                  >
+                    Admin Panel
+                  </button>
+                </>
               )}
               <button
                 onClick={handleLogout}
