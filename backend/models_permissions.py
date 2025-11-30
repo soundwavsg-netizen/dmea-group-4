@@ -138,9 +138,9 @@ DEFAULT_PERMISSIONS = {
         enabled=True,
         tabs={},
         actions={
-            "add": False,
-            "edit": False,
-            "delete": False
+            "add": True,
+            "edit": True,
+            "delete": True
         }
     )
 }
