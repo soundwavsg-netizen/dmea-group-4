@@ -153,6 +153,36 @@ class InsightGeneratorService:
         else:
             insights['persona_alignment'] = f"Engagement below target ({round(avg_engagement_rate * 100, 2)}%). Review persona assumptions and test content variations to better match audience preferences."
         
+        # TOP PERFORMING POSTS (Top 3)
+        post_level_data = analytics.get('post_level_data', [])
+        if post_level_data and len(post_level_data) >= 3:
+            insights['top_performing_posts'] = []
+            for i, post in enumerate(post_level_data[:3], 1):
+                insights['top_performing_posts'].append({
+                    'rank': i,
+                    'platform': post.get('platform', 'Unknown'),
+                    'url': post.get('post_url', 'N/A'),
+                    'engagement_rate': post.get('engagement_rate', 0),
+                    'post_type': post.get('post_type', 'Unknown'),
+                    'sentiment': post.get('sentiment', 'Unknown'),
+                    'view_count': post.get('view_count', 0)
+                })
+        
+        # UNDERPERFORMING POSTS (Bottom 3)
+        if post_level_data and len(post_level_data) >= 3:
+            insights['underperforming_posts'] = []
+            # Get last 3 posts (already sorted by engagement desc)
+            for i, post in enumerate(post_level_data[-3:][::-1], 1):  # Reverse to show worst first
+                insights['underperforming_posts'].append({
+                    'rank': i,
+                    'platform': post.get('platform', 'Unknown'),
+                    'url': post.get('post_url', 'N/A'),
+                    'engagement_rate': post.get('engagement_rate', 0),
+                    'post_type': post.get('post_type', 'Unknown'),
+                    'sentiment': post.get('sentiment', 'Unknown'),
+                    'view_count': post.get('view_count', 0)
+                })
+        
         # PRIORITY ACTIONS
         insights['priority_actions'] = [
             {'action': f"Increase posting frequency for {pillars[0]['pillar']} content" if pillars else "Focus on top-performing content types", 'priority': 1},
