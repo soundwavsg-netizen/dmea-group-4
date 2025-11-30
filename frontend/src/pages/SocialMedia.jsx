@@ -687,48 +687,38 @@ const SocialMedia = () => {
                     </Card>
                   )}
 
-                  {/* Push/Fix/Drop Recommendations */}
-                  {analytics.push_fix_drop && (
-                    <Card>
-                      <CardHeader><CardTitle>Push / Fix / Drop Recommendations</CardTitle></CardHeader>
-                      <CardContent>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <div className="space-y-2">
-                            <h3 className="font-semibold text-green-700 flex items-center gap-2">
-                              <TrendingUp className="w-4 h-4" /> Push ({analytics.push_fix_drop.push?.length || 0})
-                            </h3>
-                            {analytics.push_fix_drop.push?.map((item, idx) => (
-                              <div key={idx} className="p-3 bg-green-50 border border-green-200 rounded">
-                                <p className="font-medium text-sm">{item.type}</p>
-                                <p className="text-xs text-green-700 mt-1">{item.reason}</p>
-                                <p className="text-xs text-green-600 mt-1 italic">{item.action}</p>
-                              </div>
-                            ))}
+                  {/* Post-Level Push/Fix/Drop Classification */}
+                  {analytics.classification_summary && (
+                    <Card className="border-[#A62639]">
+                      <CardHeader className="bg-[#FAF7F5]">
+                        <CardTitle className="text-[#A62639]">Post-Level Action Plan (Push/Fix/Drop)</CardTitle>
+                        <CardDescription>AI-powered classification of individual posts based on engagement and sentiment</CardDescription>
+                      </CardHeader>
+                      <CardContent className="pt-6">
+                        {/* Summary Counts */}
+                        <div className="grid grid-cols-3 gap-4 mb-6">
+                          <div className="p-4 bg-green-50 border-2 border-green-500 rounded-lg text-center">
+                            <div className="text-3xl font-bold text-green-700">{analytics.classification_summary.push_count}</div>
+                            <div className="text-sm text-green-600 font-medium mt-1">PUSH Posts</div>
+                            <div className="text-xs text-green-600 mt-1">Scale up these winners</div>
                           </div>
-                          <div className="space-y-2">
-                            <h3 className="font-semibold text-orange-700 flex items-center gap-2">
-                              <AlertCircle className="w-4 h-4" /> Fix ({analytics.push_fix_drop.fix?.length || 0})
-                            </h3>
-                            {analytics.push_fix_drop.fix?.map((item, idx) => (
-                              <div key={idx} className="p-3 bg-orange-50 border border-orange-200 rounded">
-                                <p className="font-medium text-sm">{item.type}</p>
-                                <p className="text-xs text-orange-700 mt-1">{item.reason}</p>
-                                <p className="text-xs text-orange-600 mt-1 italic">{item.action}</p>
-                              </div>
-                            ))}
+                          <div className="p-4 bg-yellow-50 border-2 border-yellow-500 rounded-lg text-center">
+                            <div className="text-3xl font-bold text-yellow-700">{analytics.classification_summary.fix_count}</div>
+                            <div className="text-sm text-yellow-600 font-medium mt-1">FIX Posts</div>
+                            <div className="text-xs text-yellow-600 mt-1">Optimize & improve</div>
                           </div>
-                          <div className="space-y-2">
-                            <h3 className="font-semibold text-red-700 flex items-center gap-2">
-                              <X className="w-4 h-4" /> Drop ({analytics.push_fix_drop.drop?.length || 0})
-                            </h3>
-                            {analytics.push_fix_drop.drop?.map((item, idx) => (
-                              <div key={idx} className="p-3 bg-red-50 border border-red-200 rounded">
-                                <p className="font-medium text-sm">{item.type}</p>
-                                <p className="text-xs text-red-700 mt-1">{item.reason}</p>
-                                <p className="text-xs text-red-600 mt-1 italic">{item.action}</p>
-                              </div>
-                            ))}
+                          <div className="p-4 bg-red-50 border-2 border-red-500 rounded-lg text-center">
+                            <div className="text-3xl font-bold text-red-700">{analytics.classification_summary.drop_count}</div>
+                            <div className="text-sm text-red-600 font-medium mt-1">DROP Posts</div>
+                            <div className="text-xs text-red-600 mt-1">Consider discontinuing</div>
                           </div>
+                        </div>
+
+                        {/* Info Message */}
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+                          <p className="text-sm text-blue-800">
+                            <strong>Insight:</strong> View detailed post lists and individual classifications in the <strong>Insight Summary</strong> tab or expand the <strong>Post-Level Performance</strong> section below.
+                          </p>
                         </div>
                       </CardContent>
                     </Card>
