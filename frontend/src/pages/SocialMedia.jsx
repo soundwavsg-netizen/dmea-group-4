@@ -1120,7 +1120,7 @@ const SocialMedia = () => {
                                   <div className="flex flex-wrap gap-2">
                                     <Badge variant="outline">{post.platform}</Badge>
                                     <Badge variant="outline">{post.post_type}</Badge>
-                                    <Badge className={post.sentiment?.toLowerCase().includes('neg') ? 'bg-red-100 text-red-800' : 'bg-gray-100'}>
+                                    <Badge className={post.sentiment?.toLowerCase().includes('neg') ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'}>
                                       {post.sentiment}
                                     </Badge>
                                   </div>
