@@ -59,6 +59,8 @@ const Analytics = () => {
   useEffect(() => {
     loadData();
     loadMappings();
+    loadAnalytics();
+    loadInsights();
   }, []);
 
   const loadData = async () => {
