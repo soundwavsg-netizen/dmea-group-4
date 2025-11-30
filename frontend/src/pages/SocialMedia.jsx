@@ -308,6 +308,14 @@ const SocialMedia = () => {
   };
 
   const deleteColumn = (colName) => {
+    // Check permission
+    if (!canPerformAction('delete_column')) {
+      toast.error('You do not have permission to delete columns', {
+        description: 'Contact your administrator to request access'
+      });
+      return;
+    }
+    
     // Prevent deleting preset columns
     if (PRESET_COLUMNS.includes(colName)) {
       toast.error('Cannot delete preset columns');
