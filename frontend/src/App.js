@@ -26,6 +26,7 @@ import SharedFolderAnalytics from './pages/SharedFolderAnalytics';
 import ImportantLinks from './pages/ImportantLinks';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
+import { Toaster } from './components/ui/sonner';
 import './App.css';
 
 function App() {
