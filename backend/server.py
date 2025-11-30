@@ -1526,6 +1526,35 @@ def get_analytics(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.post("/api/generate-insights/{module_type}")
+def generate_insights(
+    module_type: str,
+    analytics_data: dict,
+    x_user_name: Optional[str] = Header(None)
+):
+    """Generate automated insights from analytics data"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    if module_type not in ['social_media', 'search_marketing']:
+        raise HTTPException(status_code=400, detail="Invalid module type")
+    
+    try:
+        # Generate insights based on module type
+        if module_type == 'social_media':
+            insights = InsightGeneratorService.generate_social_media_insights(analytics_data)
+        else:
+            insights = InsightGeneratorService.generate_search_marketing_insights(analytics_data)
+        
+        return insights
+    except Exception as e:
+        print(f"Error generating insights: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
 # ==================== Marketing Data Input Endpoints ====================
 
 @app.get("/api/social-media-data")
