@@ -497,9 +497,57 @@ const SocialMedia = () => {
                 <div className="text-center py-12">
                   <AlertCircle className="w-16 h-16 mx-auto text-red-500 mb-4" />
                   <p className="text-red-600 mb-4">{analytics.error}</p>
+                  {analytics.warnings && analytics.warnings.length > 0 && (
+                    <div className="mt-4 text-left max-w-2xl mx-auto">
+                      {analytics.warnings.map((warning, idx) => (
+                        <div key={idx} className="bg-yellow-50 border border-yellow-200 rounded p-4 mb-2">
+                          <p className="font-semibold text-yellow-800">{warning.message}</p>
+                          {warning.details && warning.details.length > 0 && (
+                            <details className="mt-2">
+                              <summary className="cursor-pointer text-sm text-yellow-700">View problematic rows</summary>
+                              <div className="mt-2 text-xs text-yellow-700 space-y-1">
+                                {warning.details.map((detail, dIdx) => (
+                                  <div key={dIdx} className="pl-2">Row {detail.row}: {detail.platform} - {detail.post_type} ({detail.issues})</div>
+                                ))}
+                              </div>
+                            </details>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="space-y-8">
+                  {/* Data Quality Warnings */}
+                  {analytics.warnings && analytics.warnings.length > 0 && (
+                    <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4" data-testid="data-quality-warning">
+                      <div className="flex">
+                        <AlertCircle className="h-5 w-5 text-yellow-400 mr-3 flex-shrink-0" />
+                        <div className="flex-1">
+                          <h3 className="text-sm font-medium text-yellow-800">Data Quality Warning</h3>
+                          {analytics.warnings.map((warning, idx) => (
+                            <div key={idx} className="mt-2">
+                              <p className="text-sm text-yellow-700">{warning.message}</p>
+                              {warning.details && warning.details.length > 0 && (
+                                <details className="mt-2">
+                                  <summary className="cursor-pointer text-sm text-yellow-600 hover:text-yellow-800">View affected rows</summary>
+                                  <div className="mt-2 bg-white rounded p-3 text-xs text-yellow-800 max-h-40 overflow-y-auto">
+                                    {warning.details.map((detail, dIdx) => (
+                                      <div key={dIdx} className="py-1 border-b border-yellow-100 last:border-0">
+                                        <span className="font-semibold">Row {detail.row}:</span> {detail.platform} - {detail.post_type} 
+                                        <span className="text-red-600 ml-2">({detail.issues})</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </details>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   {/* Overview Metrics */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <Card><CardContent className="pt-6"><div className="text-3xl font-bold text-[#A62639]">{analytics.overview?.total_posts}</div><div className="text-sm text-[#6C5F5F]">Total Posts</div></CardContent></Card>
