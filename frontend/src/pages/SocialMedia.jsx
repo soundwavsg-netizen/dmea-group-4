@@ -358,10 +358,18 @@ const SocialMedia = () => {
         <p className="text-[#6C5F5F] mb-8">Upload data, map columns, and analyze performance</p>
 
         <div className="flex gap-4 mb-6 border-b border-[#E0AFA0]/30">
-          <button onClick={() => setActiveTab('data-input')} className={`px-6 py-3 font-semibold transition-colors ${activeTab === 'data-input' ? 'text-[#A62639] border-b-2 border-[#A62639]' : 'text-[#6C5F5F] hover:text-[#A62639]'}`}>Data Input</button>
-          <button onClick={() => setActiveTab('column-mapping')} className={`px-6 py-3 font-semibold transition-colors ${activeTab === 'column-mapping' ? 'text-[#A62639] border-b-2 border-[#A62639]' : 'text-[#6C5F5F] hover:text-[#A62639]'}`}>Column Mapping</button>
-          <button onClick={() => setActiveTab('dashboard')} className={`px-6 py-3 font-semibold transition-colors ${activeTab === 'dashboard' ? 'text-[#A62639] border-b-2 border-[#A62639]' : 'text-[#6C5F5F] hover:text-[#A62639]'}`}>Dashboard</button>
-          <button onClick={() => setActiveTab('insight-summary')} className={`px-6 py-3 font-semibold transition-colors ${activeTab === 'insight-summary' ? 'text-[#A62639] border-b-2 border-[#A62639]' : 'text-[#6C5F5F] hover:text-[#A62639]'}`}>Insight Summary</button>
+          {canViewTab('data_input') && (
+            <button onClick={() => setActiveTab('data-input')} className={`px-6 py-3 font-semibold transition-colors ${activeTab === 'data-input' ? 'text-[#A62639] border-b-2 border-[#A62639]' : 'text-[#6C5F5F] hover:text-[#A62639]'}`}>Data Input</button>
+          )}
+          {canViewTab('column_mapping') && (
+            <button onClick={() => setActiveTab('column-mapping')} className={`px-6 py-3 font-semibold transition-colors ${activeTab === 'column-mapping' ? 'text-[#A62639] border-b-2 border-[#A62639]' : 'text-[#6C5F5F] hover:text-[#A62639]'}`}>Column Mapping</button>
+          )}
+          {canViewTab('dashboard') && (
+            <button onClick={() => setActiveTab('dashboard')} className={`px-6 py-3 font-semibold transition-colors ${activeTab === 'dashboard' ? 'text-[#A62639] border-b-2 border-[#A62639]' : 'text-[#6C5F5F] hover:text-[#A62639]'}`}>Dashboard</button>
+          )}
+          {canViewTab('insight_summary') && (
+            <button onClick={() => setActiveTab('insight-summary')} className={`px-6 py-3 font-semibold transition-colors ${activeTab === 'insight-summary' ? 'text-[#A62639] border-b-2 border-[#A62639]' : 'text-[#6C5F5F] hover:text-[#A62639]'}`}>Insight Summary</button>
+          )}
         </div>
 
         {activeTab === 'data-input' && (
