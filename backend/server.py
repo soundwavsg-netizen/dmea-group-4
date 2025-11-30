@@ -1617,7 +1617,7 @@ def generate_insights(
     analytics_data: dict,
     x_user_name: Optional[str] = Header(None)
 ):
-    """Generate automated insights from analytics data"""
+    """Generate automated insights from analytics data and save them"""
     if not x_user_name:
         raise HTTPException(status_code=401, detail="Authentication required")
     
@@ -1625,17 +1625,48 @@ def generate_insights(
         raise HTTPException(status_code=400, detail="Invalid module type")
     
     try:
+        from services.analytics_storage_service import AnalyticsStorageService
+        
         # Generate insights based on module type
         if module_type == 'social_media':
             insights = InsightGeneratorService.generate_social_media_insights(analytics_data)
         else:
             insights = InsightGeneratorService.generate_search_marketing_insights(analytics_data)
         
+        # Save insights (globally accessible)
+        AnalyticsStorageService.save_insights(module_type, insights, x_user_name)
+        
         return insights
     except Exception as e:
         print(f"Error generating insights: {e}")
         import traceback
         traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/insights/{module_type}")
+def get_insights(
+    module_type: str,
+    x_user_name: Optional[str] = Header(None)
+):
+    """Get saved insights - No special permission needed, just view access"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    if module_type not in ['social_media', 'search_marketing']:
+        raise HTTPException(status_code=400, detail="Invalid module type")
+    
+    try:
+        from services.analytics_storage_service import AnalyticsStorageService
+        
+        # Get saved insights (globally shared)
+        insights = AnalyticsStorageService.get_insights(module_type)
+        
+        if not insights:
+            return {"message": "No insights generated yet"}
+        
+        return insights
+    except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
