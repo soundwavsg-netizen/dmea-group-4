@@ -734,38 +734,132 @@ const SocialMedia = () => {
                     </Card>
                   )}
 
-                  {/* Top Posts */}
-                  {analytics.top_posts && analytics.top_posts.length > 0 && (
-                    <Card>
-                      <CardHeader><CardTitle>Top Performing Posts</CardTitle></CardHeader>
-                      <CardContent>
-                        <div className="overflow-x-auto">
-                          <table className="w-full text-sm">
-                            <thead className="bg-[#FAF7F5]">
-                              <tr>
-                                <th className="px-4 py-2 text-left">Platform</th>
-                                <th className="px-4 py-2 text-left">Post Type</th>
-                                <th className="px-4 py-2 text-right">Likes</th>
-                                <th className="px-4 py-2 text-right">Comments</th>
-                                <th className="px-4 py-2 text-right">Shares</th>
-                                <th className="px-4 py-2 text-right">Engagement Rate</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {analytics.top_posts.slice(0, 10).map((post, idx) => (
-                                <tr key={idx} className={idx % 2 === 0 ? 'bg-white' : 'bg-[#FAF7F5]/30'}>
-                                  <td className="px-4 py-2">{post.platform}</td>
-                                  <td className="px-4 py-2">{post.post_type}</td>
-                                  <td className="px-4 py-2 text-right">{post.likes?.toLocaleString()}</td>
-                                  <td className="px-4 py-2 text-right">{post.comments?.toLocaleString()}</td>
-                                  <td className="px-4 py-2 text-right">{post.shares?.toLocaleString()}</td>
-                                  <td className="px-4 py-2 text-right font-semibold text-[#A62639]">{(post.engagement_rate * 100).toFixed(2)}%</td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
+                  {/* Post-Level Performance Panel (Collapsible) */}
+                  {analytics.post_level_data && analytics.post_level_data.length > 0 && (
+                    <Card className="mt-6">
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <CardTitle>Post-Level Performance</CardTitle>
+                            <CardDescription>Detailed analysis of individual post performance</CardDescription>
+                          </div>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setShowPostLevel(!showPostLevel)}
+                            className="text-[#A62639] border-[#A62639]"
+                          >
+                            {showPostLevel ? 'Hide Details' : 'Show Details'}
+                          </Button>
                         </div>
-                      </CardContent>
+                      </CardHeader>
+                      
+                      {showPostLevel && (
+                        <CardContent>
+                          {/* Summary Cards */}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            {analytics.best_post && (
+                              <div className="p-4 bg-green-50 border-2 border-green-500 rounded-lg shadow-sm">
+                                <h3 className="font-semibold text-green-800 mb-2 flex items-center gap-2">
+                                  <TrendingUp className="w-5 h-5" />
+                                  Best Performing Post
+                                </h3>
+                                <p className="text-sm text-green-700 mb-1">
+                                  <strong>Platform:</strong> {analytics.best_post.platform}
+                                </p>
+                                <p className="text-sm text-green-700 mb-1 truncate">
+                                  <strong>URL:</strong>{' '}
+                                  <a href={analytics.best_post.post_url} target="_blank" rel="noopener noreferrer" className="underline">
+                                    {analytics.best_post.post_url}
+                                  </a>
+                                </p>
+                                <p className="text-sm text-green-700">
+                                  <strong>Engagement:</strong> {(analytics.best_post.engagement_rate * 100).toFixed(2)}%
+                                </p>
+                              </div>
+                            )}
+                            
+                            {analytics.worst_post && (
+                              <div className="p-4 bg-red-50 border-2 border-red-500 rounded-lg shadow-sm">
+                                <h3 className="font-semibold text-red-800 mb-2 flex items-center gap-2">
+                                  <AlertCircle className="w-5 h-5" />
+                                  Lowest Performing Post
+                                </h3>
+                                <p className="text-sm text-red-700 mb-1">
+                                  <strong>Platform:</strong> {analytics.worst_post.platform}
+                                </p>
+                                <p className="text-sm text-red-700 mb-1 truncate">
+                                  <strong>URL:</strong>{' '}
+                                  <a href={analytics.worst_post.post_url} target="_blank" rel="noopener noreferrer" className="underline">
+                                    {analytics.worst_post.post_url}
+                                  </a>
+                                </p>
+                                <p className="text-sm text-red-700">
+                                  <strong>Engagement:</strong> {(analytics.worst_post.engagement_rate * 100).toFixed(2)}%
+                                </p>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Post-Level Table */}
+                          <div className="overflow-x-auto">
+                            <table className="w-full text-sm">
+                              <thead className="bg-[#F8F6F5] border-b-2 border-[#E0AFA0]">
+                                <tr>
+                                  <th className="px-4 py-3 text-left font-semibold">Platform</th>
+                                  <th className="px-4 py-3 text-left font-semibold">Post URL</th>
+                                  <th className="px-4 py-3 text-left font-semibold">Post Type</th>
+                                  <th className="px-4 py-3 text-right font-semibold">Engagement Rate</th>
+                                  <th className="px-4 py-3 text-right font-semibold">Views</th>
+                                  <th className="px-4 py-3 text-center font-semibold">Sentiment</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {analytics.post_level_data.map((post, idx) => {
+                                  const isBest = analytics.best_post && post.post_url === analytics.best_post.post_url;
+                                  const isWorst = analytics.worst_post && post.post_url === analytics.worst_post.post_url;
+                                  
+                                  return (
+                                    <tr 
+                                      key={idx} 
+                                      className={`border-b hover:bg-[#FAF7F5] transition-colors ${
+                                        isBest ? 'bg-green-50 border-2 border-green-500 shadow-md' : 
+                                        isWorst ? 'bg-red-50 border-2 border-red-500' : ''
+                                      }`}
+                                    >
+                                      <td className="px-4 py-3">{post.platform}</td>
+                                      <td className="px-4 py-3 max-w-xs truncate">
+                                        <a 
+                                          href={post.post_url} 
+                                          target="_blank" 
+                                          rel="noopener noreferrer"
+                                          className="text-[#1769AA] hover:underline"
+                                        >
+                                          {post.post_url}
+                                        </a>
+                                      </td>
+                                      <td className="px-4 py-3">{post.post_type}</td>
+                                      <td className="px-4 py-3 text-right font-semibold text-[#A62639]">
+                                        {(post.engagement_rate * 100).toFixed(2)}%
+                                      </td>
+                                      <td className="px-4 py-3 text-right">{post.view_count?.toLocaleString()}</td>
+                                      <td className="px-4 py-3 text-center">
+                                        <span className={`px-2 py-1 rounded-full text-xs ${
+                                          post.sentiment?.toLowerCase().includes('pos') ? 'bg-green-100 text-green-800' :
+                                          post.sentiment?.toLowerCase().includes('neg') ? 'bg-red-100 text-red-800' :
+                                          'bg-gray-100 text-gray-800'
+                                        }`}>
+                                          {post.sentiment}
+                                        </span>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
+                          </div>
+                        </CardContent>
+                      )}
                     </Card>
                   )}
                 </div>
