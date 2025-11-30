@@ -169,12 +169,13 @@ const SocialMedia = () => {
 
   const loadInsights = async () => {
     try {
-      const response = await axios.get(`${API}/api/insights/social_media`, {
+      const response = await axios.get(`${API}/api/diagnostic-insights/social_media`, {
         headers: { 
           'X-User-Name': session?.username,
           'X-User-Role': session?.role
         }
       });
+      console.log('Insights loaded:', response.data);
       if (response.data && !response.data.message) {
         setInsights(response.data);
       }
