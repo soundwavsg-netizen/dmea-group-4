@@ -253,9 +253,12 @@ class AnalyticsEngineService:
             # POST-LEVEL DATA (All posts for detailed analysis)
             post_level_data = []
             for post in posts_with_engagement:
+                # Try multiple possible URL field names
+                url = post.get('post_url') or post.get('url') or post.get('post_link') or post.get('link') or post.get('Post URL') or post.get('URL') or ''
+                
                 post_level_data.append({
                     'platform': post.get('platform', 'Unknown'),
-                    'post_url': post.get('post_url', 'N/A'),
+                    'post_url': url,
                     'post_type': post.get('post_type', 'Unknown'),
                     'engagement_rate': round(post['engagement_rate'], 4),
                     'view_count': int(safe_num(post.get('views', 0))),
