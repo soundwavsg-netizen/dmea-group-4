@@ -217,10 +217,12 @@ class AnalyticsEngineService:
                 negative_ratio = negative_count / max(total_pillar_posts, 1)
                 
                 # Debug logging
-                print(f"[P/F/D Debug] {pillar_name}: eng={pillar_engagement:.4f}, pos={positive_count}/{total_pillar_posts}, neg={negative_count}/{total_pillar_posts}")
+                print(f"[P/F/D Debug] {pillar_name}: eng={pillar_engagement:.4f} (threshold={high_engagement_threshold:.4f}), pos={positive_count}/{total_pillar_posts} ({positive_ratio:.2f}), neg={negative_count}/{total_pillar_posts} ({negative_ratio:.2f})")
                 
                 # PUSH: Above or near average engagement AND majority positive sentiment
-                if pillar_engagement >= high_engagement_threshold and positive_ratio >= 0.5:
+                push_check = pillar_engagement >= high_engagement_threshold and positive_ratio >= 0.5
+                print(f"[P/F/D Check] {pillar_name} PUSH? {push_check} (eng>={high_engagement_threshold:.4f}: {pillar_engagement >= high_engagement_threshold}, pos>=0.5: {positive_ratio >= 0.5})")
+                if push_check:
                     push_items.append({
                         'type': pillar_name,
                         'engagement_rate': round(pillar_engagement, 4),
