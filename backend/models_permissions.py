@@ -35,46 +35,50 @@ class UserListItem(BaseModel):
     has_custom_permissions: bool
     modules_enabled: List[str]
 
-# Default permissions for new users
+# Default permissions for new users (matches "chris" template structure)
 DEFAULT_PERMISSIONS = {
-    "dashboard": ModulePermission(enabled=True, tabs={}, actions={}),
+    "dashboard": ModulePermission(
+        enabled=True, 
+        tabs={}, 
+        actions={}
+    ),
     "buyer_persona": ModulePermission(
         enabled=True, 
         tabs={
             "home": True,
             "add_insight": True,
-            "report": False,
+            "report": True,
             "manage_insights": False,
-            "persona_generator": False,
-            "personas": False
+            "persona_generator": True,
+            "personas": True
         },
         actions={
             "add_insight": True,
             "edit_insight": False,
             "delete_insight": False,
-            "view_personas": False,
+            "view_personas": True,
             "generate_persona": False,
             "edit_persona": False
         }
     ),
     "daily_reflections": ModulePermission(
-        enabled=True,  # ✅ Enabled by default for all users
+        enabled=True,
         tabs={},
         actions={
-            "add": True,      # ✅ Can add their own reflections
-            "edit": True,     # ✅ Can edit their own reflections
-            "delete": True    # ✅ Can delete their own reflections
+            "add": True,
+            "edit": True,
+            "delete": True
         }
     ),
     "presentations": ModulePermission(
-        enabled=False,
+        enabled=True,
         tabs={
-            "home": False,
-            "friendly_brief": False,
-            "clustering_technical": False
+            "home": True,
+            "friendly_brief": True,
+            "clustering_technical": True
         },
         actions={
-            "add": False,
+            "add": True,
             "delete": False
         }
     ),
@@ -119,7 +123,7 @@ DEFAULT_PERMISSIONS = {
         }
     ),
     "shared_folder": ModulePermission(
-        enabled=True,
+        enabled=False,
         tabs={
             "view_files": True,
             "analytics": False
@@ -133,11 +137,7 @@ DEFAULT_PERMISSIONS = {
     "important_links": ModulePermission(
         enabled=True,
         tabs={},
-        actions={
-            "add": False,
-            "edit": False,
-            "delete": False
-        }
+        actions={}
     )
 }
 
