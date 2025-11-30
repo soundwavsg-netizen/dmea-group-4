@@ -475,36 +475,6 @@ const AdminPanel = () => {
             </button>
           )}
           <button
-            onClick={() => setActiveTab('persona-settings')}
-            className={`px-6 py-3 font-semibold transition-colors ${
-              activeTab === 'persona-settings'
-                ? 'text-[#A62639] border-b-2 border-[#A62639]'
-                : 'text-[#6C5F5F] hover:text-[#A62639]'
-            }`}
-          >
-            Persona Settings
-          </button>
-          <button
-            onClick={() => setActiveTab('shared-folder-settings')}
-            className={`px-6 py-3 font-semibold transition-colors ${
-              activeTab === 'shared-folder-settings'
-                ? 'text-[#A62639] border-b-2 border-[#A62639]'
-                : 'text-[#6C5F5F] hover:text-[#A62639]'
-            }`}
-          >
-            Shared Folder Settings
-          </button>
-          <button
-            onClick={() => setActiveTab('module-settings')}
-            className={`px-6 py-3 font-semibold transition-colors ${
-              activeTab === 'module-settings'
-                ? 'text-[#A62639] border-b-2 border-[#A62639]'
-                : 'text-[#6C5F5F] hover:text-[#A62639]'
-            }`}
-          >
-            Module Settings
-          </button>
-          <button
             onClick={() => setActiveTab('module-order')}
             className={`px-6 py-3 font-semibold transition-colors ${
               activeTab === 'module-order'
