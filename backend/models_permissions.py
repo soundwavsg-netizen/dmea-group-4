@@ -311,5 +311,17 @@ SUPERADMIN_PERMISSIONS = {
             "perform_mapping": True,
             "analyze_data": True
         }
+    ),
+    "shared_folder": ModulePermission(
+        enabled=True,
+        tabs={
+            "view_files": True,
+            "analytics": True
+        },
+        actions={
+            "upload": True,
+            "delete": True,
+            "share": True
+        }
     )
 }
