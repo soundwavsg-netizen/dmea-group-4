@@ -142,12 +142,34 @@ const Analytics = () => {
   const loadAnalytics = async () => {
     try {
       const response = await axios.get(`${API}/api/analytics/search_marketing`, {
-        headers: { 'X-User-Name': session?.username }
+        headers: { 
+          'X-User-Name': session?.username,
+          'X-User-Role': session?.role
+        }
       });
-      setAnalytics(response.data);
+      if (response.data && !response.data.message) {
+        setAnalytics(response.data);
+      }
     } catch (error) {
       console.error('Error loading analytics:', error);
-      toast.error('Failed to load analytics');
+      // Silently fail if no analytics exist yet
+    }
+  };
+
+  const loadInsights = async () => {
+    try {
+      const response = await axios.get(`${API}/api/insights/search_marketing`, {
+        headers: { 
+          'X-User-Name': session?.username,
+          'X-User-Role': session?.role
+        }
+      });
+      if (response.data && !response.data.message) {
+        setInsights(response.data);
+      }
+    } catch (error) {
+      console.error('Error loading insights:', error);
+      // Silently fail if no insights exist yet
     }
   };
 
