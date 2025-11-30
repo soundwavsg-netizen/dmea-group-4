@@ -47,6 +47,9 @@ const SocialMedia = () => {
   const [newColumnName, setNewColumnName] = useState('');
   const session = authService.getSession();
   
+  // Permission management
+  const { canViewTab, canPerformAction, isSuperadmin, loading: permissionsLoading } = usePermissions('social_media_diagnostics');
+  
   const CHART_COLORS = ['#A62639', '#E0AFA0', '#2E7D32', '#1769AA', '#B26A00'];
 
   const REQUIRED_MAPPINGS = [
