@@ -435,21 +435,9 @@ const Analytics = () => {
               )}
             </CardContent>
           </Card>
-          )
         )}
 
         {activeTab === 'column-mapping' && (
-          !canViewTab('column_mapping') ? (
-            <Card>
-              <CardContent className="py-12">
-                <div className="text-center">
-                  <Lock className="w-16 h-16 mx-auto text-[#E0AFA0] mb-4" />
-                  <h3 className="text-xl font-semibold text-[#6C5F5F] mb-2">Access Restricted</h3>
-                  <p className="text-[#6C5F5F]">You don't have permission to view this tab. Contact your administrator.</p>
-                </div>
-              </CardContent>
-            </Card>
-          ) : (
           <Card>
             <CardHeader><CardTitle>Column Mapping</CardTitle><CardDescription>Map columns to analytics fields (only preset columns shown)</CardDescription></CardHeader>
             <CardContent>
