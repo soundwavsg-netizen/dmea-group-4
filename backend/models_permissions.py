@@ -129,6 +129,15 @@ DEFAULT_PERMISSIONS = {
             "delete": False,
             "share": False
         }
+    ),
+    "important_links": ModulePermission(
+        enabled=True,
+        tabs={},
+        actions={
+            "add": False,
+            "edit": False,
+            "delete": False
+        }
     )
 }
 
