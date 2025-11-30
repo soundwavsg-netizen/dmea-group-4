@@ -176,7 +176,7 @@ class InsightGeneratorService:
                 insights['underperforming_posts'].append({
                     'rank': i,
                     'platform': post.get('platform', 'Unknown'),
-                    'url': post.get('post_url', 'N/A'),
+                    'url': post.get('post_url', ''),
                     'engagement_rate': post.get('engagement_rate', 0),
                     'post_type': post.get('post_type', 'Unknown'),
                     'sentiment': post.get('sentiment', 'Unknown'),
