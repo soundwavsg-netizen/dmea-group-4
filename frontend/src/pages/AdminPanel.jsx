@@ -25,16 +25,14 @@ const AdminPanel = () => {
 
   const session = authService.getSession();
 
-  // All available modules
+  // All available modules (using correct module names)
   const ALL_MODULES = [
     { key: 'dashboard', label: '🏠 Dashboard' },
     { key: 'buyer_persona', label: '👥 Buyer Persona' },
     { key: 'daily_reflections', label: '📝 Daily Reflections' },
     { key: 'presentations', label: '📊 Presentations' },
-    { key: 'seo_content', label: '🔍 SEO & Content' },
-    { key: 'social_media', label: '📱 Social Media Diagnostics' },
-    { key: 'analytics', label: '📊 Search Marketing Diagnostics' },
-    { key: 'final_capstone', label: '🎓 Final Capstone' },
+    { key: 'social_media_diagnostics', label: '📱 Social Media Diagnostics' },
+    { key: 'search_marketing_diagnostics', label: '📊 Search Marketing Diagnostics' },
     { key: 'shared_folder', label: '📁 Shared Folder' },
     { key: 'important_links', label: '🔗 Important Links' }
   ];
