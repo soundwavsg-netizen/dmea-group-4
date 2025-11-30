@@ -233,9 +233,9 @@ const Analytics = () => {
   };
 
   const addColumn = () => {
-    if (!canPerformAction(\'add_column\')) {
-      toast.error(\'You do not have permission to add columns\', {
-        description: \'Contact your administrator to request access\'
+    if (!canPerformAction('add_column\')) {
+      toast.error('You do not have permission to add columns\', {
+        description: 'Contact your administrator to request access\'
       });
       return;
     }
@@ -249,9 +249,9 @@ const Analytics = () => {
     if (!newName || newName === oldName) return;
     
     // Check permission
-    if (!canPerformAction(\'rename_column\')) {
-      toast.error(\'You do not have permission to rename columns\', {
-        description: \'Contact your administrator to request access\'
+    if (!canPerformAction('rename_column\')) {
+      toast.error('You do not have permission to rename columns\', {
+        description: 'Contact your administrator to request access\'
       });
       setEditingColumn(null);
       return;
@@ -280,9 +280,9 @@ const Analytics = () => {
 
   const deleteColumn = (colName) => {
     // Check permission
-    if (!canPerformAction(\'delete_column\')) {
-      toast.error(\'You do not have permission to delete columns\', {
-        description: \'Contact your administrator to request access\'
+    if (!canPerformAction('delete_column\')) {
+      toast.error('You do not have permission to delete columns\', {
+        description: 'Contact your administrator to request access\'
       });
       return;
     }
@@ -302,9 +302,9 @@ const Analytics = () => {
   };
 
   const addRow = () => {
-    if (!canPerformAction(\'add_row\')) {
-      toast.error(\'You do not have permission to add rows\', {
-        description: \'Contact your administrator to request access\'
+    if (!canPerformAction('add_row\')) {
+      toast.error('You do not have permission to add rows\', {
+        description: 'Contact your administrator to request access\'
       });
       return;
     }
@@ -318,9 +318,9 @@ const Analytics = () => {
   };
 
   const deleteRow = (rowId) => {
-    if (!canPerformAction(\'delete_row\')) {
-      toast.error(\'You do not have permission to delete rows\', {
-        description: \'Contact your administrator to request access\'
+    if (!canPerformAction('delete_row\')) {
+      toast.error('You do not have permission to delete rows\', {
+        description: 'Contact your administrator to request access\'
       });
       return;
     }
