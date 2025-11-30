@@ -1,22 +1,9 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import authService from '../services/authService';
-import ChangePasswordModal from '../components/ChangePasswordModal';
+import React from 'react';
 
 const Home = () => {
-  const navigate = useNavigate();
-  const [changePasswordOpen, setChangePasswordOpen] = useState(false);
-  const session = authService.getSession();
-  const isSuperAdmin = authService.isSuperAdmin();
-
-  const handleLogout = () => {
-    authService.logout();
-    navigate('/login');
-  };
-
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-[#F8F6F5] to-[#F3ECE7]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex items-center justify-center" style={{ minHeight: 'calc(100vh - 64px)' }}>
+    <div className="min-h-screen w-full bg-gradient-to-br from-[#F8F6F5] to-[#F3ECE7] flex items-center justify-center">
+      <div className="text-center">
         {/* Hero Section */}
         <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#E0AFA0]/30 to-[#F8F6F5] my-10">
           <div className="relative py-20 md:py-32">
