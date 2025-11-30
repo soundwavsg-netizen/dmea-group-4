@@ -37,12 +37,24 @@ class InsightGeneratorService:
         
         # Platform Performance Insights
         platforms = analytics.get('platform_comparison', [])
+        best_post_overall = analytics.get('best_post')
+        
         if platforms:
             # Find best performing platform
             best_platform = max(platforms, key=lambda x: x.get('avg_engagement_rate', 0))
-            insights['top_insights'].append(
-                f"{best_platform['platform']} drives the highest engagement rate at {round(best_platform['avg_engagement_rate'] * 100, 2)}% across {best_platform['posting_frequency']} posts."
-            )
+            
+            # Enhanced insight with post reference
+            base_insight = f"{best_platform['platform']} drives the highest engagement rate at {round(best_platform['avg_engagement_rate'] * 100, 2)}%"
+            if best_post_overall and best_post_overall.get('platform') == best_platform['platform']:
+                post_url = best_post_overall.get('post_url', 'N/A')
+                if post_url != 'N/A':
+                    insights['top_insights'].append(
+                        f"{base_insight}, led by top-performing content such as {post_url}, which achieved exceptional engagement ({round(best_post_overall.get('engagement_rate', 0) * 100, 2)}%)."
+                    )
+                else:
+                    insights['top_insights'].append(f"{base_insight} across {best_platform['posting_frequency']} posts.")
+            else:
+                insights['top_insights'].append(f"{base_insight} across {best_platform['posting_frequency']} posts.")
             
             # Find platform with most views
             views_leader = max(platforms, key=lambda x: x.get('avg_views', 0))
