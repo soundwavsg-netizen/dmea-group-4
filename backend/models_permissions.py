@@ -117,6 +117,18 @@ DEFAULT_PERMISSIONS = {
             "perform_mapping": False,
             "analyze_data": False
         }
+    ),
+    "shared_folder": ModulePermission(
+        enabled=True,
+        tabs={
+            "view_files": True,
+            "analytics": False
+        },
+        actions={
+            "upload": False,
+            "delete": False,
+            "share": False
+        }
     )
 }
 
