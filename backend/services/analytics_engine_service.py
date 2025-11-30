@@ -194,10 +194,10 @@ class AnalyticsEngineService:
             fix_items = []
             drop_items = []
             
-            # More practical thresholds: top performer gets push, bottom gets drop
+            # More practical thresholds: be lenient to always provide recommendations
             # Sort pillars by engagement to find top and bottom performers
             sorted_pillars = sorted(content_pillars, key=lambda x: x['avg_engagement_rate'], reverse=True)
-            high_engagement_threshold = avg_engagement_rate * 0.98  # At or slightly below average
+            high_engagement_threshold = avg_engagement_rate * 0.92  # 92% of average or above
             low_engagement_threshold = avg_engagement_rate * 0.85   # 15% below average
             
             for pillar in content_pillars:
