@@ -121,13 +121,13 @@ const Sidebar = () => {
         label: 'Shared Folder', 
         path: '/shared-folder', 
         icon: '📁',
-        check: () => isSuperAdmin || moduleSettings.shared_folder_enabled
+        check: () => isSuperAdmin || permissionsService.canAccessModule('shared_folder')
       },
       important_links: { 
         label: 'Important Links', 
         path: '/important-links', 
         icon: '🔗',
-        check: () => isSuperAdmin || moduleSettings.important_links_enabled
+        check: () => isSuperAdmin || permissionsService.canAccessModule('important_links')
       }
     };
     
