@@ -12,6 +12,7 @@ import * as XLSX from 'xlsx';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, ScatterChart, Scatter } from 'recharts';
 import authService from '../services/authService';
 import { usePermissions } from '../hooks/usePermissions';
+import SearchMarketingNav from '../components/SearchMarketingNav';
 
 const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
