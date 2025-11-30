@@ -176,22 +176,20 @@ def set_user_module_list(username: str, modules_enabled: list) -> bool:
             # Create minimal structure
             current_perms = {"modules": {}}
         
-        # Update module enabled status based on provided list
-        all_modules = [
-            'dashboard', 'buyer_persona', 'daily_reflections', 'presentations',
-            'seo_content', 'social_media', 'analytics', 'final_capstone',
-            'shared_folder', 'important_links'
-        ]
+        # Get the correct template based on role
+        from models_permissions import DEFAULT_PERMISSIONS, ADMIN_PERMISSIONS
         
-        for module_key in all_modules:
+        # Determine user's role
+        user_role = current_perms.get('role', 'user')
+        template = ADMIN_PERMISSIONS if user_role == 'admin' else DEFAULT_PERMISSIONS
+        
+        # Ensure all modules from template exist in current permissions
+        for module_key, module_perm in template.items():
             if module_key not in current_perms.get('modules', {}):
-                current_perms['modules'][module_key] = {
-                    'enabled': False,
-                    'tabs': {},
-                    'actions': {}
-                }
+                # Add missing module with full structure from template
+                current_perms['modules'][module_key] = module_perm.dict()
             
-            # Set enabled status based on modules_enabled list
+            # Update enabled status based on modules_enabled list
             current_perms['modules'][module_key]['enabled'] = module_key in modules_enabled
         
         # Save to Firestore
