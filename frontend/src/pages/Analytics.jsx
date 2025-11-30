@@ -105,7 +105,10 @@ const Analytics = () => {
       
       // Step 1: Run analytics
       const analyticsResponse = await axios.get(`${API}/api/analytics/search_marketing`, {
-        headers: { 'X-User-Name': session?.username }
+        headers: { 
+          'X-User-Name': session?.username,
+          'X-User-Role': session?.role
+        }
       });
       
       if (analyticsResponse.data.error) {
@@ -118,7 +121,10 @@ const Analytics = () => {
       // Step 2: Generate insights
       const insightsResponse = await axios.post(`${API}/api/generate-insights/search_marketing`,
         analyticsResponse.data,
-        { headers: { 'X-User-Name': session?.username } }
+        { headers: { 
+          'X-User-Name': session?.username,
+          'X-User-Role': session?.role
+        } }
       );
       
       setInsights(insightsResponse.data);
