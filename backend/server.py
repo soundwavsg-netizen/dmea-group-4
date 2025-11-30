@@ -1436,15 +1436,33 @@ def check_diagnostic_permission(username: str, role: str, module: str, action: s
         
         # Module name needs to have '_diagnostics' suffix
         module_key = f"{module}_diagnostics"
-        module_perms = perms.get('modules', {}).get(module_key)
+        module_perms = perms.get(module_key)
         
-        if not module_perms or not module_perms.get('enabled'):
+        if not module_perms:
+            print(f"Module {module_key} not found in permissions")
+            return False
+            
+        # Handle both dict and Pydantic model
+        if isinstance(module_perms, dict):
+            enabled = module_perms.get('enabled', False)
+            actions = module_perms.get('actions', {})
+        else:
+            # Pydantic model
+            enabled = module_perms.enabled
+            actions = module_perms.actions if hasattr(module_perms, 'actions') else {}
+        
+        if not enabled:
+            print(f"Module {module_key} not enabled for {username}")
             return False
         
         # Check if action is allowed
-        return module_perms.get('actions', {}).get(action, False)
+        has_permission = actions.get(action, False) if isinstance(actions, dict) else getattr(actions, action, False)
+        print(f"Permission check: {username} ({role}) - {module_key}.{action} = {has_permission}")
+        return has_permission
     except Exception as e:
         print(f"Error checking diagnostic permission: {e}")
+        import traceback
+        traceback.print_exc()
         return False
 
 
