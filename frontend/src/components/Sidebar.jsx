@@ -67,7 +67,7 @@ const Sidebar = () => {
       return []; // Return empty until permissions load
     }
     
-    // Define all possible modules with their configs
+    // Define all possible modules with their configs (using correct permission keys)
     const moduleConfigs = {
       dashboard: { 
         label: 'Dashboard', 
@@ -93,41 +93,29 @@ const Sidebar = () => {
         icon: '📊',
         check: () => permissionsService.canAccessModule('presentations')
       },
-      seo_content: { 
-        label: 'SEO & Content', 
-        path: '/seo', 
-        icon: '🔍',
-        check: () => isSuperAdmin || flags.seo_content || permissionsService.canAccessModule('seo_content')
-      },
-      social_media: { 
+      social_media_diagnostics: { 
         label: 'Social Media Diagnostics', 
         path: '/social/library', 
         icon: '📱',
-        check: () => isSuperAdmin || flags.social_media || permissionsService.canAccessModule('social_media_diagnostics')
+        check: () => permissionsService.canAccessModule('social_media_diagnostics')
       },
-      analytics: { 
+      search_marketing_diagnostics: { 
         label: 'Search Marketing Diagnostics', 
         path: '/analytics/traffic', 
         icon: '📊',
-        check: () => isSuperAdmin || flags.analytics || permissionsService.canAccessModule('search_marketing_diagnostics')
-      },
-      final_capstone: { 
-        label: 'Final Capstone', 
-        path: '/final/report', 
-        icon: '🎓',
-        check: () => isSuperAdmin || flags.final_capstone || permissionsService.canAccessModule('final_capstone')
+        check: () => permissionsService.canAccessModule('search_marketing_diagnostics')
       },
       shared_folder: { 
         label: 'Shared Folder', 
         path: '/shared-folder', 
         icon: '📁',
-        check: () => isSuperAdmin || permissionsService.canAccessModule('shared_folder')
+        check: () => permissionsService.canAccessModule('shared_folder')
       },
       important_links: { 
         label: 'Important Links', 
         path: '/important-links', 
         icon: '🔗',
-        check: () => isSuperAdmin || permissionsService.canAccessModule('important_links')
+        check: () => permissionsService.canAccessModule('important_links')
       }
     };
     
