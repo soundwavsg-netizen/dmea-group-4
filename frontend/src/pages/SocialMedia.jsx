@@ -275,6 +275,15 @@ const SocialMedia = () => {
   const renameColumn = (oldName, newName) => {
     if (!newName || newName === oldName) return;
     
+    // Check permission
+    if (!canPerformAction('rename_column')) {
+      toast.error('You do not have permission to rename columns', {
+        description: 'Contact your administrator to request access'
+      });
+      setEditingColumn(null);
+      return;
+    }
+    
     // Prevent renaming preset columns
     if (PRESET_COLUMNS.includes(oldName)) {
       toast.error('Cannot rename preset columns');
