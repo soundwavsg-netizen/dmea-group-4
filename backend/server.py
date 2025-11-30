@@ -1413,6 +1413,41 @@ def update_module_order(
 
 # ==================== Dynamic Marketing Data Endpoints ====================
 
+
+# Permission checking helper for diagnostic modules
+def check_diagnostic_permission(username: str, role: str, module: str, action: str) -> bool:
+    """
+    Check if user has permission to perform an action on a diagnostic module
+    Args:
+        username: User's username
+        role: User's role (superadmin, admin, user)
+        module: Module name ('social_media' or 'search_marketing')
+        action: Action to check (e.g., 'save_data', 'analyze_data', 'perform_mapping')
+    Returns:
+        True if user has permission, False otherwise
+    """
+    # Superadmin always has full access
+    if role == 'superadmin':
+        return True
+    
+    try:
+        from services.permissions_service import get_user_permissions
+        perms = get_user_permissions(username, role)
+        
+        # Module name needs to have '_diagnostics' suffix
+        module_key = f"{module}_diagnostics"
+        module_perms = perms.get('modules', {}).get(module_key)
+        
+        if not module_perms or not module_perms.get('enabled'):
+            return False
+        
+        # Check if action is allowed
+        return module_perms.get('actions', {}).get(action, False)
+    except Exception as e:
+        print(f"Error checking diagnostic permission: {e}")
+        return False
+
+
 @app.post("/api/dynamic-data/{module}")
 def save_dynamic_table_data(
     module: str,
