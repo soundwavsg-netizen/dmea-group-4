@@ -821,8 +821,9 @@ const Analytics = () => {
           </Card>
           )
         )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
