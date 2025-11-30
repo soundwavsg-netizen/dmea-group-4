@@ -582,7 +582,7 @@ const SocialMedia = () => {
               {!analytics ? (
                 <div className="text-center py-12">
                   <BarChart3 className="w-16 h-16 mx-auto text-[#E0AFA0] mb-4" />
-                  <p className="text-[#6C5F5F] mb-4">Click "Analyze Data" to generate insights from your uploaded data.</p>
+                  <p className="text-[#6C5F5F] mb-4">Click &quot;Analyze Data&quot; to generate insights from your uploaded data.</p>
                 </div>
               ) : analytics.error ? (
                 <div className="text-center py-12">
