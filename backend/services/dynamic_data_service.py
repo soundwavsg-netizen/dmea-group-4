@@ -16,13 +16,15 @@ class DynamicDataService:
     @staticmethod
     def save_table_data(username: str, module: str, data: Dict[str, Any]) -> bool:
         """
-        Save complete table data (columns + rows)
+        Save complete table data (columns + rows) - SHARED across all users
         module: 'social_media' or 'search_marketing'
+        Each module has ONE shared dataset that all users see
         """
         try:
-            doc_ref = db.collection(f'{module}_dynamic_data').document(username)
+            # Use 'shared' document so all users see the same data
+            doc_ref = db.collection(f'{module}_dynamic_data').document('shared')
             doc_ref.set({
-                'username': username,
+                'last_updated_by': username,
                 'columns': data.get('columns', []),
                 'rows': data.get('rows', []),
                 'updated_at': data.get('updated_at', None)
