@@ -137,7 +137,11 @@ DEFAULT_PERMISSIONS = {
     "important_links": ModulePermission(
         enabled=True,
         tabs={},
-        actions={}
+        actions={
+            "add": False,
+            "edit": False,
+            "delete": False
+        }
     )
 }
 
