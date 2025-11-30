@@ -9,8 +9,11 @@ const Layout = ({ children }) => {
   const location = useLocation();
   const isAdminOrAbove = authService.isAdminOrAbove();
   
-  // Determine if we're in Buyer Persona module
-  const buyerPersonaPaths = ['/', '/add-insight', '/report', '/persona-generator', '/personas', '/manage-insights'];
+  // Determine if we're on Dashboard
+  const isOnDashboard = location.pathname === '/';
+  
+  // Determine if we're in Buyer Persona module (exclude dashboard)
+  const buyerPersonaPaths = ['/add-insight', '/report', '/persona-generator', '/personas', '/manage-insights'];
   const isInBuyerPersona = buyerPersonaPaths.includes(location.pathname);
   
   // Determine if we're in Presentations module
@@ -21,6 +24,9 @@ const Layout = ({ children }) => {
   
   // Show Presentations sub-nav whenever in presentations module (permissions will filter tabs)
   const showPresentationsNav = isInPresentations;
+  
+  // Show Dashboard nav on dashboard page
+  const showDashboardNav = isOnDashboard;
 
   return (
     <div className="flex h-screen overflow-hidden w-full max-w-full">
