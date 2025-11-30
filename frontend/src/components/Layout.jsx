@@ -37,6 +37,7 @@ const Layout = ({ children }) => {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col w-full max-w-full overflow-hidden">
         {/* Module Sub-Navigation (if applicable) */}
+        {showDashboardNav && <DashboardNav />}
         {showBuyerPersonaNav && <BuyerPersonaNav />}
         {showPresentationsNav && <PresentationsNav />}
         
