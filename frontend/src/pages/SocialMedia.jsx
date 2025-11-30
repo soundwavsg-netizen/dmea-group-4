@@ -253,7 +253,10 @@ const SocialMedia = () => {
     try {
       await axios.post(`${API}/api/column-mapping/social_media`,
         { mappings },
-        { headers: { 'X-User-Name': session?.username } }
+        { headers: { 
+          'X-User-Name': session?.username,
+          'X-User-Role': session?.role
+        } }
       );
       toast.success('Mappings saved successfully');
       loadAnalytics();
