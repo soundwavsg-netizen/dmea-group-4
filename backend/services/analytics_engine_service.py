@@ -245,6 +245,7 @@ class AnalyticsEngineService:
             )[:10]
             
             return {
+                'warnings': data_warnings if data_warnings else None,
                 'overview': {
                     'total_posts': total_posts,
                     'total_likes': int(total_likes),
