@@ -730,9 +730,21 @@ const Analytics = () => {
               )}
             </CardContent>
           </Card>
+          )
         )}
 
         {activeTab === 'insight-summary' && (
+          !canViewTab('insight_summary') ? (
+            <Card>
+              <CardContent className="py-12">
+                <div className="text-center">
+                  <Lock className="w-16 h-16 mx-auto text-[#E0AFA0] mb-4" />
+                  <h3 className="text-xl font-semibold text-[#6C5F5F] mb-2">Access Restricted</h3>
+                  <p className="text-[#6C5F5F]">You don't have permission to view this tab. Contact your administrator.</p>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
           <Card>
             <CardHeader><CardTitle>Insight Summary</CardTitle><CardDescription>Automated insights and keyword strategy</CardDescription></CardHeader>
             <CardContent>
