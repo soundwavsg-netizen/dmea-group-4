@@ -46,6 +46,7 @@ const SocialMedia = () => {
   const [analyzing, setAnalyzing] = useState(false);
   const [editingColumn, setEditingColumn] = useState(null);
   const [newColumnName, setNewColumnName] = useState('');
+  const [showPostLevel, setShowPostLevel] = useState(false);
   const session = authService.getSession();
   
   // Permission management
