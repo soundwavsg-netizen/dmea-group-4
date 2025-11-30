@@ -891,6 +891,7 @@ const SocialMedia = () => {
               )}
             </CardContent>
           </Card>
+          )
         )}
       </div>
     </div>
