@@ -1499,14 +1499,20 @@ def get_dynamic_table_data(
 def save_column_mapping(
     module: str,
     mappings: dict,
-    x_user_name: Optional[str] = Header(None)
+    x_user_name: Optional[str] = Header(None),
+    x_user_role: Optional[str] = Header(None)
 ):
-    """Save column mappings"""
+    """Save column mappings - Permission enforced"""
     if not x_user_name:
         raise HTTPException(status_code=401, detail="Authentication required")
     
     if module not in ['social_media', 'search_marketing']:
         raise HTTPException(status_code=400, detail="Invalid module")
+    
+    # Check permission
+    role = x_user_role or 'user'
+    if not check_diagnostic_permission(x_user_name, role, module, 'perform_mapping'):
+        raise HTTPException(status_code=403, detail="You do not have permission to perform column mapping for this module")
     
     try:
         mapping_data = mappings.get('mappings', {})
