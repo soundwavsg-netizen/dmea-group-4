@@ -424,7 +424,8 @@ class AnalyticsEngineService:
                 } for p in top_posts],
                 'post_level_data': post_level_data,
                 'best_post': best_post,
-                'worst_post': worst_post
+                'worst_post': worst_post,
+                'classification_summary': classification_summary
             }
         except Exception as e:
             print(f"Error in social media analytics: {e}")
