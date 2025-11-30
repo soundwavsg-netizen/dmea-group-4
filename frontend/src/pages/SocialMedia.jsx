@@ -260,6 +260,12 @@ const SocialMedia = () => {
   };
 
   const addColumn = () => {
+    if (!canPerformAction('add_column')) {
+      toast.error('You do not have permission to add columns', {
+        description: 'Contact your administrator to request access'
+      });
+      return;
+    }
     const newColName = `Extra Column ${columns.length - PRESET_COLUMNS.length + 1}`;
     setColumns([...columns, newColName]);
     setRows(rows.map(row => ({ ...row, [newColName]: '' })));
