@@ -46,8 +46,8 @@ class InsightGeneratorService:
             # Enhanced insight with post reference
             base_insight = f"{best_platform['platform']} drives the highest engagement rate at {round(best_platform['avg_engagement_rate'] * 100, 2)}%"
             if best_post_overall and best_post_overall.get('platform') == best_platform['platform']:
-                post_url = best_post_overall.get('post_url', 'N/A')
-                if post_url != 'N/A':
+                post_url = best_post_overall.get('post_url', '')
+                if post_url and post_url.strip():
                     insights['top_insights'].append(
                         f"{base_insight}, led by top-performing content such as {post_url}, which achieved exceptional engagement ({round(best_post_overall.get('engagement_rate', 0) * 100, 2)}%)."
                     )
