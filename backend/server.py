@@ -1543,13 +1543,13 @@ def get_column_mapping(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.get("/api/analytics/{module}")
-def get_analytics(
+@app.get("/api/analytics/{module}/run")
+def run_analytics(
     module: str,
     x_user_name: Optional[str] = Header(None),
     x_user_role: Optional[str] = Header(None)
 ):
-    """Get analytics based on mapped data - Permission enforced"""
+    """Run analytics and save results - Permission enforced"""
     if not x_user_name:
         raise HTTPException(status_code=401, detail="Authentication required")
     
@@ -1562,6 +1562,8 @@ def get_analytics(
         raise HTTPException(status_code=403, detail="You do not have permission to run analytics for this module")
     
     try:
+        from services.analytics_storage_service import AnalyticsStorageService
+        
         # Get mapped data
         mapped_data = DynamicDataService.get_mapped_data(x_user_name, module)
         
@@ -1573,6 +1575,36 @@ def get_analytics(
             analytics = AnalyticsEngineService.social_media_analytics(mapped_data)
         else:
             analytics = AnalyticsEngineService.search_marketing_analytics(mapped_data)
+        
+        # Save analytics results (globally accessible)
+        AnalyticsStorageService.save_analytics(module, analytics, x_user_name)
+        
+        return analytics
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/analytics/{module}")
+def get_analytics(
+    module: str,
+    x_user_name: Optional[str] = Header(None),
+    x_user_role: Optional[str] = Header(None)
+):
+    """Get saved analytics results - No special permission needed, just view access"""
+    if not x_user_name:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    if module not in ['social_media', 'search_marketing']:
+        raise HTTPException(status_code=400, detail="Invalid module")
+    
+    try:
+        from services.analytics_storage_service import AnalyticsStorageService
+        
+        # Get saved analytics (globally shared)
+        analytics = AnalyticsStorageService.get_analytics(module)
+        
+        if not analytics:
+            return {"message": "No analytics generated yet"}
         
         return analytics
     except Exception as e:
