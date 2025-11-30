@@ -900,6 +900,98 @@ const SocialMedia = () => {
                     </Card>
                   )}
 
+                  {/* Top Performing Posts */}
+                  {insights.top_performing_posts && insights.top_performing_posts.length > 0 && (
+                    <Card className="border-green-500">
+                      <CardHeader className="bg-green-50">
+                        <CardTitle className="text-green-800 flex items-center gap-2">
+                          <TrendingUp className="w-5 h-5" />
+                          Top Performing Posts
+                        </CardTitle>
+                        <CardDescription>Best 3 posts by engagement</CardDescription>
+                      </CardHeader>
+                      <CardContent className="pt-6">
+                        <div className="space-y-4">
+                          {insights.top_performing_posts.map((post) => (
+                            <div key={post.rank} className="p-4 border-2 border-green-200 rounded-lg bg-green-50/50">
+                              <div className="flex items-start gap-3">
+                                <Badge className="bg-green-600 text-white">#{post.rank}</Badge>
+                                <div className="flex-1 space-y-2">
+                                  <div className="flex flex-wrap gap-2">
+                                    <Badge variant="outline">{post.platform}</Badge>
+                                    <Badge variant="outline">{post.post_type}</Badge>
+                                    <Badge className={post.sentiment?.toLowerCase().includes('pos') ? 'bg-green-100 text-green-800' : 'bg-gray-100'}>
+                                      {post.sentiment}
+                                    </Badge>
+                                  </div>
+                                  <p className="text-sm text-gray-600 truncate">
+                                    <a href={post.url} target="_blank" rel="noopener noreferrer" className="text-[#1769AA] hover:underline">
+                                      {post.url}
+                                    </a>
+                                  </p>
+                                  <div className="flex gap-4 text-sm">
+                                    <span className="font-semibold text-green-700">
+                                      Engagement: {(post.engagement_rate * 100).toFixed(2)}%
+                                    </span>
+                                    <span className="text-gray-600">
+                                      Views: {post.view_count?.toLocaleString()}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Underperforming Posts */}
+                  {insights.underperforming_posts && insights.underperforming_posts.length > 0 && (
+                    <Card className="border-red-500">
+                      <CardHeader className="bg-red-50">
+                        <CardTitle className="text-red-800 flex items-center gap-2">
+                          <AlertCircle className="w-5 h-5" />
+                          Underperforming Posts
+                        </CardTitle>
+                        <CardDescription>Lowest 3 posts - opportunities for improvement</CardDescription>
+                      </CardHeader>
+                      <CardContent className="pt-6">
+                        <div className="space-y-4">
+                          {insights.underperforming_posts.map((post) => (
+                            <div key={post.rank} className="p-4 border-2 border-red-200 rounded-lg bg-red-50/50">
+                              <div className="flex items-start gap-3">
+                                <Badge className="bg-red-600 text-white">#{post.rank}</Badge>
+                                <div className="flex-1 space-y-2">
+                                  <div className="flex flex-wrap gap-2">
+                                    <Badge variant="outline">{post.platform}</Badge>
+                                    <Badge variant="outline">{post.post_type}</Badge>
+                                    <Badge className={post.sentiment?.toLowerCase().includes('neg') ? 'bg-red-100 text-red-800' : 'bg-gray-100'}>
+                                      {post.sentiment}
+                                    </Badge>
+                                  </div>
+                                  <p className="text-sm text-gray-600 truncate">
+                                    <a href={post.url} target="_blank" rel="noopener noreferrer" className="text-[#1769AA] hover:underline">
+                                      {post.url}
+                                    </a>
+                                  </p>
+                                  <div className="flex gap-4 text-sm">
+                                    <span className="font-semibold text-red-700">
+                                      Engagement: {(post.engagement_rate * 100).toFixed(2)}%
+                                    </span>
+                                    <span className="text-gray-600">
+                                      Views: {post.view_count?.toLocaleString()}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
                   {/* Strategic Recommendations */}
                   {insights.strategic_recommendations && insights.strategic_recommendations.length > 0 && (
                     <Card>
