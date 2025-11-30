@@ -248,7 +248,31 @@ class AnalyticsEngineService:
                 posts_with_engagement,
                 key=lambda x: x['total_engagement'],
                 reverse=True
-            )[:10]
+            )[:5]  # Top 5
+            
+            # POST-LEVEL DATA (All posts for detailed analysis)
+            post_level_data = []
+            for post in posts_with_engagement:
+                post_level_data.append({
+                    'platform': post.get('platform', 'Unknown'),
+                    'post_url': post.get('post_url', 'N/A'),
+                    'post_type': post.get('post_type', 'Unknown'),
+                    'engagement_rate': round(post['engagement_rate'], 4),
+                    'view_count': int(safe_num(post.get('views', 0))),
+                    'sentiment': post.get('sentiment', 'Unknown'),
+                    'likes': int(safe_num(post.get('likes', 0))),
+                    'comments': int(safe_num(post.get('comments', 0))),
+                    'shares': int(safe_num(post.get('shares', 0))),
+                    'saves': int(safe_num(post.get('saves', 0))),
+                    'total_engagement': int(post['total_engagement'])
+                })
+            
+            # Sort by engagement rate for better display
+            post_level_data.sort(key=lambda x: x['engagement_rate'], reverse=True)
+            
+            # Find best and worst performing posts
+            best_post = post_level_data[0] if post_level_data else None
+            worst_post = post_level_data[-1] if post_level_data else None
             
             return {
                 'warnings': data_warnings if data_warnings else None,
@@ -281,7 +305,10 @@ class AnalyticsEngineService:
                     'comments': safe_num(p.get('comments', 0)),
                     'shares': safe_num(p.get('shares', 0)),
                     'engagement_rate': round(p['engagement_rate'], 4)
-                } for p in top_posts]
+                } for p in top_posts],
+                'post_level_data': post_level_data,
+                'best_post': best_post,
+                'worst_post': worst_post
             }
         except Exception as e:
             print(f"Error in social media analytics: {e}")
