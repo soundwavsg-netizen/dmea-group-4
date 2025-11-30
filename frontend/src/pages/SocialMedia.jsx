@@ -354,6 +354,12 @@ const SocialMedia = () => {
   };
 
   const deleteRow = (rowId) => {
+    if (!canPerformAction('delete_row')) {
+      toast.error('You do not have permission to delete rows', {
+        description: 'Contact your administrator to request access'
+      });
+      return;
+    }
     setRows(rows.filter(row => row.id !== rowId));
   };
 
