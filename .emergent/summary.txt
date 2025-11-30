@@ -1,145 +1,162 @@
 <analysis>**original_problem_statement:**
-The user's primary request is to implement a comprehensive, granular permission system for the Social Media Diagnostics and Search Marketing Diagnostics modules. This includes both tab-level visibility and action-level controls (e.g., uploading data, running analytics), all managed from a centralized location in the Admin Panel.
+The user's initial request was for a comprehensive, granular permission system. This evolved into a series of UI/UX enhancements and bug fixes for the Social Media Diagnostics and Search Marketing Diagnostics modules.
 
-A subsequent request involved a major refactoring of the Admin Panel UI. The user asked to remove the disparate Module Settings and Shared Folder tabs and consolidate all permission management into the All Users tab, accessible via an Advanced Settings section for each user.
-
-During implementation, the user discovered and reported several critical issues:
-1.  Data from the two diagnostics modules were overlapping. The desired behavior is for data to be globally shared across all users but strictly separated by module, with everyone seeing the latest version.
-2.  The newly refactored Admin Panel has bugs: the sidebar module visibility doesn't respect the permissions set, and the Advanced Settings UI is not consistent for all user accounts.
-
-PRODUCT REQUIREMENTS:
--   **Granular Permissions:** Admins must be able to control (for each user and for each diagnostics module):
-    -   **Tab Visibility:** , , , .
-    -   **Action Permissions:** , , , , , .
--   **Centralized Management:** All permissions must be managed within the All Users tab of the Admin Panel.
--   **Backend Enforcement:** API endpoints must be secured to prevent unauthorized actions.
--   **Data Architecture:** Module data should be globally shared (latest version visible to all) but strictly separated between modules.
--   **UI Consistency:** The permission settings UI must be identical for all non-superadmin users.
+PRODUCT REQUIREMENTS (LATEST):
+-   **Social Media Diagnostics - Analytics Tab:**
+    -   Keep existing platform-level charts.
+    -   Add a new collapsible Post-Level Performance panel containing a table with columns: Platform, Post URL, Post Type, Engagement Rate, View Count, and Sentiment Score.
+    -   Visually highlight the best-performing (green glow) and worst-performing (red outline) posts in the table.
+    -   Add summary cards for the Best Performing Post and Lowest Performing Post above the table.
+-   **Social Media Diagnostics - Insight Summary Tab:**
+    -   Add new sections for Top Performing Posts (top 3) and Underperforming Posts (bottom 3).
+    -   Revise insight wording to include specific post URLs.
+-   **Search Marketing Diagnostics - UI Enhancements:**
+    -   **Analytics Tab:** Add an optional collapsible panel for Competitor Keyword Visibility.
+    -   **Insight Summary Tab:** Add optional micro-insights for Keyword Trend Movement if date data is available.
+-   **Push/Fix/Drop Classification System (Social Media):**
+    -   Classify each post as PUSH, FIX, or DROP based on dynamic engagement percentiles and sentiment scores.
+    -   Display classification counts and lists in the Insight Summary tab.
+    -   Add a colored tag (Push/Fix/Drop) to each post in the Post-Level Performance table.
+-   **General/Bug Fixes:**
+    -   The URL field for posts must display the correct URL, not 'N/A' or be empty.
+    -   Sentiment badges in the Insight Summary must be clearly readable.
+    -   Do not remove preset columns after a data upload.
+    -   Ensure no changes break other modules (Persona, Presentations, etc.).
 
 **User's preferred language**: English
 
 **what currently exists?**
-- A fully functional analytics pipeline (data input, mapping, analytics engine, dashboard, insights summary) for both diagnostics modules.
-- The backend data service () has been correctly refactored to store data on a per-module basis, shared globally, resolving the data overlap issue.
-- Backend permission models () have been extended to include all the new granular controls for the diagnostics modules, the Shared Folder, and Important Links.
-- The frontend pages (, ) have been updated with UI logic to hide/disable elements based on permissions.
-- The Admin Panel UI has been partially refactored to consolidate settings, but this has introduced new bugs related to UI consistency and permission enforcement.
+- A full-stack application with a FastAPI backend and React frontend, featuring a granular permission system.
+- The backend analytics engine has been updated to return detailed  for social media posts. The insight generator has also been enhanced to produce more specific insights.
+- Analytics and insight results are now persisted in a  collection in Firestore, making them globally available and persistent across user sessions.
+- The Social Media Diagnostics frontend () has been significantly updated to include the new Post-Level Performance and enhanced Insight Summary sections, though they contain bugs.
+- Numerous critical bugs related to permissions, API route conflicts, data persistence, and UI layout have been identified and fixed throughout the session.
 
 **Last working item**:
--   **Last item agent was working**: Fixing bugs reported by the user after the Admin Panel refactoring. Specifically, the agent was addressing:
-    1.  Why the sidebar module visibility (e.g., Important Links, Shared Folder) was not respecting the permissions set in the Admin Panel.
-    2.  Why the Advanced Settings permission UI was inconsistent for different user accounts.
+-   **Last item agent was working**: Implementing the Push/Fix/Drop classification system as per the user's detailed instructions. The agent had just begun modifying the backend  to add the classification logic and fix related bugs.
 -   **Status**: IN PROGRESS
 -   **Agent Testing Done**: N
--   **Which testing method agent to use?**: both. The backend logic for creating default user permissions needs to be tested via API or script. The frontend Admin Panel and Sidebar require verification with the frontend testing agent across different user roles.
--   **User Testing Done**: N (User is blocked by these bugs).
+-   **Which testing method agent to use?**: both. The backend classification logic requires testing via script/curl. The new frontend UI elements (tags, classification sections) require verification with the screenshot tool or the frontend testing agent.
+-   **User Testing Done**: N
 
 **All Pending/In progress Issue list**:
--   **Issue 1: Inconsistent Advanced Settings UI in Admin Panel (P0)**: The permission toggles shown for default users (, ) differ from those for other users (, ). The user requires this UI to be identical for all non-superadmin users.
--   **Issue 2: Sidebar Module Visibility Not Respecting Permissions (P1)**: The user reported that checking/unchecking modules in the Admin Panel doesn't correctly show/hide them in the user's sidebar.
--   **Issue 3: Admin Panel Slow Loading (P2)**: A pre-existing, low-priority issue where the  endpoint causes a 5-10 second load time for the Admin Panel.
+-   **Issue 1: Post URL field is empty or incorrect (P0)**: In the new Post-Level Performance and Insight Summary sections, the URL for each post is displaying as empty. This is a critical bug blocking the usability of the new features.
+-   **Issue 2: Sentiment badge text in Insight Summary is unreadable (P1)**: The text for Positive and Negative sentiment badges has poor color contrast, making it difficult to read.
+-   **Issue 3: Implement Search Marketing Diagnostics UI enhancements (P2)**: The requested frontend updates for the Search Marketing module (Competitor Keyword Visibility and Keyword Trend Movement) have not been started.
 
 **Issues Detail**:
--   **Issue 1: Inconsistent Advanced Settings UI in Admin Panel**
-    -   **Attempted fixes**: The agent refactored the Admin Panel UI but didn't address the root cause, which is likely in the backend. The logic that generates a permissions document for a user for the first time is likely using an outdated or incomplete template.
+-   **Issue 1: Post URL field is empty or incorrect**
+    -   **Attempted fixes**: The agent correctly identified the issue was in the backend and attempted to fix it by changing the key from  to  in  and . When this failed, a debug print statement () was added to  to discover the actual key name.
     -   **Next debug checklist**:
-        1.  Examine , specifically the logic within  that handles cases where a user does not yet have a permissions document in Firestore.
-        2.  Ensure this logic creates the document using the full, updated  object from .
-        3.  Delete the existing permissions document for a test user (e.g., ) in Firestore to force recreation, then verify in the Admin Panel that all toggles appear correctly.
-    -   **Why fix this issue and what will be achieved with the fix?**: This is critical for providing a consistent and usable admin experience, fulfilling a direct user requirement.
+        1.  Run the Analyze Data function for the Social Media module.
+        2.  Inspect the backend logs () for the DEBUG: Post keys output to identify the correct key for the post URL (e.g., 'Link', 'Post URL', 'URL').
+        3.  Update  and  to use this correct key.
+        4.  Re-run analytics and verify in the frontend that post URLs are now correctly displayed.
+    -   **Why fix this issue and what will be achieved with the fix?**: The URL is a primary identifier for posts. Without it, the post-level analytics are not actionable.
     -   **Status**: IN PROGRESS
-    -   **Is recurring issue?**: N
+    -   **Is recurring issue?**: Y
     -   **Should Test frontend/backend/both after fix?**: both
     -   **Blocked on other issue**: None
 
--   **Issue 2: Sidebar Module Visibility Not Respecting Permissions**
-    -   **Attempted fixes**: The agent correctly identified that  was using an old global settings service and updated the logic for  and  to use the new .
+-   **Issue 2: Sentiment badge text in Insight Summary is unreadable**
+    -   **Attempted fixes**: The agent modified the Tailwind CSS classes in  for the sentiment badges to use  and  for better contrast.
     -   **Next debug checklist**:
-        1.  Log in as Superadmin and navigate to the Admin Panel.
-        2.  For a regular test user, toggle the main  checkbox for several modules (e.g., turn OFF Shared Folder, turn ON Important Links).
-        3.  Log out and log back in as that regular user.
-        4.  Confirm the sidebar accurately reflects the changes. The modules should appear/disappear as configured.
-    -   **Why fix this issue and what will be achieved with the fix?**: This will make the primary module access control functional and confirm the agent's recent fix works end-to-end.
+        1.  Take a screenshot of the Insight Summary tab, focusing on the Top/Underperforming Posts sections.
+        2.  Verify the legibility of the Positive and Negative text within the badges.
+    -   **Why fix this issue and what will be achieved with the fix?**: This is a UI/UX improvement for readability and accessibility.
     -   **Status**: USER VERIFICATION PENDING
     -   **Is recurring issue?**: N
     -   **Should Test frontend/backend/both after fix?**: frontend
     -   **Blocked on other issue**: None
 
+-   **Issue 3: Implement Search Marketing Diagnostics UI enhancements**
+    -   **Attempted fixes**: None.
+    -   **Next debug checklist**:
+        1.  In , add a new collapsible Competitor Keyword Visibility panel in the Analytics tab.
+        2.  In the Insight Summary tab of the same file, add a section for Keyword Trend Movement, ensuring it only renders if date-based trend data is available from the backend.
+    -   **Why fix this issue and what will be achieved with the fix?**: Fulfills the remaining user requirements for the Search Marketing module.
+    -   **Status**: NOT STARTED
+    -   **Is recurring issue?**: N
+    -   **Should Test frontend/backend/both after fix?**: frontend
+    -   **Blocked on other issue**: None
+
 **In progress Task List**:
--   **Task 1: Complete Permission System Implementation (P0)**
+-   **Task 1: Implement PUSH/FIX/DROP classification system (P0)**
 
 **Task Detail**:
--   **Task 1: Complete Permission System Implementation**
-    -   **Where to resume**: The main remaining work is fixing the bugs in the Admin Panel and verifying the entire system.
-        1.  **Fix Bugs**: Prioritize fixing Issue 1 (Inconsistent UI) and verifying the fix for Issue 2 (Sidebar Visibility).
-        2.  **Backend Enforcement Review**: While the main endpoints are secured, conduct a quick review of all endpoints in  related to the diagnostics modules to ensure no data modification endpoint is missing a permission check.
-        3.  **End-to-End Test**: Once the bugs are fixed, perform a full test cycle: As a Superadmin, grant a regular user a specific, non-default permission (e.g.,  but not ). Log in as the user and confirm they can upload a file but the Analyze Data button is disabled.
-    -   **What will be achieved with this?**: This will deliver the complete, secure, and bug-free permission system requested by the user.
+-   **Task 1: Implement PUSH/FIX/DROP classification system**
+    -   **Where to resume**: Continue the implementation in .
+        1.  **Backend**: Inside the  function, calculate dynamic percentile thresholds for engagement. Iterate through , classify each post as 'Push', 'Fix', or 'Drop' based on the user's rules, and add this classification to each post object. Update the function's return value to include counts of each classification.
+        2.  **Frontend**: Update .
+            - In the Analytics tab's Post-Level Performance table, add a new column to display the classification as a colored tag.
+            - In the Insight Summary tab, create a new section to display the Push/Fix/Drop counts and list the posts under each category.
+    -   **What will be achieved with this?**: This will deliver the final, most important diagnostic feature requested by the user for the Social Media module.
     -   **Status**: IN PROGRESS
     -   **Should Test frontend/backend/both after fix?**: both
-    -   **Blocked on something**: Blocked by the Admin Panel bugs (Issue 1 & 2).
+    -   **Blocked on something**: None.
 
 **Upcoming and Future Tasks**
-
--   **Upcoming Tasks**:
-    -   (P1) Add CSV/XLS *export* functionality to the Data Input tabs.
--   **Future Tasks**:
-    -   (P2) Address the Admin Panel slow loading issue by optimizing the  endpoint.
+- **Upcoming Tasks**:
+    - (P1) Implement the UI enhancements for the Search Marketing Diagnostics module (Issue 3).
+- **Future Tasks**:
+    - (P2) Optimize the  endpoint to address the slow loading of the Admin Panel.
 
 **Completed work in this session**
--   **Architectural Fix (Data Sharing)**: Resolved a critical data overlap bug by refactoring the backend to use a module-specific, globally shared data model in Firestore.
--   **Full Analytics Engine Implementation**: Built and debugged the entire backend analytics and insight generation logic based on user-provided formulas.
--   **Frontend Analytics UI**: Created the Dashboard and Insight Summary tabs, with Recharts visualizations and robust empty/loading states.
--   **Data Quality Validation**: Implemented a warning system to inform users of rows with missing data, preventing silent failures and improving UX.
--   **Permission System Foundation**: Extended backend models with granular permissions and applied checks to frontend UI elements and backend APIs.
--   **Admin Panel Refactoring**: Consolidated multiple settings tabs into the All Users tab as per user's request, simplifying the top-level navigation.
+- **Permission System Overhaul**: Fixed numerous critical bugs related to user permissions, including inconsistent UI, incorrect backend checks, missing request headers, and conflicting API routes.
+- **Analytics & Insight Persistence**: Refactored the backend to save analytics and insight results to Firestore, ensuring data is persistent and globally accessible to all users with view rights.
+- **Major UI/UX Refactoring**:
+    - Implemented dedicated top-navigation bars for the main dashboard and diagnostic modules, resolving incorrect tab layouts.
+    - Simplified the main dashboard () to a title page.
+    - Added a Reset User Password button to the  for superadmins.
+- **Social Media Module Frontend**:
+    - Added a collapsible Post-Level Performance panel with a detailed data table to the Analytics tab.
+    - Added Top Performing Posts and Underperforming Posts sections to the Insight Summary tab.
+- **Backend Analytics Engine**: Enhanced the engine to return detailed  and to correctly handle post URLs (pending bug fix).
 
 **Earlier issues found/mentioned but not fixed**
--   None.
+-   **Admin Panel Slow Loading**: A pre-existing, low-priority issue where the  endpoint has a 5-10 second load time. This has not been addressed.
 
 **Known issue recurrence from previous fork**
--   None in this session. The previous  on deployment was resolved and has not returned.
+-   None.
 
 **Code Architecture**
 
 
 **Key Technical Concepts**
--   **Backend**: FastAPI, Firebase Firestore, Pydantic.
--   **Frontend**: React, Shadcn UI, .
--   **Data Architecture**: The data model for diagnostics modules was pivoted from per-user () to globally shared, per-module (). This is a crucial architectural decision.
--   **Permissions**: A detailed permission model defined in  is stored per-user in a  collection in Firestore. Enforcement is done on both the frontend (disabling UI) and backend (protecting API endpoints).
+-   **State Persistence**: Analytics and insight data are now stored in a  collection in Firestore, enabling global and persistent access.
+-   **API Route Conflict Resolution**: Fixed a critical bug where two FastAPI routes were conflicting by renaming one to .
+-   **Centralized Permission Hook**: The  hook is central to frontend security. A critical bug was fixed by adding the  header to its API calls.
 
 **key DB schema**
--   : collection where each document ID is a . The document contains a nested object with permissions for all modules (e.g., ).
--   : collection where each document ID is a module name (e.g., ). The document contains the shared , , and  for that module.
+-   : A new collection where the document ID is the module name (e.g., ). Each document stores the latest  and .
 
 **changes in tech stack**
 -   None.
 
 **All files**
 -   **Created**:
-    -   : A custom React hook to simplify checking user permissions in UI components.
+    -   : To manage persistence of analytics and insights in Firestore.
+    -   : New navigation components to fix UI layout issues.
 -   **Updated (Critically)**:
-    -   : Fundamentally changed to implement the globally shared, per-module data model.
-    -   : The source of truth for the entire granular permission structure.
-    -   : Majorly refactored to consolidate UI, but is now the source of high-priority bugs.
-    -   : Updated to use the correct permission service, fixing a module visibility bug.
-    -   : Updated to add permission enforcement to API endpoints.
+    -   : To add post-level data and is pending PUSH/FIX/DROP logic.
+    -   : To add persistence endpoints, fix permission logic, and resolve API route conflicts.
+    -   : Major UI overhaul to add the new analytics and insight sections.
+    -   : Fixed a critical bug by adding the  header to API calls.
+    -   : To correctly render the appropriate top-level navigation component.
 
 **Areas that need refactoring**:
--   The permission creation logic in  needs to be fixed to ensure all users get a consistent set of default permissions.
+-   None at the moment.
 
 **key api endpoints**
--    (GET, PUT): Manages user permissions.
--    (POST): Secured endpoint for saving table data.
--    (POST): Secured endpoint for saving column mappings.
--    (GET): Secured endpoint that triggers the analytics engine.
--    (POST): Secured endpoint that generates the insight summary.
+-    (GET/POST): **FIXED** route to get/generate and save insights.
+-    (GET/POST): **NEW** route to get/generate and save analytics.
+-    (GET): Fetches the current user's permissions; its frontend consumer was fixed.
 
 **Critical Info for New Agent**
--   **Priority 1 is Fixing Admin Panel Bugs**: The user is blocked by two issues: the inconsistent Advanced Settings UI for different users, and the sidebar not respecting module permissions. The UI inconsistency is likely a backend issue in how default permissions are created.
--   **Data Model is Now Globally Shared**: Do not write user-specific logic for the diagnostics modules. All data is stored per-module in the  collection and is visible to all users. This was a critical fix requested by the user.
--   **Permissions are the Core Task**: The overarching goal is to complete the granular permission system. Every fix and test should be viewed through the lens of making this system robust, secure, and consistent.
+-   **Focus on the User's Latest Request**: The highest priority is to implement the PUSH/FIX/DROP classification system and fix the associated bugs (empty URL, unreadable badges).
+-   **The Backend Is Mostly Done (for now)**: The user has explicitly stated **not** to modify the backend analytics logic further, *except* for implementing the PUSH/FIX/DROP classification.
+-   **Solve the URL Bug First**: This is the top-priority bug. Use the debug print statement added in  and check the backend logs to find the correct URL key.
+-   **Permissions & API Calls**: Remember that all frontend API calls related to permissions or secured actions **must** include the  header to function correctly for admins.
 
 **documents created in this job**
 -   
@@ -147,26 +164,26 @@ PRODUCT REQUIREMENTS:
 -   
 
 **Last 5 User Messages and any pending user messages**
-1.  **User**: Reported that data was overlapping between the two diagnostics modules and requested a fix. The desired state is globally shared data, separated by module. (Status: COMPLETED)
-2.  **User**: Confirmed the data separation fix was good and instructed the agent to proceed with the permissions task. (Status: ACKNOWLEDGED)
-3.  **User**: Provided detailed instructions to reorganize the Admin Panel by removing separate settings tabs and consolidating everything into the All Users tab. (Status: IN PROGRESS)
-4.  **User**: Reported critical bugs with the Admin Panel refactoring: sidebar visibility is broken, and the permissions UI is inconsistent for different users. (Status: PENDING FIX)
-5.  **User**: Awaiting a fix for the Admin Panel bugs. The conversation ended on this bug report. (Status: PENDING FIX)
+1.  **User**: Requested major enhancements to the Social Media and Search Marketing modules, including post-level analytics and a new PUSH/FIX/DROP classification system. (Status: IN PROGRESS)
+2.  **User**: Confirmed the backend analytics engine was complete and instructed the agent to focus only on frontend UI/layout changes. (Status: ACKNOWLEDGED)
+3.  **User**: Reported that the URL field in the new UI shows 'N/A' and then later that it is empty. (Status: PENDING FIX)
+4.  **User**: Reported that the sentiment badge text in the Insight Summary is hard to read. (Status: PENDING FIX)
+5.  **User**: Provided the final, detailed logic for the PUSH/FIX/DROP classification system. (Status: IN PROGRESS)
 
 **Project Health Check:**
--   **Broken**: The Admin Panel is currently in a buggy state due to the recent refactoring. The permissions UI is inconsistent, and module visibility in the sidebar is not working as expected. These issues block further user testing.
+-   **Broken**: The new Post-Level Performance feature in the Social Media module is broken because post URLs are not displaying.
 -   **Mocked**: None.
 
 **Testing status**
 -   **Testing agent used after significant changes**: NO
 -   **Troubleshoot agent used after agent stuck in loop**: NO
 -   **Test files created**: []
--   **Known regressions**: The Admin Panel refactoring introduced bugs in permission management and UI consistency.
+-   **Known regressions**: None, but new features have bugs.
 
 **Credentials to test flow:**
 -   **Super Admin**:  / 
--   **Regular User**: Use accounts like , , or  to test the differences in the Admin Panel UI and to verify permission-based access.
+-   **Regular User(s)**: , ,  (Use these to test permission-based access).
 
 **What agent forgot to execute**
--   The agent did not update the backend logic responsible for creating *default* permission sets for users. This oversight is the likely cause of the inconsistent Advanced Settings UI that the user reported.
--   The agent did not perform a full end-to-end test on the sidebar visibility fix before presenting the work, leading to the user finding the bug.</analysis>
+-   The agent did not fully resolve the post URL issue. It added a debug statement but did not follow through by checking the logs to find the correct data key.
+-   The UI enhancements for the Search Marketing Diagnostics module, requested alongside the Social Media ones, have not been started.</analysis>
