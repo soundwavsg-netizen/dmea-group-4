@@ -77,6 +77,46 @@ DEFAULT_PERMISSIONS = {
             "add": False,
             "delete": False
         }
+    ),
+    "social_media_diagnostics": ModulePermission(
+        enabled=True,
+        tabs={
+            "data_input": True,
+            "column_mapping": False,
+            "dashboard": True,
+            "insight_summary": False
+        },
+        actions={
+            "add_column": False,
+            "delete_column": False,
+            "rename_column": False,
+            "add_row": False,
+            "delete_row": False,
+            "upload_csv": False,
+            "save_data": False,
+            "perform_mapping": False,
+            "analyze_data": False
+        }
+    ),
+    "search_marketing_diagnostics": ModulePermission(
+        enabled=True,
+        tabs={
+            "data_input": True,
+            "column_mapping": False,
+            "dashboard": True,
+            "insight_summary": False
+        },
+        actions={
+            "add_column": False,
+            "delete_column": False,
+            "rename_column": False,
+            "add_row": False,
+            "delete_row": False,
+            "upload_csv": False,
+            "save_data": False,
+            "perform_mapping": False,
+            "analyze_data": False
+        }
     )
 }
 
