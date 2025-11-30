@@ -1,165 +1,172 @@
 <analysis>**original_problem_statement:**
-The user requested a series of significant feature additions and enhancements, evolving from simple toggles to a complex data analytics system. The core requirements are:
-1.  **Module Management**: Implement features for Superadmins to toggle module visibility globally (), rename modules, and re-order them in the sidebar.
-2.  **User-Specific Permissions**: Allow Superadmins to enable or disable specific modules for individual users from the All Users tab in the Admin Panel.
-3.  **Comprehensive Data Analytics System (for Social Media & Search Marketing modules)**:
-    *   **Data Input Tab**: A flexible, spreadsheet-like table that supports manual entry and CSV/XLS file uploads.
-    *   **Flexible Table Editor**: The ability for Superadmins to add, rename, delete, and reorder columns dynamically, as the input data structure is unknown.
-    *   **CSV/XLS Upload**: The system must parse uploaded files, preserve a set of pre-defined essential columns, and append any new columns from the file without destroying the existing table structure.
-    *   **Column Mapping Tab**: A critical UI where the user maps the flexible columns from their uploaded data to the specific metrics required by the system's analytics engine (e.g., mapping a column named User Likes to the system's Likes metric).
-    *   **Analytics Engine**: The analytics logic should ONLY process data from the mapped columns.
-    *   **Insight Generator**: An Insight Summary tab that automatically generates an executive summary, recommendations (Push/Fix/Drop), and trend analysis based on the analytics output, requiring no manual input from the user.
-4.  **Bug Fixes**:
-    *   Fix private folder file visibility.
-    *   Resolve recurring backend deployment failures on Google Cloud Run ().
-    *   Ensure the data input table UI is consistent and always shows column headers.
+The user's primary request is to implement a comprehensive, granular permission system for the Social Media Diagnostics and Search Marketing Diagnostics modules. This includes both tab-level visibility and action-level controls (e.g., uploading data, running analytics), all managed from a centralized location in the Admin Panel.
+
+A subsequent request involved a major refactoring of the Admin Panel UI. The user asked to remove the disparate Module Settings and Shared Folder tabs and consolidate all permission management into the All Users tab, accessible via an Advanced Settings section for each user.
+
+During implementation, the user discovered and reported several critical issues:
+1.  Data from the two diagnostics modules were overlapping. The desired behavior is for data to be globally shared across all users but strictly separated by module, with everyone seeing the latest version.
+2.  The newly refactored Admin Panel has bugs: the sidebar module visibility doesn't respect the permissions set, and the Advanced Settings UI is not consistent for all user accounts.
+
+PRODUCT REQUIREMENTS:
+-   **Granular Permissions:** Admins must be able to control (for each user and for each diagnostics module):
+    -   **Tab Visibility:** , , , .
+    -   **Action Permissions:** , , , , , .
+-   **Centralized Management:** All permissions must be managed within the All Users tab of the Admin Panel.
+-   **Backend Enforcement:** API endpoints must be secured to prevent unauthorized actions.
+-   **Data Architecture:** Module data should be globally shared (latest version visible to all) but strictly separated between modules.
+-   **UI Consistency:** The permission settings UI must be identical for all non-superadmin users.
 
 **User's preferred language**: English
 
 **what currently exists?**
-- The backend infrastructure for all requested features is in place, including services and API endpoints for module ordering, user-specific permissions, dynamic data tables, column mapping, and the insight generator.
-- The frontend has been significantly updated. The  and  pages are now complex, multi-tab applications featuring:
-    - A Data Input tab with a dynamic table, CSV/XLS upload, and column management.
-    - A Column Mapping tab with dropdowns to link source data to system metrics.
-    - Placeholder tabs for Dashboard (analytics) and Insight Summary.
-- The Admin Panel has been enhanced with a Module Order management tab and user-specific module toggles.
-- Critical backend deployment issues related to Python pathing on Google Cloud Run have been resolved.
+- A fully functional analytics pipeline (data input, mapping, analytics engine, dashboard, insights summary) for both diagnostics modules.
+- The backend data service () has been correctly refactored to store data on a per-module basis, shared globally, resolving the data overlap issue.
+- Backend permission models () have been extended to include all the new granular controls for the diagnostics modules, the Shared Folder, and Important Links.
+- The frontend pages (, ) have been updated with UI logic to hide/disable elements based on permissions.
+- The Admin Panel UI has been partially refactored to consolidate settings, but this has introduced new bugs related to UI consistency and permission enforcement.
 
 **Last working item**:
-- **Last item agent was working**: Implementing the final layer of the analytics feature: the Insight Summary tab. The agent created the backend service () and the API endpoint () to produce automated insights. The next step is to connect the frontend UI to this endpoint.
-- **Status**: IN PROGRESS
-- **Agent Testing Done**: N (Backend service was created, but the full end-to-end flow is not implemented or tested).
-- **Which testing method agent to use?**: both. The backend insight generation logic needs verification. The frontend needs to be tested to ensure it correctly fetches and displays the generated summary. An end-to-end test via the testing agent is recommended upon completion.
-- **User Testing Done**: N
+-   **Last item agent was working**: Fixing bugs reported by the user after the Admin Panel refactoring. Specifically, the agent was addressing:
+    1.  Why the sidebar module visibility (e.g., Important Links, Shared Folder) was not respecting the permissions set in the Admin Panel.
+    2.  Why the Advanced Settings permission UI was inconsistent for different user accounts.
+-   **Status**: IN PROGRESS
+-   **Agent Testing Done**: N
+-   **Which testing method agent to use?**: both. The backend logic for creating default user permissions needs to be tested via API or script. The frontend Admin Panel and Sidebar require verification with the frontend testing agent across different user roles.
+-   **User Testing Done**: N (User is blocked by these bugs).
 
 **All Pending/In progress Issue list**:
--   **Issue 1: Admin Panel Slow Loading (P1)**: A known, pre-existing performance issue where the Admin Panel takes ~5-10 seconds to load due to a slow  endpoint. This impacts the usability of admin features.
--   **Issue 2: Sidebar Module Visibility Logic Needs Verification (P2)**: The agent implemented a fix to ensure modules appear for regular users when granted permission, but this flow was not tested end-to-end.
+-   **Issue 1: Inconsistent Advanced Settings UI in Admin Panel (P0)**: The permission toggles shown for default users (, ) differ from those for other users (, ). The user requires this UI to be identical for all non-superadmin users.
+-   **Issue 2: Sidebar Module Visibility Not Respecting Permissions (P1)**: The user reported that checking/unchecking modules in the Admin Panel doesn't correctly show/hide them in the user's sidebar.
+-   **Issue 3: Admin Panel Slow Loading (P2)**: A pre-existing, low-priority issue where the  endpoint causes a 5-10 second load time for the Admin Panel.
 
 **Issues Detail**:
--   **Issue 1: Admin Panel Slow Loading**
-    -   **Attempted fixes**: None. The agent identified the slow endpoint () as the root cause but did not attempt to optimize it.
+-   **Issue 1: Inconsistent Advanced Settings UI in Admin Panel**
+    -   **Attempted fixes**: The agent refactored the Admin Panel UI but didn't address the root cause, which is likely in the backend. The logic that generates a permissions document for a user for the first time is likely using an outdated or incomplete template.
     -   **Next debug checklist**:
-        - Analyze the  function in the backend, likely within .
-        - Optimize the Firestore query or the data serialization logic within that function.
-    -   **Why fix this issue and what will be achieved with the fix?**: This will significantly improve the user experience for Superadmins and speed up testing of any features within the Admin Panel.
-    -   **Status**: NOT STARTED
-    -   **Is recurring issue?**: Y
-    -   **Should Test frontend/backend/both after fix?**: backend
+        1.  Examine , specifically the logic within  that handles cases where a user does not yet have a permissions document in Firestore.
+        2.  Ensure this logic creates the document using the full, updated  object from .
+        3.  Delete the existing permissions document for a test user (e.g., ) in Firestore to force recreation, then verify in the Admin Panel that all toggles appear correctly.
+    -   **Why fix this issue and what will be achieved with the fix?**: This is critical for providing a consistent and usable admin experience, fulfilling a direct user requirement.
+    -   **Status**: IN PROGRESS
+    -   **Is recurring issue?**: N
+    -   **Should Test frontend/backend/both after fix?**: both
     -   **Blocked on other issue**: None
--   **Issue 2: Sidebar Module Visibility Logic Needs Verification**
-    -   **Attempted fixes**: The agent updated the conditional rendering logic in .
+
+-   **Issue 2: Sidebar Module Visibility Not Respecting Permissions**
+    -   **Attempted fixes**: The agent correctly identified that  was using an old global settings service and updated the logic for  and  to use the new .
     -   **Next debug checklist**:
-        1.  Log in as Superadmin, go to Admin Panel, and enable a module for a regular user.
-        2.  Log out and log back in as that regular user.
-        3.  Verify the newly enabled module is now visible in the sidebar.
-    -   **Why fix this issue and what will be achieved with the fix?**: This is required to confirm that the user-specific module permission toggles are fully functional.
+        1.  Log in as Superadmin and navigate to the Admin Panel.
+        2.  For a regular test user, toggle the main  checkbox for several modules (e.g., turn OFF Shared Folder, turn ON Important Links).
+        3.  Log out and log back in as that regular user.
+        4.  Confirm the sidebar accurately reflects the changes. The modules should appear/disappear as configured.
+    -   **Why fix this issue and what will be achieved with the fix?**: This will make the primary module access control functional and confirm the agent's recent fix works end-to-end.
     -   **Status**: USER VERIFICATION PENDING
     -   **Is recurring issue?**: N
     -   **Should Test frontend/backend/both after fix?**: frontend
     -   **Blocked on other issue**: None
 
 **In progress Task List**:
--   **Task 1: Connect Frontend to Insight Generator API (P0)**
--   **Task 2: Implement Analytics Engine Logic (P1)**
+-   **Task 1: Complete Permission System Implementation (P0)**
 
 **Task Detail**:
--   **Task 1: Connect Frontend to Insight Generator API**
-    -   **Where to resume**: In  and , within the Insight Summary tab.
-        1.  Implement a  hook that triggers when analytics data is ready.
-        2.  Make a  request to the  endpoint, sending the analytics results as the payload.
-        3.  Render the returned summary, recommendations, and trends in a clean, readable format.
-    -   **What will be achieved with this?**: This will complete the final, most valuable feature of the analytics system, providing users with automated, actionable insights.
+-   **Task 1: Complete Permission System Implementation**
+    -   **Where to resume**: The main remaining work is fixing the bugs in the Admin Panel and verifying the entire system.
+        1.  **Fix Bugs**: Prioritize fixing Issue 1 (Inconsistent UI) and verifying the fix for Issue 2 (Sidebar Visibility).
+        2.  **Backend Enforcement Review**: While the main endpoints are secured, conduct a quick review of all endpoints in  related to the diagnostics modules to ensure no data modification endpoint is missing a permission check.
+        3.  **End-to-End Test**: Once the bugs are fixed, perform a full test cycle: As a Superadmin, grant a regular user a specific, non-default permission (e.g.,  but not ). Log in as the user and confirm they can upload a file but the Analyze Data button is disabled.
+    -   **What will be achieved with this?**: This will deliver the complete, secure, and bug-free permission system requested by the user.
     -   **Status**: IN PROGRESS
     -   **Should Test frontend/backend/both after fix?**: both
-    -   **Blocked on something**: Task 2 (Analytics Engine Logic).
--   **Task 2: Implement Analytics Engine Logic**
-    -   **Where to resume**: In .
-    -   **What will be achieved with this?**: This service is currently a placeholder. It needs to be implemented with the actual business logic to perform calculations (e.g., engagement rates, content pillar performance, keyword opportunities) on the mapped data. This is a prerequisite for the Insight Generator to work.
-    -   **Status**: NOT STARTED
-    -   **Should Test frontend/backend/both after fix?**: backend
-    -   **Blocked on something**: None.
+    -   **Blocked on something**: Blocked by the Admin Panel bugs (Issue 1 & 2).
 
 **Upcoming and Future Tasks**
-- **Upcoming Tasks**:
-    - (P2) Add CSV/XLS *export* functionality to the Data Input tabs.
-- **Future Tasks**:
-    - (P2) Address the Admin Panel slow loading issue.
-    - (P3) Live Editing Feasibility: Follow up with the user on the agent's recommendation for a PDF Annotation system instead of native PPTX/PDF editing.
+
+-   **Upcoming Tasks**:
+    -   (P1) Add CSV/XLS *export* functionality to the Data Input tabs.
+-   **Future Tasks**:
+    -   (P2) Address the Admin Panel slow loading issue by optimizing the  endpoint.
 
 **Completed work in this session**
-- **Module Management**: Implemented module renaming and a drag-and-drop reordering system in the Admin Panel.
-- **User-Specific Module Permissions**: Added toggles in the Admin Panel to control module visibility for each user and updated the backend/frontend logic accordingly.
-- **Comprehensive Data Analytics System (Foundation)**:
-    - Built the dynamic Data Input tab with a flexible table, CSV/XLS upload, and column management.
-    - **Crucially**, fixed the upload logic to preserve preset columns and append new data, preventing the analytics schema from being overwritten.
-    - Implemented the Column Mapping UI and backend logic.
-    - Created the backend service and API endpoint for the Insight Generator.
-- **Deployment & Environment Fixes**:
-    - Resolved a critical, recurring backend deployment failure () by correcting Python import paths for the Google Cloud Run environment.
-    - Documented the user's exact, mandatory deployment commands for both frontend () and backend ().
+-   **Architectural Fix (Data Sharing)**: Resolved a critical data overlap bug by refactoring the backend to use a module-specific, globally shared data model in Firestore.
+-   **Full Analytics Engine Implementation**: Built and debugged the entire backend analytics and insight generation logic based on user-provided formulas.
+-   **Frontend Analytics UI**: Created the Dashboard and Insight Summary tabs, with Recharts visualizations and robust empty/loading states.
+-   **Data Quality Validation**: Implemented a warning system to inform users of rows with missing data, preventing silent failures and improving UX.
+-   **Permission System Foundation**: Extended backend models with granular permissions and applied checks to frontend UI elements and backend APIs.
+-   **Admin Panel Refactoring**: Consolidated multiple settings tabs into the All Users tab as per user's request, simplifying the top-level navigation.
+
+**Earlier issues found/mentioned but not fixed**
+-   None.
 
 **Known issue recurrence from previous fork**
-- **Issue recurrence in previous fork**: Backend deployment on Google Cloud Run repeatedly failed with .
-- **Recurrence count**: High.
-- **Status**: RESOLVED. The root cause was incorrect Python import paths for the Cloud Run environment. The agent fixed this by adding  to key backend files. This fix is critical and must be preserved.
+-   None in this session. The previous  on deployment was resolved and has not returned.
 
 **Code Architecture**
 
 
 **Key Technical Concepts**
-- **Backend**: FastAPI, Firestore, Pydantic. The  pattern is critical for Cloud Run deployment.
-- **Frontend**: React, , Shadcn UI,  for drag-and-drop,  for CSV parsing,  for Excel file parsing.
+-   **Backend**: FastAPI, Firebase Firestore, Pydantic.
+-   **Frontend**: React, Shadcn UI, .
+-   **Data Architecture**: The data model for diagnostics modules was pivoted from per-user () to globally shared, per-module (). This is a crucial architectural decision.
+-   **Permissions**: A detailed permission model defined in  is stored per-user in a  collection in Firestore. Enforcement is done on both the frontend (disabling UI) and backend (protecting API endpoints).
 
-**All files** (list a.) all created or updated files in this session and why do they exists? 2. Any other important files)
-- **Created**:
-    - : Logic for module reordering.
-    - : Manages the entire lifecycle of dynamic data (tables, columns, rows, mappings).
-    - : Placeholder for the core analytics calculation logic.
-    - : Logic for generating automated text summaries.
-    - : Frontend service for the module ordering feature.
-    - : The drag-and-drop UI for reordering modules in the Admin Panel.
-- **Updated**:
-    - : Heavily modified to add endpoints for all new features and to fix Python path issues.
-    - : Added a function to handle user-specific module toggles.
-    - : Updated to include the module ordering tab and the user-specific module toggles.
-    - : Updated to reflect renamed modules and to apply the custom module order.
-    -  & : Completely rewritten to implement the multi-tab data analytics system.
-    - : Added new dependencies for file parsing and drag-and-drop.
+**key DB schema**
+-   : collection where each document ID is a . The document contains a nested object with permissions for all modules (e.g., ).
+-   : collection where each document ID is a module name (e.g., ). The document contains the shared , , and  for that module.
+
+**changes in tech stack**
+-   None.
+
+**All files**
+-   **Created**:
+    -   : A custom React hook to simplify checking user permissions in UI components.
+-   **Updated (Critically)**:
+    -   : Fundamentally changed to implement the globally shared, per-module data model.
+    -   : The source of truth for the entire granular permission structure.
+    -   : Majorly refactored to consolidate UI, but is now the source of high-priority bugs.
+    -   : Updated to use the correct permission service, fixing a module visibility bug.
+    -   : Updated to add permission enforcement to API endpoints.
+
+**Areas that need refactoring**:
+-   The permission creation logic in  needs to be fixed to ensure all users get a consistent set of default permissions.
+
+**key api endpoints**
+-    (GET, PUT): Manages user permissions.
+-    (POST): Secured endpoint for saving table data.
+-    (POST): Secured endpoint for saving column mappings.
+-    (GET): Secured endpoint that triggers the analytics engine.
+-    (POST): Secured endpoint that generates the insight summary.
 
 **Critical Info for New Agent**
-- **User-Specific Deployment Commands are Mandatory**:
-    - **Backend**: From , run: . The  flag is non-negotiable to prevent using stale Docker images.
-    - **Frontend**: From , the user's process is  (NOT yarn install v1.22.22
-[1/4] Resolving packages...
-success Already up-to-date.
-Done in 0.35s.), followed by .
-- **Python Path Fix is Essential**: The agent resolved a recurring  on deployment by adding  to key backend files. This change is critical for the application to run on Google Cloud and must not be altered.
-- **Analytics Logic is a Placeholder**: The core analytics calculations in  have not been implemented. The Insight Generator depends on the output of this service.
-- **Admin Panel Performance**: The Admin Panel has a known loading delay of 5-10 seconds. Be patient when accessing it for testing.
+-   **Priority 1 is Fixing Admin Panel Bugs**: The user is blocked by two issues: the inconsistent Advanced Settings UI for different users, and the sidebar not respecting module permissions. The UI inconsistency is likely a backend issue in how default permissions are created.
+-   **Data Model is Now Globally Shared**: Do not write user-specific logic for the diagnostics modules. All data is stored per-module in the  collection and is visible to all users. This was a critical fix requested by the user.
+-   **Permissions are the Core Task**: The overarching goal is to complete the granular permission system. Every fix and test should be viewed through the lens of making this system robust, secure, and consistent.
+
+**documents created in this job**
+-   
+-   
+-   
 
 **Last 5 User Messages and any pending user messages**
-1.  **User**: Requested an Insight Summary tab in both analytics modules to automatically generate executive summaries and recommendations from the analytics data. (COMPLETED - Backend service created, frontend tab is a placeholder).
-2.  **User**: Reported that CSV uploads were deleting preset columns and requested a fix to ensure preset columns are always preserved. Also requested UI consistency between the two analytics modules. (COMPLETED).
-3.  **User**: Provided a comprehensive Master Instruction for the full data analytics system, including CSV upload, a flexible table editor, a column mapping system, and an analytics engine. (COMPLETED - Foundation is built, but core analytics logic is a placeholder).
-4.  **User**: Pointed out that the data input tables were blank and requested that column headers always be visible. (COMPLETED).
-5.  **User**: Confirmed all fixes were working and said All ok. Can carry on. (Agent then proceeded to final summary before being asked about rollback).
+1.  **User**: Reported that data was overlapping between the two diagnostics modules and requested a fix. The desired state is globally shared data, separated by module. (Status: COMPLETED)
+2.  **User**: Confirmed the data separation fix was good and instructed the agent to proceed with the permissions task. (Status: ACKNOWLEDGED)
+3.  **User**: Provided detailed instructions to reorganize the Admin Panel by removing separate settings tabs and consolidating everything into the All Users tab. (Status: IN PROGRESS)
+4.  **User**: Reported critical bugs with the Admin Panel refactoring: sidebar visibility is broken, and the permissions UI is inconsistent for different users. (Status: PENDING FIX)
+5.  **User**: Awaiting a fix for the Admin Panel bugs. The conversation ended on this bug report. (Status: PENDING FIX)
 
 **Project Health Check:**
-- **Broken**: The Insight Summary tab is not yet connected to the backend. The analytics engine is not yet functional.
-- **Mocked**: The  is a placeholder and does not perform any real calculations.
+-   **Broken**: The Admin Panel is currently in a buggy state due to the recent refactoring. The permissions UI is inconsistent, and module visibility in the sidebar is not working as expected. These issues block further user testing.
+-   **Mocked**: None.
 
 **Testing status**
-- **Testing agent used after significant changes**: NO
-- **Troubleshoot agent used after agent stuck in loop**: NO
-- **Test files created**: []
-- **Known regressions**: None
+-   **Testing agent used after significant changes**: NO
+-   **Troubleshoot agent used after agent stuck in loop**: NO
+-   **Test files created**: []
+-   **Known regressions**: The Admin Panel refactoring introduced bugs in permission management and UI consistency.
 
 **Credentials to test flow:**
 -   **Super Admin**:  / 
--   **Regular User**: Credentials for a regular test user (e.g., ) need to be confirmed or created to test the user-specific permission toggles.
+-   **Regular User**: Use accounts like , , or  to test the differences in the Admin Panel UI and to verify permission-based access.
 
 **What agent forgot to execute**
-- The agent did not implement the core business logic for the analytics engine in . The service exists, but it's a placeholder.
-- The agent created the backend for the Insight Summary but did not connect the frontend to fetch and display the data.
-- The agent fixed the sidebar visibility logic for regular users but did not perform a final end-to-end test to confirm the fix works as expected.</analysis>
+-   The agent did not update the backend logic responsible for creating *default* permission sets for users. This oversight is the likely cause of the inconsistent Advanced Settings UI that the user reported.
+-   The agent did not perform a full end-to-end test on the sidebar visibility fix before presenting the work, leading to the user finding the bug.</analysis>
