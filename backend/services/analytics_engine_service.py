@@ -24,12 +24,67 @@ class AnalyticsEngineService:
             if not mapped_data:
                 return {'error': 'No data available for analytics'}
             
+            # Data quality warnings
+            data_warnings = []
+            skipped_rows = []
+            
             # Helper function to safely convert to numeric
             def safe_num(value, default=0):
                 try:
                     return float(value) if value not in [None, '', 'null'] else default
                 except (ValueError, TypeError):
                     return default
+            
+            # Validate and filter data
+            valid_data = []
+            for idx, row in enumerate(mapped_data, start=1):
+                issues = []
+                platform = row.get('platform', '')
+                post_type = row.get('post_type', '')
+                
+                # Check critical fields
+                if not platform or platform in ['', 'null', None]:
+                    issues.append('Missing Platform')
+                if not post_type or post_type in ['', 'null', None]:
+                    issues.append('Missing Post Type')
+                
+                # Check if all engagement metrics are zero/missing
+                likes = safe_num(row.get('likes', 0))
+                comments = safe_num(row.get('comments', 0))
+                shares = safe_num(row.get('shares', 0))
+                saves = safe_num(row.get('saves', 0))
+                views = safe_num(row.get('views', 0))
+                
+                if likes == 0 and comments == 0 and shares == 0 and saves == 0 and views == 0:
+                    issues.append('No engagement data')
+                
+                if issues:
+                    skipped_rows.append({
+                        'row': idx,
+                        'platform': platform or 'N/A',
+                        'post_type': post_type or 'N/A',
+                        'issues': ', '.join(issues)
+                    })
+                else:
+                    valid_data.append(row)
+            
+            # Add warning if rows were skipped
+            if skipped_rows:
+                data_warnings.append({
+                    'type': 'warning',
+                    'message': f'{len(skipped_rows)} row(s) skipped due to missing critical data',
+                    'details': skipped_rows[:10]  # Show first 10 problematic rows
+                })
+            
+            # If no valid data remains, return error
+            if not valid_data:
+                return {
+                    'error': 'No valid data available for analytics',
+                    'warnings': data_warnings
+                }
+            
+            # Use valid_data instead of mapped_data for calculations
+            mapped_data = valid_data
             
             # Calculate engagement rate for each post using EXACT formula
             posts_with_engagement = []
