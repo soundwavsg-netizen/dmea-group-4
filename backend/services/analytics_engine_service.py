@@ -253,8 +253,14 @@ class AnalyticsEngineService:
             # POST-LEVEL DATA (All posts for detailed analysis)
             post_level_data = []
             for post in posts_with_engagement:
-                # Try multiple possible URL field names
-                url = post.get('post_url') or post.get('url') or post.get('post_link') or post.get('link') or post.get('Post URL') or post.get('URL') or ''
+                # Try to find URL field - check all keys in post that might contain URL
+                url = ''
+                for key in post.keys():
+                    key_lower = str(key).lower()
+                    if 'url' in key_lower or 'link' in key_lower:
+                        url = post.get(key, '')
+                        if url and url.strip():
+                            break
                 
                 post_level_data.append({
                     'platform': post.get('platform', 'Unknown'),
