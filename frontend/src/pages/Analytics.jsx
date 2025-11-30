@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Download, Upload, Trash2, Edit2, Save, X, BarChart3, TrendingUp, AlertCircle, Target } from 'lucide-react';
+import { Plus, Download, Upload, Trash2, Edit2, Save, X, BarChart3, TrendingUp, AlertCircle, Target, Lock } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Input } from '../components/ui/input';
@@ -11,6 +11,7 @@ import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, ScatterChart, Scatter } from 'recharts';
 import authService from '../services/authService';
+import { usePermissions } from '../hooks/usePermissions';
 
 const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
