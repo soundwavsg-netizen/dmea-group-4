@@ -69,6 +69,8 @@ const SocialMedia = () => {
   useEffect(() => {
     loadData();
     loadMappings();
+    loadAnalytics();
+    loadInsights();
   }, []);
 
   const loadData = async () => {
