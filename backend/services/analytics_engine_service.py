@@ -194,47 +194,51 @@ class AnalyticsEngineService:
             fix_items = []
             drop_items = []
             
-            # Define thresholds
-            high_engagement_threshold = avg_engagement_rate * 1.2  # 20% above average
-            low_engagement_threshold = avg_engagement_rate * 0.5   # 50% below average
+            # Define more lenient thresholds (10% above/below average instead of 20%/50%)
+            high_engagement_threshold = avg_engagement_rate * 1.05  # 5% above average
+            low_engagement_threshold = avg_engagement_rate * 0.8   # 20% below average
             
             for pillar in content_pillars:
                 pillar_posts = pillar['posts']
                 pillar_engagement = pillar['avg_engagement_rate']
                 pillar_name = pillar['pillar']
                 
+                # Skip if no posts
+                if not pillar_posts:
+                    continue
+                
                 # Check sentiment distribution for this pillar
                 positive_count = sum(1 for p in pillar_posts if str(p.get('sentiment', '')).lower() in ['positive', 'pos'])
                 negative_count = sum(1 for p in pillar_posts if str(p.get('sentiment', '')).lower() in ['negative', 'neg'])
                 total_pillar_posts = len(pillar_posts)
+                positive_ratio = positive_count / max(total_pillar_posts, 1)
+                negative_ratio = negative_count / max(total_pillar_posts, 1)
                 
-                # PUSH: High engagement rate AND Positive sentiment
-                if pillar_engagement >= high_engagement_threshold and positive_count / max(total_pillar_posts, 1) > 0.5:
+                # PUSH: Above average engagement AND majority positive sentiment (or neutral with high engagement)
+                if pillar_engagement >= high_engagement_threshold and positive_ratio >= 0.5:
                     push_items.append({
                         'type': pillar_name,
                         'engagement_rate': round(pillar_engagement, 4),
-                        'reason': f'High engagement ({round(pillar_engagement * 100, 2)}%) with positive sentiment',
-                        'action': f'Increase {pillar_name} content frequency'
+                        'reason': f'Strong engagement ({round(pillar_engagement * 100, 2)}%) with {int(positive_ratio * 100)}% positive sentiment',
+                        'action': f'Increase {pillar_name} content frequency by 25-50%'
                     })
                 
-                # FIX: High engagement rate AND Negative sentiment
-                elif pillar_engagement >= high_engagement_threshold and negative_count / max(total_pillar_posts, 1) > 0.5:
+                # FIX: Good engagement BUT significant negative sentiment (>30%)
+                elif pillar_engagement >= avg_engagement_rate * 0.9 and negative_ratio > 0.3:
                     fix_items.append({
                         'type': pillar_name,
                         'engagement_rate': round(pillar_engagement, 4),
-                        'reason': f'High engagement ({round(pillar_engagement * 100, 2)}%) but negative sentiment',
-                        'action': f'Review messaging and tone for {pillar_name} content'
+                        'reason': f'Decent engagement ({round(pillar_engagement * 100, 2)}%) but {int(negative_ratio * 100)}% negative sentiment',
+                        'action': f'Audit {pillar_name} messaging to address concerns and improve sentiment'
                     })
                 
-                # DROP: Low engagement rate AND Low posting frequency AND Low views
-                elif (pillar_engagement <= low_engagement_threshold and 
-                      pillar['total_posts'] < total_posts * 0.1 and 
-                      pillar['avg_views'] < total_views / total_posts * 0.5):
+                # DROP: Below average engagement AND low views
+                elif pillar_engagement <= low_engagement_threshold and pillar['avg_views'] < (total_views / total_posts * 0.7):
                     drop_items.append({
                         'type': pillar_name,
                         'engagement_rate': round(pillar_engagement, 4),
-                        'reason': f'Low engagement ({round(pillar_engagement * 100, 2)}%), low frequency, low views',
-                        'action': f'Consider dropping or restructuring {pillar_name} content'
+                        'reason': f'Below average engagement ({round(pillar_engagement * 100, 2)}%) with limited reach ({int(pillar["avg_views"])} avg views)',
+                        'action': f'Consider pausing {pillar_name} content or testing new approaches'
                     })
             
             # TOP PERFORMING POSTS
