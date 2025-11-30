@@ -704,6 +704,106 @@ const Analytics = () => {
                       </CardContent>
                     </Card>
                   )}
+
+                  {/* Competitor Keyword Visibility */}
+                  {analytics.content_gaps && analytics.content_gaps.length > 0 && (
+                    <Card className="border-[#1769AA]">
+                      <CardHeader className="bg-blue-50">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <CardTitle className="text-[#1769AA] flex items-center gap-2">
+                              <Target className="w-5 h-5" />
+                              Competitor Keyword Visibility
+                            </CardTitle>
+                            <CardDescription>Keywords where competitors outrank you - sorted by opportunity</CardDescription>
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="pt-6">
+                        <div className="space-y-4">
+                          {/* Summary Stats */}
+                          <div className="grid grid-cols-3 gap-4 mb-6">
+                            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                              <div className="text-2xl font-bold text-blue-700">{analytics.content_gaps.length}</div>
+                              <div className="text-xs text-blue-600">Total Gap Keywords</div>
+                            </div>
+                            <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                              <div className="text-2xl font-bold text-green-700">
+                                {analytics.content_gaps.filter(g => g.difficulty <= 40).length}
+                              </div>
+                              <div className="text-xs text-green-600">Easy Wins (Difficulty ≤40)</div>
+                            </div>
+                            <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                              <div className="text-2xl font-bold text-yellow-700">
+                                {analytics.content_gaps.reduce((sum, g) => sum + (g.volume || 0), 0).toLocaleString()}
+                              </div>
+                              <div className="text-xs text-yellow-600">Total Opportunity Volume</div>
+                            </div>
+                          </div>
+
+                          {/* Top Opportunities Table */}
+                          <div className="overflow-x-auto">
+                            <table className="w-full text-sm">
+                              <thead className="bg-[#FAF7F5] border-b-2 border-blue-200">
+                                <tr>
+                                  <th className="px-4 py-3 text-left font-semibold">Keyword</th>
+                                  <th className="px-4 py-3 text-center font-semibold">Competitor Rank</th>
+                                  <th className="px-4 py-3 text-right font-semibold">Search Volume</th>
+                                  <th className="px-4 py-3 text-right font-semibold">Difficulty</th>
+                                  <th className="px-4 py-3 text-right font-semibold">Opportunity Score</th>
+                                  <th className="px-4 py-3 text-center font-semibold">Priority</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {analytics.content_gaps.slice(0, 10).map((gap, idx) => {
+                                  const isEasyWin = gap.difficulty <= 40 && gap.volume >= 500;
+                                  const priority = isEasyWin ? 'High' : gap.volume >= 1000 ? 'Medium' : 'Low';
+                                  
+                                  return (
+                                    <tr 
+                                      key={idx} 
+                                      className={`border-b hover:bg-blue-50 transition-colors ${
+                                        isEasyWin ? 'bg-green-50/30' : ''
+                                      }`}
+                                    >
+                                      <td className="px-4 py-3 font-medium text-[#1769AA]">{gap.keyword}</td>
+                                      <td className="px-4 py-3 text-center">
+                                        <Badge variant="outline" className="bg-white">
+                                          #{gap.competitor_rank}
+                                        </Badge>
+                                      </td>
+                                      <td className="px-4 py-3 text-right">{gap.volume?.toLocaleString()}</td>
+                                      <td className="px-4 py-3 text-right">
+                                        <span className={
+                                          gap.difficulty <= 40 ? 'text-green-600 font-semibold' :
+                                          gap.difficulty <= 60 ? 'text-yellow-600' :
+                                          'text-red-600'
+                                        }>
+                                          {gap.difficulty}
+                                        </span>
+                                      </td>
+                                      <td className="px-4 py-3 text-right font-semibold text-[#A62639]">
+                                        {gap.opportunity_score}
+                                      </td>
+                                      <td className="px-4 py-3 text-center">
+                                        <Badge className={
+                                          priority === 'High' ? 'bg-green-500 hover:bg-green-600' :
+                                          priority === 'Medium' ? 'bg-yellow-500 hover:bg-yellow-600' :
+                                          'bg-gray-400 hover:bg-gray-500'
+                                        }>
+                                          {priority}
+                                        </Badge>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
                 </div>
               )}
             </CardContent>
