@@ -86,9 +86,9 @@ const SearchMarketingNav = ({ activeTab, setActiveTab }) => {
             <div
               onClick={() => setActiveTab('dashboard')}
               className={tabStyle('dashboard')}
-              data-testid="search-marketing-tab-dashboard"
+              data-testid="search-marketing-tab-analytics"
             >
-              Dashboard
+              Analytics
             </div>
           )}
           
