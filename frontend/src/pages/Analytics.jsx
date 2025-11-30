@@ -451,12 +451,10 @@ const Analytics = () => {
                 ))}
                 <Button 
                   onClick={saveMappings} 
-                  disabled={!canPerformAction('perform_mapping')}
-                  className="w-full bg-[#A62639] hover:bg-[#8a1f2d] mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-[#A62639] hover:bg-[#8a1f2d] mt-6"
                 >
-                  {!canPerformAction('perform_mapping') && <Lock className="w-4 h-4 mr-2" />}
                   <Save className="w-4 h-4 mr-2" />
-                  Save Mappings & Generate Analytics
+                  Save Mappings
                 </Button>
               </div>
             </CardContent>
