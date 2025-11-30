@@ -36,15 +36,16 @@ class DynamicDataService:
     
     @staticmethod
     def get_table_data(username: str, module: str) -> Dict[str, Any]:
-        """Get complete table data"""
+        """Get complete table data - SHARED across all users"""
         try:
-            doc = db.collection(f'{module}_dynamic_data').document(username).get()
+            # Get the shared document so all users see the same latest data
+            doc = db.collection(f'{module}_dynamic_data').document('shared').get()
             if doc.exists:
                 return doc.to_dict()
-            return {'columns': [], 'rows': [], 'username': username}
+            return {'columns': [], 'rows': [], 'last_updated_by': None}
         except Exception as e:
             print(f"Error retrieving {module} data: {e}")
-            return {'columns': [], 'rows': [], 'username': username}
+            return {'columns': [], 'rows': [], 'last_updated_by': None}
     
     @staticmethod
     def save_column_mapping(username: str, module: str, mappings: Dict[str, str]) -> bool:
