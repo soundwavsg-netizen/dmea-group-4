@@ -469,7 +469,7 @@ const SocialMedia = () => {
               ) : rows.length === 0 ? (
                 <div className="text-center py-12">
                   <Upload className="w-16 h-16 mx-auto text-[#E0AFA0] mb-4" />
-                  <p className="text-[#6C5F5F] mb-4">No data yet. Upload a CSV/Excel file or click "Add Row" to start.</p>
+                  <p className="text-[#6C5F5F] mb-4">No data yet. Upload a CSV/Excel file or click &quot;Add Row&quot; to start.</p>
                   <div className="flex gap-3 justify-center">
                     <Button onClick={() => document.getElementById('file-upload').click()} className="bg-[#A62639] hover:bg-[#8a1f2d]">
                       <Upload className="w-4 h-4 mr-2" />Upload File
