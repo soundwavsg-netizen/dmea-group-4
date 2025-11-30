@@ -135,8 +135,9 @@ class InsightGeneratorService:
         })
         
         # PERSONA ALIGNMENT
+        top_pillar_name = pillars[0]['pillar'] if pillars and len(pillars) > 0 else 'top content types'
         if avg_engagement_rate > 0.03:
-            insights['persona_alignment'] = f"Content resonates strongly with target audience (avg {round(avg_engagement_rate * 100, 2)}% engagement). Continue current persona targeting with focus on {best_pillar['pillar'] if pillars else 'top content types'}."
+            insights['persona_alignment'] = f"Content resonates strongly with target audience (avg {round(avg_engagement_rate * 100, 2)}% engagement). Continue current persona targeting with focus on {top_pillar_name}."
         else:
             insights['persona_alignment'] = f"Engagement below target ({round(avg_engagement_rate * 100, 2)}%). Review persona assumptions and test content variations to better match audience preferences."
         
