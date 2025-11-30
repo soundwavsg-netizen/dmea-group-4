@@ -889,6 +889,98 @@ const Analytics = () => {
                     </Card>
                   )}
 
+                  {/* Keyword Trend Movement - Optional (only if date data available) */}
+                  {insights.keyword_trends && insights.keyword_trends.length > 0 && (
+                    <Card className="border-purple-500">
+                      <CardHeader className="bg-purple-50">
+                        <CardTitle className="text-purple-800 flex items-center gap-2">
+                          <TrendingUp className="w-5 h-5" />
+                          Keyword Trend Movement
+                        </CardTitle>
+                        <CardDescription>Micro-insights on search volume changes over time</CardDescription>
+                      </CardHeader>
+                      <CardContent className="pt-6">
+                        <div className="space-y-4">
+                          {/* Trending Up */}
+                          {insights.keyword_trends.filter(t => t.trend === 'up').length > 0 && (
+                            <div className="mb-4">
+                              <h3 className="text-lg font-semibold text-green-700 mb-3 flex items-center gap-2">
+                                <TrendingUp className="w-4 h-4" />
+                                Trending Up ({insights.keyword_trends.filter(t => t.trend === 'up').length})
+                              </h3>
+                              <div className="space-y-2">
+                                {insights.keyword_trends.filter(t => t.trend === 'up').slice(0, 5).map((kw, idx) => (
+                                  <div key={idx} className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                                    <div className="flex items-center justify-between">
+                                      <span className="font-medium text-green-800">{kw.keyword}</span>
+                                      <Badge className="bg-green-600 text-white">
+                                        +{kw.change_percent}%
+                                      </Badge>
+                                    </div>
+                                    <div className="text-sm text-green-700 mt-1">
+                                      Volume: {kw.current_volume?.toLocaleString()} (was {kw.previous_volume?.toLocaleString()})
+                                    </div>
+                                    {kw.insight && (
+                                      <p className="text-xs text-green-600 mt-1 italic">{kw.insight}</p>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Trending Down */}
+                          {insights.keyword_trends.filter(t => t.trend === 'down').length > 0 && (
+                            <div className="mb-4">
+                              <h3 className="text-lg font-semibold text-red-700 mb-3 flex items-center gap-2">
+                                <AlertCircle className="w-4 h-4" />
+                                Trending Down ({insights.keyword_trends.filter(t => t.trend === 'down').length})
+                              </h3>
+                              <div className="space-y-2">
+                                {insights.keyword_trends.filter(t => t.trend === 'down').slice(0, 5).map((kw, idx) => (
+                                  <div key={idx} className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                                    <div className="flex items-center justify-between">
+                                      <span className="font-medium text-red-800">{kw.keyword}</span>
+                                      <Badge className="bg-red-600 text-white">
+                                        {kw.change_percent}%
+                                      </Badge>
+                                    </div>
+                                    <div className="text-sm text-red-700 mt-1">
+                                      Volume: {kw.current_volume?.toLocaleString()} (was {kw.previous_volume?.toLocaleString()})
+                                    </div>
+                                    {kw.insight && (
+                                      <p className="text-xs text-red-600 mt-1 italic">{kw.insight}</p>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Stable Keywords */}
+                          {insights.keyword_trends.filter(t => t.trend === 'stable').length > 0 && (
+                            <div>
+                              <h3 className="text-lg font-semibold text-gray-700 mb-3">
+                                Stable ({insights.keyword_trends.filter(t => t.trend === 'stable').length})
+                              </h3>
+                              <p className="text-sm text-gray-600">
+                                {insights.keyword_trends.filter(t => t.trend === 'stable').length} keywords showing consistent search volume
+                              </p>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* No Date Data Message */}
+                        {insights.keyword_trends.length === 0 && (
+                          <div className="text-center py-6 text-gray-600">
+                            <AlertCircle className="w-12 h-12 mx-auto mb-2 text-gray-400" />
+                            <p>No trend data available. Add date/timestamp data to track keyword movement over time.</p>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  )}
+
                   {/* Priority Actions */}
                   {insights.priority_actions && insights.priority_actions.length > 0 && (
                     <Card>
