@@ -359,7 +359,8 @@ const AdminPanel = () => {
       presentations: 'Presentations',
       reports: 'Reports',
       social_media_diagnostics: '📱 Social Media Diagnostics',
-      search_marketing_diagnostics: '📊 Search Marketing Diagnostics'
+      search_marketing_diagnostics: '📊 Search Marketing Diagnostics',
+      shared_folder: '📁 Shared Folder'
     };
     return labels[moduleName] || moduleName;
   };
