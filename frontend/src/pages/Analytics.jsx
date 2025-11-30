@@ -489,8 +489,10 @@ const Analytics = () => {
                 ))}
                 <Button 
                   onClick={saveMappings} 
-                  className="w-full bg-[#A62639] hover:bg-[#8a1f2d] mt-6"
+                  disabled={!isSuperadmin && !canPerformAction('perform_mapping')}
+                  className="w-full bg-[#A62639] hover:bg-[#8a1f2d] mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
+                  {!isSuperadmin && !canPerformAction('perform_mapping') && <Lock className="w-4 h-4 mr-2" />}
                   <Save className="w-4 h-4 mr-2" />
                   Save Mappings
                 </Button>
