@@ -1644,12 +1644,12 @@ def generate_insights(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.get("/api/insights/{module_type}")
-def get_insights(
+@app.get("/api/diagnostic-insights/{module_type}")
+def get_diagnostic_insights(
     module_type: str,
     x_user_name: Optional[str] = Header(None)
 ):
-    """Get saved insights - No special permission needed, just view access"""
+    """Get saved diagnostic insights - No special permission needed, just view access"""
     if not x_user_name:
         raise HTTPException(status_code=401, detail="Authentication required")
     
