@@ -116,7 +116,10 @@ const SocialMedia = () => {
       
       // Step 1: Run analytics
       const analyticsResponse = await axios.get(`${API}/api/analytics/social_media`, {
-        headers: { 'X-User-Name': session?.username }
+        headers: { 
+          'X-User-Name': session?.username,
+          'X-User-Role': session?.role
+        }
       });
       
       if (analyticsResponse.data.error) {
@@ -129,7 +132,10 @@ const SocialMedia = () => {
       // Step 2: Generate insights
       const insightsResponse = await axios.post(`${API}/api/generate-insights/social_media`,
         analyticsResponse.data,
-        { headers: { 'X-User-Name': session?.username } }
+        { headers: { 
+          'X-User-Name': session?.username,
+          'X-User-Role': session?.role
+        } }
       );
       
       setInsights(insightsResponse.data);
