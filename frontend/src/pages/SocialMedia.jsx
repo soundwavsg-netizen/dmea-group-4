@@ -237,7 +237,10 @@ const SocialMedia = () => {
     try {
       await axios.post(`${API}/api/dynamic-data/social_media`,
         { columns, rows, updated_at: new Date().toISOString() },
-        { headers: { 'X-User-Name': session?.username } }
+        { headers: { 
+          'X-User-Name': session?.username,
+          'X-User-Role': session?.role
+        } }
       );
       toast.success('Data saved successfully');
     } catch (error) {
