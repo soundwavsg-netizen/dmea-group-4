@@ -490,6 +490,7 @@ class AnalyticsEngineService:
             }
             
             return {
+                'warnings': data_warnings if data_warnings else None,
                 'overview': {
                     'total_keywords': total_keywords,
                     'total_search_volume': int(total_search_volume),
