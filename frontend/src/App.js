@@ -32,6 +32,7 @@ import './App.css';
 function App() {
   return (
     <BrowserRouter>
+      <Toaster position="top-right" richColors closeButton />
       <Routes>
         {/* Public Route - Login (No Layout) */}
         <Route path="/login" element={<Login />} />
