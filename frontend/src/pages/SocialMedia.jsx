@@ -812,6 +812,7 @@ const SocialMedia = () => {
                                   <th className="px-4 py-3 text-right font-semibold">Engagement Rate</th>
                                   <th className="px-4 py-3 text-right font-semibold">Views</th>
                                   <th className="px-4 py-3 text-center font-semibold">Sentiment</th>
+                                  <th className="px-4 py-3 text-center font-semibold">Action</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -830,7 +831,7 @@ const SocialMedia = () => {
                                       <td className="px-4 py-3">{post.platform}</td>
                                       <td className="px-4 py-3 max-w-xs truncate">
                                         <span className="text-[#1769AA]">
-                                          {post.post_url}
+                                          {post.post_url || 'N/A'}
                                         </span>
                                       </td>
                                       <td className="px-4 py-3">{post.post_type}</td>
@@ -846,6 +847,20 @@ const SocialMedia = () => {
                                         }`}>
                                           {post.sentiment}
                                         </span>
+                                      </td>
+                                      <td className="px-4 py-3 text-center">
+                                        {post.classification && post.classification !== 'NONE' && (
+                                          <Badge 
+                                            className={`font-semibold ${
+                                              post.classification === 'PUSH' ? 'bg-green-500 hover:bg-green-600 text-white' :
+                                              post.classification === 'FIX' ? 'bg-yellow-500 hover:bg-yellow-600 text-white' :
+                                              post.classification === 'DROP' ? 'bg-red-500 hover:bg-red-600 text-white' :
+                                              'bg-gray-300 text-gray-700'
+                                            }`}
+                                          >
+                                            {post.classification}
+                                          </Badge>
+                                        )}
                                       </td>
                                     </tr>
                                   );
