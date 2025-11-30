@@ -50,13 +50,14 @@ class DynamicDataService:
     @staticmethod
     def save_column_mapping(username: str, module: str, mappings: Dict[str, str]) -> bool:
         """
-        Save column mappings (which uploaded column maps to which system field)
+        Save column mappings (which uploaded column maps to which system field) - SHARED
         Example: {'platform': 'Column A', 'likes': 'Column B'}
         """
         try:
-            doc_ref = db.collection(f'{module}_column_mappings').document(username)
+            # Use 'shared' document so all users see the same mappings
+            doc_ref = db.collection(f'{module}_column_mappings').document('shared')
             doc_ref.set({
-                'username': username,
+                'last_updated_by': username,
                 'mappings': mappings
             })
             return True
