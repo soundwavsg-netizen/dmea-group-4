@@ -235,6 +235,15 @@ ADMIN_PERMISSIONS = {
             "delete": True,
             "share": True
         }
+    ),
+    "important_links": ModulePermission(
+        enabled=True,
+        tabs={},
+        actions={
+            "add": True,
+            "edit": True,
+            "delete": True
+        }
     )
 }
 
