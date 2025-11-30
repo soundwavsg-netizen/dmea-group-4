@@ -3,6 +3,7 @@ import Sidebar from './Sidebar';
 import { useLocation } from 'react-router-dom';
 import BuyerPersonaNav from './BuyerPersonaNav';
 import PresentationsNav from './PresentationsNav';
+import DashboardNav from './DashboardNav';
 import authService from '../services/authService';
 
 const Layout = ({ children }) => {
