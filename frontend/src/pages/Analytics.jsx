@@ -358,17 +358,6 @@ const Analytics = () => {
           <p className="text-[#6C5F5F] mb-8">Upload data, map columns, and analyze keyword opportunities</p>
 
         {activeTab === 'data-input' && (
-          !canViewTab('data_input') ? (
-            <Card>
-              <CardContent className="py-12">
-                <div className="text-center">
-                  <Lock className="w-16 h-16 mx-auto text-[#E0AFA0] mb-4" />
-                  <h3 className="text-xl font-semibold text-[#6C5F5F] mb-2">Access Restricted</h3>
-                  <p className="text-[#6C5F5F]">You don't have permission to view this tab. Contact your administrator.</p>
-                </div>
-              </CardContent>
-            </Card>
-          ) : (
           <Card>
             <CardHeader>
               <div className="flex justify-between items-center">
