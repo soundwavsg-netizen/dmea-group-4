@@ -158,12 +158,13 @@ const Analytics = () => {
 
   const loadInsights = async () => {
     try {
-      const response = await axios.get(`${API}/api/insights/search_marketing`, {
+      const response = await axios.get(`${API}/api/diagnostic-insights/search_marketing`, {
         headers: { 
           'X-User-Name': session?.username,
           'X-User-Role': session?.role
         }
       });
+      console.log('Insights loaded:', response.data);
       if (response.data && !response.data.message) {
         setInsights(response.data);
       }
