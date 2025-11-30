@@ -16,42 +16,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-[#F8F6F5] to-[#F3ECE7]">
-      {/* User Functions Bar */}
-      <div className="w-full bg-white border-b border-[#E0AFA0]/30 px-4 sm:px-6 lg:px-8 py-3">
-        <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <div className="text-[#6C5F5F] text-sm">
-            Logged in as <span className="font-semibold text-[#A62639]">{session?.username}</span>
-          </div>
-          <div className="flex gap-3">
-            <button
-              onClick={() => setChangePasswordOpen(true)}
-              className="px-4 py-2 text-sm bg-[#E0AFA0] text-white rounded-lg hover:bg-[#d19a89] transition-colors"
-            >
-              Change Password
-            </button>
-            {isSuperAdmin && (
-              <button
-                onClick={() => navigate('/admin')}
-                className="px-4 py-2 text-sm bg-[#1769AA] text-white rounded-lg hover:bg-[#135a8a] transition-colors"
-              >
-                Admin Panel
-              </button>
-            )}
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 text-sm bg-[#A62639] text-white rounded-lg hover:bg-[#8a1f2d] transition-colors"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <ChangePasswordModal 
-          open={changePasswordOpen} 
-          onClose={() => setChangePasswordOpen(false)} 
-        />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex items-center justify-center" style={{ minHeight: 'calc(100vh - 64px)' }}>
         {/* Hero Section */}
         <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#E0AFA0]/30 to-[#F8F6F5] my-10">
           <div className="relative py-20 md:py-32">
