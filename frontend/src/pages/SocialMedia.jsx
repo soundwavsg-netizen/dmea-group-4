@@ -769,9 +769,9 @@ const SocialMedia = () => {
                                 </p>
                                 <p className="text-sm text-green-700 mb-1 truncate">
                                   <strong>URL:</strong>{' '}
-                                  <a href={analytics.best_post.post_url} target="_blank" rel="noopener noreferrer" className="underline">
+                                  <span className="underline">
                                     {analytics.best_post.post_url}
-                                  </a>
+                                  </span>
                                 </p>
                                 <p className="text-sm text-green-700">
                                   <strong>Engagement:</strong> {(analytics.best_post.engagement_rate * 100).toFixed(2)}%
@@ -790,9 +790,9 @@ const SocialMedia = () => {
                                 </p>
                                 <p className="text-sm text-red-700 mb-1 truncate">
                                   <strong>URL:</strong>{' '}
-                                  <a href={analytics.worst_post.post_url} target="_blank" rel="noopener noreferrer" className="underline">
+                                  <span className="underline">
                                     {analytics.worst_post.post_url}
-                                  </a>
+                                  </span>
                                 </p>
                                 <p className="text-sm text-red-700">
                                   <strong>Engagement:</strong> {(analytics.worst_post.engagement_rate * 100).toFixed(2)}%
