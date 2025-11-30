@@ -103,13 +103,13 @@ const Sidebar = () => {
         label: 'Social Media Diagnostics', 
         path: '/social/library', 
         icon: '📱',
-        check: () => isSuperAdmin || flags.social_media || permissionsService.canAccessModule('social_media')
+        check: () => isSuperAdmin || flags.social_media || permissionsService.canAccessModule('social_media_diagnostics')
       },
       analytics: { 
         label: 'Search Marketing Diagnostics', 
         path: '/analytics/traffic', 
         icon: '📊',
-        check: () => isSuperAdmin || flags.analytics || permissionsService.canAccessModule('analytics')
+        check: () => isSuperAdmin || flags.analytics || permissionsService.canAccessModule('search_marketing_diagnostics')
       },
       final_capstone: { 
         label: 'Final Capstone', 
