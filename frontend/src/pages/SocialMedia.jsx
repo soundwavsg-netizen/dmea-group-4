@@ -416,14 +416,24 @@ const SocialMedia = () => {
                   <CardDescription>Upload CSV/Excel or manually enter data. Preset columns are protected.</CardDescription>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={() => document.getElementById('file-upload').click()}>
-                    <Upload className="w-4 h-4 mr-2" />Upload CSV/Excel
-                  </Button>
-                  <input id="file-upload" type="file" accept=".csv,.xlsx,.xls" onChange={handleFileUpload} className="hidden" />
+                  {canPerformAction('upload_csv') && (
+                    <>
+                      <Button variant="outline" size="sm" onClick={() => document.getElementById('file-upload').click()}>
+                        <Upload className="w-4 h-4 mr-2" />Upload CSV/Excel
+                      </Button>
+                      <input id="file-upload" type="file" accept=".csv,.xlsx,.xls" onChange={handleFileUpload} className="hidden" />
+                    </>
+                  )}
                   <Button onClick={exportCSV} variant="outline" size="sm"><Download className="w-4 h-4 mr-2" />Export</Button>
-                  <Button onClick={addColumn} size="sm" className="bg-blue-600 hover:bg-blue-700"><Plus className="w-4 h-4 mr-2" />Add Column</Button>
-                  <Button onClick={addRow} size="sm" className="bg-[#A62639] hover:bg-[#8a1f2d]"><Plus className="w-4 h-4 mr-2" />Add Row</Button>
-                  <Button onClick={saveData} size="sm" className="bg-green-600 hover:bg-green-700"><Save className="w-4 h-4 mr-2" />Save</Button>
+                  {canPerformAction('add_column') && (
+                    <Button onClick={addColumn} size="sm" className="bg-blue-600 hover:bg-blue-700"><Plus className="w-4 h-4 mr-2" />Add Column</Button>
+                  )}
+                  {canPerformAction('add_row') && (
+                    <Button onClick={addRow} size="sm" className="bg-[#A62639] hover:bg-[#8a1f2d]"><Plus className="w-4 h-4 mr-2" />Add Row</Button>
+                  )}
+                  {canPerformAction('save_data') && (
+                    <Button onClick={saveData} size="sm" className="bg-green-600 hover:bg-green-700"><Save className="w-4 h-4 mr-2" />Save</Button>
+                  )}
                 </div>
               </div>
             </CardHeader>
