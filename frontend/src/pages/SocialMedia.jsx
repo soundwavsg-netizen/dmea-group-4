@@ -567,11 +567,11 @@ const SocialMedia = () => {
                 </div>
                 <Button 
                   onClick={analyzeData} 
-                  disabled={analyzing || rows.length === 0 || !canPerformAction('analyze_data')}
+                  disabled={analyzing || rows.length === 0 || (!isSuperadmin && !canPerformAction('analyze_data'))}
                   className="bg-[#A62639] hover:bg-[#8a1f2d] disabled:opacity-50 disabled:cursor-not-allowed"
                   data-testid="analyze-data-button"
                 >
-                  {!canPerformAction('analyze_data') ? <Lock className="w-4 h-4 mr-2" /> : <BarChart3 className="w-4 h-4 mr-2" />}
+                  {(!isSuperadmin && !canPerformAction('analyze_data')) ? <Lock className="w-4 h-4 mr-2" /> : <BarChart3 className="w-4 h-4 mr-2" />}
                   {analyzing ? 'Analyzing...' : 'Analyze Data'}
                 </Button>
               </div>
