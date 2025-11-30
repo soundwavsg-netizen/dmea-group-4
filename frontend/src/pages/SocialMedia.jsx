@@ -151,12 +151,18 @@ const SocialMedia = () => {
   const loadAnalytics = async () => {
     try {
       const response = await axios.get(`${API}/api/analytics/social_media`, {
-        headers: { 'X-User-Name': session?.username }
+        headers: { 
+          'X-User-Name': session?.username,
+          'X-User-Role': session?.role
+        }
       });
       setAnalytics(response.data);
     } catch (error) {
       console.error('Error loading analytics:', error);
-      toast.error('Failed to load analytics');
+      // Don't show error if analytics just don't exist yet
+      if (error.response?.status !== 404) {
+        toast.error('Failed to load analytics');
+      }
     }
   };
 
