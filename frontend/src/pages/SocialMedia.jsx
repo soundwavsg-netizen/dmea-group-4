@@ -334,6 +334,12 @@ const SocialMedia = () => {
   };
 
   const addRow = () => {
+    if (!canPerformAction('add_row')) {
+      toast.error('You do not have permission to add rows', {
+        description: 'Contact your administrator to request access'
+      });
+      return;
+    }
     const newRow = { id: `row-${Date.now()}` };
     columns.forEach(col => {
       newRow[col] = '';
