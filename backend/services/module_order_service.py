@@ -14,16 +14,14 @@ class ModuleOrderService:
     
     ORDER_DOC_PATH = "settings/module_order"
     
-    # Default order for all modules
+    # Default order for all modules (using correct module names)
     DEFAULT_ORDER = [
         "dashboard",
         "buyer_persona",
         "daily_reflections",
         "presentations",
-        "seo_content",
-        "social_media",
-        "analytics",
-        "final_capstone",
+        "social_media_diagnostics",
+        "search_marketing_diagnostics",
         "shared_folder",
         "important_links"
     ]
