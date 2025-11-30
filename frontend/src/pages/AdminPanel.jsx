@@ -360,7 +360,8 @@ const AdminPanel = () => {
       reports: 'Reports',
       social_media_diagnostics: '📱 Social Media Diagnostics',
       search_marketing_diagnostics: '📊 Search Marketing Diagnostics',
-      shared_folder: '📁 Shared Folder'
+      shared_folder: '📁 Shared Folder',
+      important_links: '🔗 Important Links'
     };
     return labels[moduleName] || moduleName;
   };
