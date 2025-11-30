@@ -233,6 +233,12 @@ const Analytics = () => {
   };
 
   const addColumn = () => {
+    if (!canPerformAction(\'add_column\')) {
+      toast.error(\'You do not have permission to add columns\', {
+        description: \'Contact your administrator to request access\'
+      });
+      return;
+    }
     const newColName = `Extra Column ${columns.length - PRESET_COLUMNS.length + 1}`;
     setColumns([...columns, newColName]);
     setRows(rows.map(row => ({ ...row, [newColName]: '' })));
@@ -241,6 +247,15 @@ const Analytics = () => {
 
   const renameColumn = (oldName, newName) => {
     if (!newName || newName === oldName) return;
+    
+    // Check permission
+    if (!canPerformAction(\'rename_column\')) {
+      toast.error(\'You do not have permission to rename columns\', {
+        description: \'Contact your administrator to request access\'
+      });
+      setEditingColumn(null);
+      return;
+    }
     if (PRESET_COLUMNS.includes(oldName)) {
       toast.error('Cannot rename preset columns');
       setEditingColumn(null);
@@ -264,6 +279,13 @@ const Analytics = () => {
   };
 
   const deleteColumn = (colName) => {
+    // Check permission
+    if (!canPerformAction(\'delete_column\')) {
+      toast.error(\'You do not have permission to delete columns\', {
+        description: \'Contact your administrator to request access\'
+      });
+      return;
+    }
     if (PRESET_COLUMNS.includes(colName)) {
       toast.error('Cannot delete preset columns');
       return;
@@ -280,6 +302,12 @@ const Analytics = () => {
   };
 
   const addRow = () => {
+    if (!canPerformAction(\'add_row\')) {
+      toast.error(\'You do not have permission to add rows\', {
+        description: \'Contact your administrator to request access\'
+      });
+      return;
+    }
     const newRow = { id: `row-${Date.now()}` };
     columns.forEach(col => { newRow[col] = ''; });
     setRows([...rows, newRow]);
@@ -290,6 +318,12 @@ const Analytics = () => {
   };
 
   const deleteRow = (rowId) => {
+    if (!canPerformAction(\'delete_row\')) {
+      toast.error(\'You do not have permission to delete rows\', {
+        description: \'Contact your administrator to request access\'
+      });
+      return;
+    }
     setRows(rows.filter(row => row.id !== rowId));
   };
 
