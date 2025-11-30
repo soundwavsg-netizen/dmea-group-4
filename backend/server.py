@@ -1452,14 +1452,20 @@ def check_diagnostic_permission(username: str, role: str, module: str, action: s
 def save_dynamic_table_data(
     module: str,
     data: dict,
-    x_user_name: Optional[str] = Header(None)
+    x_user_name: Optional[str] = Header(None),
+    x_user_role: Optional[str] = Header(None)
 ):
-    """Save dynamic table data (columns + rows)"""
+    """Save dynamic table data (columns + rows) - Permission enforced"""
     if not x_user_name:
         raise HTTPException(status_code=401, detail="Authentication required")
     
     if module not in ['social_media', 'search_marketing']:
         raise HTTPException(status_code=400, detail="Invalid module")
+    
+    # Check permission
+    role = x_user_role or 'user'
+    if not check_diagnostic_permission(x_user_name, role, module, 'save_data'):
+        raise HTTPException(status_code=403, detail="You do not have permission to save data for this module")
     
     try:
         success = DynamicDataService.save_table_data(x_user_name, module, data)
