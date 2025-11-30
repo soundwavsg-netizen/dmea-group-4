@@ -920,9 +920,9 @@ const SocialMedia = () => {
                                     </Badge>
                                   </div>
                                   <p className="text-sm text-gray-600 truncate">
-                                    <a href={post.url} target="_blank" rel="noopener noreferrer" className="text-[#1769AA] hover:underline">
+                                    <span className="text-[#1769AA]">
                                       {post.url}
-                                    </a>
+                                    </span>
                                   </p>
                                   <div className="flex gap-4 text-sm">
                                     <span className="font-semibold text-green-700">
@@ -966,9 +966,9 @@ const SocialMedia = () => {
                                     </Badge>
                                   </div>
                                   <p className="text-sm text-gray-600 truncate">
-                                    <a href={post.url} target="_blank" rel="noopener noreferrer" className="text-[#1769AA] hover:underline">
+                                    <span className="text-[#1769AA]">
                                       {post.url}
-                                    </a>
+                                    </span>
                                   </p>
                                   <div className="flex gap-4 text-sm">
                                     <span className="font-semibold text-red-700">
