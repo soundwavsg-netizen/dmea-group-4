@@ -21,8 +21,13 @@ export const usePermissions = (moduleName) => {
 
       try {
         const response = await axios.get(`${API}/api/permissions/me`, {
-          headers: { 'X-User-Name': session.username }
+          headers: { 
+            'X-User-Name': session.username,
+            'X-User-Role': session.role
+          }
         });
+        
+        console.log('Permissions API response for', moduleName, ':', response.data);
         
         const modulePerms = response.data.modules[moduleName] || {
           enabled: false,
@@ -30,6 +35,7 @@ export const usePermissions = (moduleName) => {
           actions: {}
         };
         
+        console.log('Module permissions for', moduleName, ':', modulePerms);
         setPermissions(modulePerms);
       } catch (error) {
         console.error('Error fetching permissions:', error);
