@@ -103,8 +103,8 @@ const Analytics = () => {
       setAnalyzing(true);
       toast.info('Running analytics engine...');
       
-      // Step 1: Run analytics
-      const analyticsResponse = await axios.get(`${API}/api/analytics/search_marketing`, {
+      // Step 1: Run analytics (this now saves results)
+      const analyticsResponse = await axios.get(`${API}/api/analytics/search_marketing/run`, {
         headers: { 
           'X-User-Name': session?.username,
           'X-User-Role': session?.role
@@ -118,7 +118,7 @@ const Analytics = () => {
       
       setAnalytics(analyticsResponse.data);
       
-      // Step 2: Generate insights
+      // Step 2: Generate insights (this now saves results)
       const insightsResponse = await axios.post(`${API}/api/generate-insights/search_marketing`,
         analyticsResponse.data,
         { headers: { 
@@ -128,7 +128,7 @@ const Analytics = () => {
       );
       
       setInsights(insightsResponse.data);
-      toast.success('Analytics complete!');
+      toast.success('Analytics and insights saved! Now visible to all authorized users.');
     } catch (error) {
       console.error('Error analyzing data:', error);
       toast.error('Failed to analyze data');
