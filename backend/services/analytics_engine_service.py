@@ -294,11 +294,58 @@ class AnalyticsEngineService:
             if not mapped_data:
                 return {'error': 'No data available for analytics'}
             
+            # Data quality warnings
+            data_warnings = []
+            skipped_rows = []
+            
             def safe_num(value, default=0):
                 try:
                     return float(value) if value not in [None, '', 'null'] else default
                 except (ValueError, TypeError):
                     return default
+            
+            # Validate and filter data
+            valid_data = []
+            for idx, row in enumerate(mapped_data, start=1):
+                issues = []
+                keyword = row.get('keyword', '')
+                volume = safe_num(row.get('search_volume', 0))
+                difficulty = safe_num(row.get('keyword_difficulty', 0))
+                
+                # Check critical fields
+                if not keyword or keyword in ['', 'null', None]:
+                    issues.append('Missing Keyword')
+                if volume <= 0:
+                    issues.append('Missing/Zero Search Volume')
+                if difficulty <= 0:
+                    issues.append('Missing Keyword Difficulty')
+                
+                if issues:
+                    skipped_rows.append({
+                        'row': idx,
+                        'keyword': keyword or 'N/A',
+                        'issues': ', '.join(issues)
+                    })
+                else:
+                    valid_data.append(row)
+            
+            # Add warning if rows were skipped
+            if skipped_rows:
+                data_warnings.append({
+                    'type': 'warning',
+                    'message': f'{len(skipped_rows)} keyword(s) skipped due to missing critical data',
+                    'details': skipped_rows[:10]
+                })
+            
+            # If no valid data remains, return error
+            if not valid_data:
+                return {
+                    'error': 'No valid data available for analytics',
+                    'warnings': data_warnings
+                }
+            
+            # Use valid_data for calculations
+            mapped_data = valid_data
             
             # INTENT WEIGHTS
             INTENT_WEIGHTS = {
