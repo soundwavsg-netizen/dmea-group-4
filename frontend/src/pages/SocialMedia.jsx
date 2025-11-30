@@ -829,14 +829,9 @@ const SocialMedia = () => {
                                     >
                                       <td className="px-4 py-3">{post.platform}</td>
                                       <td className="px-4 py-3 max-w-xs truncate">
-                                        <a 
-                                          href={post.post_url} 
-                                          target="_blank" 
-                                          rel="noopener noreferrer"
-                                          className="text-[#1769AA] hover:underline"
-                                        >
+                                        <span className="text-[#1769AA]">
                                           {post.post_url}
-                                        </a>
+                                        </span>
                                       </td>
                                       <td className="px-4 py-3">{post.post_type}</td>
                                       <td className="px-4 py-3 text-right font-semibold text-[#A62639]">
