@@ -357,7 +357,9 @@ const AdminPanel = () => {
       buyer_persona: 'Buyer Persona',
       daily_reflections: 'Daily Reflections',
       presentations: 'Presentations',
-      reports: 'Reports'
+      reports: 'Reports',
+      social_media_diagnostics: '📱 Social Media Diagnostics',
+      search_marketing_diagnostics: '📊 Search Marketing Diagnostics'
     };
     return labels[moduleName] || moduleName;
   };
