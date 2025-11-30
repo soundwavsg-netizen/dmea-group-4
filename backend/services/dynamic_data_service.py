@@ -67,9 +67,10 @@ class DynamicDataService:
     
     @staticmethod
     def get_column_mapping(username: str, module: str) -> Dict[str, str]:
-        """Get column mappings"""
+        """Get column mappings - SHARED across all users"""
         try:
-            doc = db.collection(f'{module}_column_mappings').document(username).get()
+            # Get the shared mappings so all users see the same configuration
+            doc = db.collection(f'{module}_column_mappings').document('shared').get()
             if doc.exists:
                 return doc.to_dict().get('mappings', {})
             return {}
