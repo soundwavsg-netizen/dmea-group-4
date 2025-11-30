@@ -86,9 +86,9 @@ const SocialMediaNav = ({ activeTab, setActiveTab }) => {
             <div
               onClick={() => setActiveTab('dashboard')}
               className={tabStyle('dashboard')}
-              data-testid="social-media-tab-dashboard"
+              data-testid="social-media-tab-analytics"
             >
-              Dashboard
+              Analytics
             </div>
           )}
           
