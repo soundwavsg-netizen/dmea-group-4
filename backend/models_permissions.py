@@ -247,5 +247,45 @@ SUPERADMIN_PERMISSIONS = {
             "add": True,
             "delete": True
         }
+    ),
+    "social_media_diagnostics": ModulePermission(
+        enabled=True,
+        tabs={
+            "data_input": True,
+            "column_mapping": True,
+            "dashboard": True,
+            "insight_summary": True
+        },
+        actions={
+            "add_column": True,
+            "delete_column": True,
+            "rename_column": True,
+            "add_row": True,
+            "delete_row": True,
+            "upload_csv": True,
+            "save_data": True,
+            "perform_mapping": True,
+            "analyze_data": True
+        }
+    ),
+    "search_marketing_diagnostics": ModulePermission(
+        enabled=True,
+        tabs={
+            "data_input": True,
+            "column_mapping": True,
+            "dashboard": True,
+            "insight_summary": True
+        },
+        actions={
+            "add_column": True,
+            "delete_column": True,
+            "rename_column": True,
+            "add_row": True,
+            "delete_row": True,
+            "upload_csv": True,
+            "save_data": True,
+            "perform_mapping": True,
+            "analyze_data": True
+        }
     )
 }
