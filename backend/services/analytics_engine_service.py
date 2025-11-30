@@ -283,6 +283,113 @@ class AnalyticsEngineService:
             best_post = post_level_data[0] if post_level_data else None
             worst_post = post_level_data[-1] if post_level_data else None
             
+            # PUSH/FIX/DROP CLASSIFICATION
+            # Calculate engagement percentiles
+            if len(post_level_data) >= 4:  # Need at least 4 posts for meaningful percentiles
+                sorted_by_engagement = sorted(post_level_data, key=lambda x: x['engagement_rate'], reverse=True)
+                n = len(sorted_by_engagement)
+                
+                # Top 25% threshold
+                high_threshold_idx = max(0, int(n * 0.25) - 1)
+                high_engagement_threshold = sorted_by_engagement[high_threshold_idx]['engagement_rate']
+                
+                # Bottom 25% threshold (75th percentile position)
+                low_threshold_idx = min(n - 1, int(n * 0.75))
+                low_engagement_threshold = sorted_by_engagement[low_threshold_idx]['engagement_rate']
+                
+                # Classify each post
+                push_posts = []
+                fix_posts = []
+                drop_posts = []
+                
+                for post in post_level_data:
+                    engagement_rate = post['engagement_rate']
+                    
+                    # Parse sentiment score (assume numeric or positive/neutral/negative string)
+                    sentiment = post.get('sentiment', 'Unknown')
+                    if isinstance(sentiment, (int, float)):
+                        sentiment_score = float(sentiment)
+                        sentiment_category = 'positive' if sentiment_score > 0.20 else ('negative' if sentiment_score < -0.20 else 'neutral')
+                    else:
+                        sentiment_str = str(sentiment).lower()
+                        if 'pos' in sentiment_str:
+                            sentiment_category = 'positive'
+                            sentiment_score = 0.5  # Assume positive
+                        elif 'neg' in sentiment_str:
+                            sentiment_category = 'negative'
+                            sentiment_score = -0.5  # Assume negative
+                        else:
+                            sentiment_category = 'neutral'
+                            sentiment_score = 0.0
+                    
+                    # Determine engagement level
+                    if engagement_rate >= high_engagement_threshold:
+                        engagement_level = 'high'
+                    elif engagement_rate >= low_engagement_threshold:
+                        engagement_level = 'medium'
+                    else:
+                        engagement_level = 'low'
+                    
+                    # Apply classification rules
+                    classification = None
+                    
+                    # PUSH rules
+                    if engagement_level == 'high' and sentiment_category in ['positive', 'neutral']:
+                        classification = 'PUSH'
+                    elif engagement_level == 'medium' and sentiment_category == 'positive':
+                        classification = 'PUSH'
+                    
+                    # FIX rules
+                    elif engagement_level == 'high' and sentiment_category == 'negative':
+                        classification = 'FIX'
+                    elif engagement_level == 'medium' and sentiment_category in ['neutral', 'negative']:
+                        classification = 'FIX'
+                    elif engagement_level == 'low' and sentiment_category == 'positive':
+                        # Check if content pillar is important (for simplicity, consider all low+positive as FIX)
+                        classification = 'FIX'
+                    
+                    # DROP rules
+                    elif engagement_level == 'low' and sentiment_category in ['neutral', 'negative']:
+                        classification = 'DROP'
+                    
+                    # Add classification to post
+                    post['classification'] = classification or 'NONE'
+                    post['engagement_level'] = engagement_level
+                    post['sentiment_category'] = sentiment_category
+                    
+                    # Collect by classification
+                    if classification == 'PUSH':
+                        push_posts.append(post)
+                    elif classification == 'FIX':
+                        fix_posts.append(post)
+                    elif classification == 'DROP':
+                        drop_posts.append(post)
+                
+                # Store classification data
+                classification_summary = {
+                    'push_count': len(push_posts),
+                    'fix_count': len(fix_posts),
+                    'drop_count': len(drop_posts),
+                    'push_posts': push_posts[:10],  # Top 10 for display
+                    'fix_posts': fix_posts[:10],
+                    'drop_posts': drop_posts[:10],
+                    'thresholds': {
+                        'high_engagement': high_engagement_threshold,
+                        'low_engagement': low_engagement_threshold
+                    }
+                }
+            else:
+                # Not enough data for classification
+                classification_summary = {
+                    'push_count': 0,
+                    'fix_count': 0,
+                    'drop_count': 0,
+                    'push_posts': [],
+                    'fix_posts': [],
+                    'drop_posts': [],
+                    'message': 'Need at least 4 posts for classification'
+                }
+            
             return {
                 'warnings': data_warnings if data_warnings else None,
                 'overview': {
