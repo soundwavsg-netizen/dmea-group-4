@@ -1546,14 +1546,20 @@ def get_column_mapping(
 @app.get("/api/analytics/{module}")
 def get_analytics(
     module: str,
-    x_user_name: Optional[str] = Header(None)
+    x_user_name: Optional[str] = Header(None),
+    x_user_role: Optional[str] = Header(None)
 ):
-    """Get analytics based on mapped data"""
+    """Get analytics based on mapped data - Permission enforced"""
     if not x_user_name:
         raise HTTPException(status_code=401, detail="Authentication required")
     
     if module not in ['social_media', 'search_marketing']:
         raise HTTPException(status_code=400, detail="Invalid module")
+    
+    # Check permission - this is expensive operation
+    role = x_user_role or 'user'
+    if not check_diagnostic_permission(x_user_name, role, module, 'analyze_data'):
+        raise HTTPException(status_code=403, detail="You do not have permission to run analytics for this module")
     
     try:
         # Get mapped data
