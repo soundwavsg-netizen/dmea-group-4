@@ -210,7 +210,10 @@ const Analytics = () => {
     try {
       await axios.post(`${API}/api/dynamic-data/search_marketing`,
         { columns, rows, updated_at: new Date().toISOString() },
-        { headers: { 'X-User-Name': session?.username } }
+        { headers: { 
+          'X-User-Name': session?.username,
+          'X-User-Role': session?.role
+        } }
       );
       toast.success('Data saved successfully');
     } catch (error) {
@@ -223,7 +226,10 @@ const Analytics = () => {
     try {
       await axios.post(`${API}/api/column-mapping/search_marketing`,
         { mappings },
-        { headers: { 'X-User-Name': session?.username } }
+        { headers: { 
+          'X-User-Name': session?.username,
+          'X-User-Role': session?.role
+        } }
       );
       toast.success('Mappings saved successfully');
       loadAnalytics();
