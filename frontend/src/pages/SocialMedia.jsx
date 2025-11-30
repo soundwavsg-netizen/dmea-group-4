@@ -419,9 +419,7 @@ const SocialMedia = () => {
                   {canPerformAction('add_row') && (
                     <Button onClick={addRow} size="sm" className="bg-[#A62639] hover:bg-[#8a1f2d]"><Plus className="w-4 h-4 mr-2" />Add Row</Button>
                   )}
-                  {canPerformAction('save_data') && (
-                    <Button onClick={saveData} size="sm" className="bg-green-600 hover:bg-green-700"><Save className="w-4 h-4 mr-2" />Save</Button>
-                  )}
+                  <Button onClick={saveData} size="sm" className="bg-green-600 hover:bg-green-700"><Save className="w-4 h-4 mr-2" />Save</Button>
                 </div>
               </div>
             </CardHeader>
